@@ -1,0 +1,114 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-tc-valida-heading" jhiTranslate="fronterizaApp.serviciosTcValida.home.createOrEditLabel">Create or edit a Tc Valida</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTcValida.clave" for="field_clave">Clave</label>
+                    <input type="text" class="form-control" name="clave" id="field_clave"
+                           formControlName="clave"/>
+                    <div *ngIf="editForm.get('clave')!.invalid && (editForm.get('clave')!.dirty || editForm.get('clave')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('clave')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTcValida.descripcion" for="field_descripcion">Descripcion</label>
+                    <input type="text" class="form-control" name="descripcion" id="field_descripcion"
+                           formControlName="descripcion"/>
+                    <div *ngIf="editForm.get('descripcion')!.invalid && (editForm.get('descripcion')!.dirty || editForm.get('descripcion')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('descripcion')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTcValida.moral" for="field_moral">Moral</label>
+                    <input type="number" class="form-control" name="moral" id="field_moral"
+                           formControlName="moral"/>
+                    <div *ngIf="editForm.get('moral')!.invalid && (editForm.get('moral')!.dirty || editForm.get('moral')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('moral')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('moral')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTcValida.fisica" for="field_fisica">Fisica</label>
+                    <input type="number" class="form-control" name="fisica" id="field_fisica"
+                           formControlName="fisica"/>
+                    <div *ngIf="editForm.get('fisica')!.invalid && (editForm.get('fisica')!.dirty || editForm.get('fisica')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('fisica')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('fisica')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTcValida.isr" for="field_isr">Isr</label>
+                    <input type="number" class="form-control" name="isr" id="field_isr"
+                           formControlName="isr"/>
+                    <div *ngIf="editForm.get('isr')!.invalid && (editForm.get('isr')!.dirty || editForm.get('isr')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('isr')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('isr')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTcValida.iva" for="field_iva">Iva</label>
+                    <input type="number" class="form-control" name="iva" id="field_iva"
+                           formControlName="iva"/>
+                    <div *ngIf="editForm.get('iva')!.invalid && (editForm.get('iva')!.dirty || editForm.get('iva')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('iva')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('iva')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,80 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tdRegFront">
+            <h2><span jhiTranslate="fronterizaApp.serviciosTdRegFront.detail.title">Td Reg Front</span> {{ tdRegFront.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.region">Region</span></dt>
+                <dd>
+                    <span>{{ tdRegFront.region }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.domicilioRegion">Domicilio Region</span></dt>
+                <dd>
+                    <span>{{ tdRegFront.domicilioRegion }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.sucursalRegion">Sucursal Region</span></dt>
+                <dd>
+                    <span>{{ tdRegFront.sucursalRegion }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.tipoImpuestod">Tipo Impuestod</span></dt>
+                <dd>
+                    <span>{{ tdRegFront.tipoImpuestod }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.tipoSolicitudd">Tipo Solicitudd</span></dt>
+                <dd>
+                    <span>{{ tdRegFront.tipoSolicitudd }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.ejerciciod">Ejerciciod</span></dt>
+                <dd>
+                    <span>{{ tdRegFront.ejerciciod }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.tipoSolicitud">Tipo Solicitud</span></dt>
+                <dd>
+                    <div *ngIf="tdRegFront.tipoSolicitudId">
+                        <a [routerLink]="['/tc-tipo-sol', tdRegFront.tipoSolicitudId, 'view']">{{ tdRegFront.tipoSolicitudDescripcion }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.tipoImpuesto">Tipo Impuesto</span></dt>
+                <dd>
+                    <div *ngIf="tdRegFront.tipoImpuestoId">
+                        <a [routerLink]="['/tc-tipo-imp', tdRegFront.tipoImpuestoId, 'view']">{{ tdRegFront.tipoImpuestoDescripcion }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.ejercicio">Ejercicio</span></dt>
+                <dd>
+                    <div *ngIf="tdRegFront.ejercicioId">
+                        <a [routerLink]="['/tc-ejerc', tdRegFront.ejercicioId, 'view']">{{ tdRegFront.ejercicioValor }}</a>
+                    </div>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.manifestacion">Manifestacion</span></dt>
+                <dd>
+                    <span *ngFor="let manifestacion of tdRegFront.manifestacions; let last = last">
+                        <a [routerLink]="['/tc-manifes', manifestacion?.id, 'view']">{{ manifestacion.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdRegFront.validacion">Validacion</span></dt>
+                <dd>
+                    <span *ngFor="let validacion of tdRegFront.validacions; let last = last">
+                        <a [routerLink]="['/tc-valida', validacion?.id, 'view']">{{ validacion.id }}</a>{{ last ? '' : ', ' }}
+                    </span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/td-reg-front', tdRegFront.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

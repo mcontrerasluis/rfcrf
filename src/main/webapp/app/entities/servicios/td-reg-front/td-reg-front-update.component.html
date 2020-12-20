@@ -1,0 +1,79 @@
+<div class="row justify-content-center">
+    
+    <div class="p-col-8 p-md-8">
+
+	
+		<div class="card box p-shadow-24">
+			<p-toast></p-toast>
+			<p-steps [model]="items" [(activeIndex)]="activeIndex"  [readonly]="false"></p-steps>
+		</div>    
+	<form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+
+		<div class="card box p-shadow-18"*ngIf="general">			
+			<div class="p-fluid">
+            
+				<div class="p-field p-grid">
+					<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Región</label>
+					<div class="p-col-12 p-md-10">
+						<p-dropdown [options]="regionesF" name="region" formControlName="region" id="field_region" placeholder="Seleccione Región" [showClear]="true"></p-dropdown>
+					</div>
+				</div>
+				<div class="p-field p-grid">
+					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Impuesto</label>
+					<div class="p-col-12 p-md-10">
+						<p-dropdown [options]="tctipoimps" name="tipoImpuestoId" formControlName="tipoImpuestoId" id="field_tipoImpuestoId" optionLabel="descripcion" optionValue="id" placeholder="Seleccione Impuesto" [showClear]="true"></p-dropdown>
+					</div>
+				</div>
+                <div class="p-field p-grid">
+					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">¿Tienes domicilio fiscal en esa región?</label>
+					<div class="p-col-12 p-md-10">
+						<p-toggleButton name="domicilioRegion" formControlName="domicilioRegion" id="field_domicilioRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+					</div>
+				</div>
+                <div class="p-field p-grid">
+					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">¿Tienes al menos una sucursal o establecimiento en esa región?</label>
+					<div class="p-col-12 p-md-10">
+						<p-toggleButton name="sucursalRegion" formControlName="sucursalRegion" id="field_sucursalRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+					</div>
+				</div>
+                <div class="p-field p-grid">
+					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Tipo de Solicitud</label>
+					<div class="p-col-12 p-md-10">
+						<p-dropdown [options]="tctiposols" name="tipoSolicitudId" formControlName="tipoSolicitudId" id="field_tipoSolicitudId" optionLabel="descripcion" optionValue="id" placeholder="Seleccione Aviso" [showClear]="true"></p-dropdown>
+					</div>
+				</div>
+                <div class="p-field p-grid">
+					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Ejercicio Fiscal</label>
+					<div class="p-col-12 p-md-10">
+						<p-dropdown [options]="tcejercs" name="ejercicioId" formControlName="ejercicioId" id="field_ejercicioId" optionLabel="valor" optionValue="id" placeholder="Seleccione Ejercicio" [showClear]="true"></p-dropdown>
+					</div>
+				</div>
+			</div>	
+		</div>	
+
+        <div class="card box p-shadow-18" *ngIf="manifiesta">			
+			<div class="p-fluid">    			   
+                <div class="p-field p-grid" *ngFor="let tcManifesOption of tcmanifes; trackBy: trackById">
+					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><p-toggleButton onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right"></p-toggleButton></label>
+					<div class="p-col-12 p-md-10">
+						<blockquote> {{ tcManifesOption.descripcion }} </blockquote>
+					</div>
+				</div>
+                <div>
+					<button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+						<fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+					</button>
+
+					<button type="submit" id="save-entity"  class="btn btn-primary">
+						<fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+					</button>
+            	</div>            
+			</div>
+		</div>
+	</form>	
+</div>
+
+
+</div>
+
+

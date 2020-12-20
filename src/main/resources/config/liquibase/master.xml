@@ -14,7 +14,16 @@
     <property name="uuidType" value="uuid" dbms="h2, oracle"/>
 
     <include file="config/liquibase/changelog/00000000000000_initial_schema.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201220154614_added_entity_TcEjerc.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201220154714_added_entity_TcManifes.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201220154814_added_entity_TcTipoImp.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201220154914_added_entity_TcTipoSol.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201220155014_added_entity_TcValida.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201220155114_added_entity_TdGeneral.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201220155214_added_entity_TdRegFront.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-changelog - JHipster will add liquibase changelogs here -->
+    <include file="config/liquibase/changelog/20201220155114_added_entity_constraints_TdGeneral.xml" relativeToChangelogFile="false"/>
+    <include file="config/liquibase/changelog/20201220155214_added_entity_constraints_TdRegFront.xml" relativeToChangelogFile="false"/>
     <!-- jhipster-needle-liquibase-add-constraints-changelog - JHipster will add liquibase constraints changelogs here -->
     <!-- jhipster-needle-liquibase-add-incremental-changelog - JHipster will add incremental liquibase changelogs here -->
 </databaseChangeLog>

@@ -1,0 +1,128 @@
+application {
+  config {
+    applicationType monolith
+    authenticationType oauth2
+    baseName rfcrf
+    blueprints []
+    buildTool gradle
+    cacheProvider hazelcast
+    clientFramework angularX
+    clientPackageManager npm
+    clientTheme none
+    creationTimestamp 1608473659470
+    databaseType sql
+    devDatabaseType h2Disk
+    dtoSuffix DTO
+    embeddableLaunchScript false
+    enableHibernateCache true
+    enableSwaggerCodegen false
+    enableTranslation true
+    jhiPrefix jhi
+    jhipsterVersion "6.10.5"
+    languages [es]
+    messageBroker false
+    nativeLanguage es
+    otherModules []
+    packageName sat.gob.mx.agsc
+    prodDatabaseType oracle
+    searchEngine false
+    serverPort 8080
+    serviceDiscoveryType false
+    skipClient false
+    skipServer false
+    skipUserManagement true
+    testFrameworks [protractor]
+    useSass true
+    websocket spring-websocket
+  }
+  entities TcEjerc, TcManifes, TcTipoImp, TcTipoSol, TcValida, TdGeneral, TdRegFront
+}
+
+entity TcEjerc {
+  clave String required,
+  valor Integer required,
+  fechaInicio Instant,
+  fechaFin Instant,
+  usuario String
+}
+entity TcManifes {
+  clave String required,
+  descripcion String required,
+  moral Integer required,
+  fisica Integer required,
+  isr Integer required min(0) max(1),
+  iva Integer required min(0) max(1),
+  rfnorte Integer required min(0) max(1),
+  rfsur Integer required min(0) max(1),
+  s01 Integer required min(0) max(1),
+  s02 Integer required min(0) max(1),
+  s03 Integer required min(0) max(1),
+  s04 Integer required min(0) max(1),
+  fecha Instant,
+  usuario String
+}
+entity TcTipoImp {
+  clave String required,
+  descripcion String required,
+  fechaInicio Instant,
+  fechaFin Instant,
+  usuario String
+}
+entity TcTipoSol {
+  clave String required,
+  descripcion String required,
+  isr Integer required min(0) max(1),
+  iva Integer required min(0) max(1),
+  efirma Integer required min(0) max(1),
+  fechaInicio Instant 
+  fechaFin Instant,
+  usuario String
+}
+entity TcValida {
+  clave String required,
+  descripcion String required,
+  moral Integer required min(0) max(1),
+  fisica Integer required min(0) max(1),
+  isr Integer required min(0) max(1),
+  iva Integer required min(0) max(1),
+  usuario String
+}
+entity TdGeneral {
+  rfc String required,
+  fecha Instant required,
+  tipoSolicitudd String required,
+  folio String required,
+  estatus Integer required
+}
+entity TdRegFront {
+  region String required,
+  domicilioRegion String required,
+  sucursalRegion String required,
+  tipoImpuestod String ,
+  tipoSolicitudd String ,
+  ejerciciod Integer,
+  estatus String required,
+  folio String,
+  rfc String,
+  fecha Instant,
+  usuario String
+}
+relationship OneToOne {
+  TdGeneral{tipoSolicitud} to TdRegFront{general}
+}
+relationship ManyToOne {
+  TdRegFront{tipoSolicitud(descripcion)} to TcTipoSol,
+  TdRegFront{tipoImpuesto(descripcion)} to TcTipoImp,
+  TdRegFront{ejercicio(valor)} to TcEjerc
+}
+relationship ManyToMany {
+  TdRegFront{manifestacion} to TcManifes{general},
+  TdRegFront{validacion} to TcValida{general}
+}
+
+dto TcEjerc, TcManifes, TcTipoImp, TcTipoSol, TcValida, TdGeneral, TdRegFront with mapstruct
+paginate TcEjerc, TcManifes, TcTipoImp, TcTipoSol, TcValida, TdGeneral, TdRegFront with pagination
+service TcEjerc, TcManifes, TcTipoImp, TcTipoSol, TcValida, TdGeneral, TdRegFront with serviceClass
+microservice TcEjerc, TcManifes, TcTipoImp, TcTipoSol, TcValida, TdGeneral, TdRegFront with servicios
+
+

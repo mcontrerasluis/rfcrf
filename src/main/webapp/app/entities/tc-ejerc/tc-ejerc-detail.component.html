@@ -1,0 +1,46 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tcEjerc">
+            <h2><span jhiTranslate="rfcrfApp.tcEjerc.detail.title">Tc Ejerc</span> {{ tcEjerc.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="rfcrfApp.tcEjerc.clave">Clave</span></dt>
+                <dd>
+                    <span>{{ tcEjerc.clave }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcEjerc.valor">Valor</span></dt>
+                <dd>
+                    <span>{{ tcEjerc.valor }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcEjerc.fechaInicio">Fecha Inicio</span></dt>
+                <dd>
+                    <span>{{ tcEjerc.fechaInicio }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcEjerc.fechaFin">Fecha Fin</span></dt>
+                <dd>
+                    <span>{{ tcEjerc.fechaFin }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcEjerc.usuario">Usuario</span></dt>
+                <dd>
+                    <span>{{ tcEjerc.usuario }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tc-ejerc', tcEjerc.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

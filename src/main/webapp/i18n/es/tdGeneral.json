@@ -1,0 +1,27 @@
+{
+  "rfcrfApp": {
+    "tdGeneral": {
+      "home": {
+        "title": "Td Generals",
+        "createLabel": "Crear nuevo Td General",
+        "createOrEditLabel": "Crear o editar Td General",
+        "notFound": "Ningún Td Generals encontrado"
+      },
+      "created": "Un nuevo Td General ha sido creado con el identificador {{ param }}",
+      "updated": "Un Td General ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Td General ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Td General {{ id }}?"
+      },
+      "detail": {
+        "title": "Td General"
+      },
+      "rfc": "Rfc",
+      "fecha": "Fecha",
+      "tipoSolicitudd": "Tipo Solicitudd",
+      "folio": "Folio",
+      "estatus": "Estatus",
+      "tipoSolicitud": "Tipo Solicitud"
+    }
+  }
+}

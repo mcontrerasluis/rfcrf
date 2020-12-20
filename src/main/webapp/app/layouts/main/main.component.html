@@ -1,13 +1,30 @@
-<jhi-page-ribbon></jhi-page-ribbon>
+<div class="layout-wrapper" (click)="onLayoutClick()"
+     [ngClass]="{'layout-menu-horizontal': isHorizontal(),
+                 'layout-menu-overlay': isOverlay(),
+                 'layout-menu-static': isStatic(),
+                 'layout-menu-slim':isSlim(),
+                 'layout-menu-static-inactive': staticMenuDesktopInactive,
+                 'layout-menu-mobile-active': staticMenuMobileActive,
+                 'layout-menu-overlay-active':overlayMenuActive,
+                 'topbar-icons-active': topbarIconsActive,
+                 'p-input-filled': inputStyle === 'filled', 'p-ripple-disabled': !ripple}">
 
-<div>
-    <router-outlet name="navbar"></router-outlet>
-</div>
+    <app-topbar></app-topbar>
+    
 
-<div class="container-fluid">
-    <div class="card jh-card">
-        <router-outlet></router-outlet>
+    <div class="layout-sidebar" (click)="onMenuClick($event)">
+        <app-menu></app-menu>
     </div>
 
-    <jhi-footer></jhi-footer>
+    <div class="layout-main">
+
+        <jhi-breadcrumb></jhi-breadcrumb>
+
+        <div class="layout-content">
+            <router-outlet></router-outlet>
+        </div>
+        
+        <div class="layout-mask" *ngIf="staticMenuMobileActive || topbarIconsActive"></div>
+    </div>
+    
 </div>

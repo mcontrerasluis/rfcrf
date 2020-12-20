@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tcValida">
+            <h2><span jhiTranslate="fronterizaApp.serviciosTcValida.detail.title">Tc Valida</span> {{ tcValida.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcValida.clave">Clave</span></dt>
+                <dd>
+                    <span>{{ tcValida.clave }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcValida.descripcion">Descripcion</span></dt>
+                <dd>
+                    <span>{{ tcValida.descripcion }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcValida.moral">Moral</span></dt>
+                <dd>
+                    <span>{{ tcValida.moral }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcValida.fisica">Fisica</span></dt>
+                <dd>
+                    <span>{{ tcValida.fisica }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcValida.isr">Isr</span></dt>
+                <dd>
+                    <span>{{ tcValida.isr }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcValida.iva">Iva</span></dt>
+                <dd>
+                    <span>{{ tcValida.iva }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tc-valida', tcValida.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

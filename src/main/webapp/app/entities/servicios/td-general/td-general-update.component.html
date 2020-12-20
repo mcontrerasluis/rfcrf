@@ -1,0 +1,103 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+            <h2 id="jhi-td-general-heading" jhiTranslate="fronterizaApp.serviciosTdGeneral.home.createOrEditLabel">Create or edit a Td General</h2>
+
+            <div>
+                <jhi-alert-error></jhi-alert-error>
+
+                <div class="form-group" [hidden]="!editForm.get('id')!.value">
+                    <label for="id" jhiTranslate="global.field.id">ID</label>
+                    <input type="text" class="form-control" id="id" name="id" formControlName="id" readonly />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdGeneral.rfc" for="field_rfc">Rfc</label>
+                    <input type="text" class="form-control" name="rfc" id="field_rfc"
+                           formControlName="rfc"/>
+                    <div *ngIf="editForm.get('rfc')!.invalid && (editForm.get('rfc')!.dirty || editForm.get('rfc')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('rfc')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdGeneral.fecha" for="field_fecha">Fecha</label>
+                    <div class="d-flex">
+                        <input id="field_fecha" type="datetime-local" class="form-control" name="fecha" formControlName="fecha" placeholder="YYYY-MM-DD HH:mm"/>
+                    </div>
+                    <div *ngIf="editForm.get('fecha')!.invalid && (editForm.get('fecha')!.dirty || editForm.get('fecha')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('fecha')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('fecha')?.errors?.ZonedDateTimelocal" jhiTranslate="entity.validation.ZonedDateTimelocal">
+                            This field should be a date and time.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdGeneral.tipoSolicitudd" for="field_tipoSolicitudd">Tipo Solicitudd</label>
+                    <input type="text" class="form-control" name="tipoSolicitudd" id="field_tipoSolicitudd"
+                           formControlName="tipoSolicitudd"/>
+                    <div *ngIf="editForm.get('tipoSolicitudd')!.invalid && (editForm.get('tipoSolicitudd')!.dirty || editForm.get('tipoSolicitudd')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('tipoSolicitudd')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdGeneral.folio" for="field_folio">Folio</label>
+                    <input type="text" class="form-control" name="folio" id="field_folio"
+                           formControlName="folio"/>
+                    <div *ngIf="editForm.get('folio')!.invalid && (editForm.get('folio')!.dirty || editForm.get('folio')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('folio')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdGeneral.estatus" for="field_estatus">Estatus</label>
+                    <input type="number" class="form-control" name="estatus" id="field_estatus"
+                           formControlName="estatus"/>
+                    <div *ngIf="editForm.get('estatus')!.invalid && (editForm.get('estatus')!.dirty || editForm.get('estatus')!.touched)">
+                        <small class="form-text text-danger"
+                               *ngIf="editForm.get('estatus')?.errors?.required" jhiTranslate="entity.validation.required">
+                        This field is required.
+                        </small>
+                        <small class="form-text text-danger"
+                            [hidden]="!editForm.get('estatus')?.errors?.number" jhiTranslate="entity.validation.number">
+                            This field should be a number.
+                        </small>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-control-label" jhiTranslate="fronterizaApp.serviciosTdGeneral.tipoSolicitud" for="field_tipoSolicitud">Tipo Solicitud</label>
+                    <select class="form-control" id="field_tipoSolicitud" name="tipoSolicitud" formControlName="tipoSolicitudId">
+                        <option [ngValue]="null"></option>
+                        <option [ngValue]="tdRegFrontOption.id" *ngFor="let tdRegFrontOption of tiposolicituds; trackBy: trackById">{{ tdRegFrontOption.id }}</option>
+                    </select>
+                </div>
+            </div>
+
+            <div>
+                <button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
+                    <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+                </button>
+
+                <button type="submit" id="save-entity" [disabled]="editForm.invalid || isSaving" class="btn btn-primary">
+                    <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+{
+  "rfcrfApp": {
+    "tcEjerc": {
+      "home": {
+        "title": "Tc Ejercs",
+        "createLabel": "Crear nuevo Tc Ejerc",
+        "createOrEditLabel": "Crear o editar Tc Ejerc",
+        "notFound": "Ningún Tc Ejercs encontrado"
+      },
+      "created": "Un nuevo Tc Ejerc ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tc Ejerc ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tc Ejerc ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tc Ejerc {{ id }}?"
+      },
+      "detail": {
+        "title": "Tc Ejerc"
+      },
+      "clave": "Clave",
+      "valor": "Valor",
+      "fechaInicio": "Fecha Inicio",
+      "fechaFin": "Fecha Fin",
+      "usuario": "Usuario"
+    }
+  }
+}

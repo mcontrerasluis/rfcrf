@@ -8,5 +8,15 @@ eg $input-color: red;
 @import 'bootstrap-variables';
 // Import Bootstrap source files from node_modules
 @import '~bootstrap/scss/bootstrap';
+@import '~primeng/resources/primeng.min.css';
+@import '~primeflex/primeflex.scss';
+@import '~primeicons/primeicons.css';
+@import '~fullcalendar/main.min.css';
+@import '../../assets/theme/theme-navy.css';
+@import '../../assets/layout/css/layout-navy.css';
+@import '../../assets/layout/css/estilos-sat.css';
+@import '../../assets/layout/css/all.min.css';
+
+//@import "assets/demo/flags/flags.css";
 
 /* jhipster-needle-scss-add-vendor JHipster will add new css style */

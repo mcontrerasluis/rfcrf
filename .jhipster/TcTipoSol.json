@@ -1,0 +1,61 @@
+{
+  "name": "TcTipoSol",
+  "fields": [
+    {
+      "fieldName": "clave",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "isr",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "iva",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "efirma",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "fechaInicio",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "fechaFin",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "usuario",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [],
+  "changelogDate": "20201220154914",
+  "entityTableName": "tc_tipo_sol",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["rfcrf"],
+  "microserviceName": "servicios"
+}

@@ -1,0 +1,54 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tcValida">
+            <h2><span jhiTranslate="rfcrfApp.tcValida.detail.title">Tc Valida</span> {{ tcValida.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="rfcrfApp.tcValida.clave">Clave</span></dt>
+                <dd>
+                    <span>{{ tcValida.clave }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcValida.descripcion">Descripcion</span></dt>
+                <dd>
+                    <span>{{ tcValida.descripcion }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcValida.moral">Moral</span></dt>
+                <dd>
+                    <span>{{ tcValida.moral }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcValida.fisica">Fisica</span></dt>
+                <dd>
+                    <span>{{ tcValida.fisica }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcValida.isr">Isr</span></dt>
+                <dd>
+                    <span>{{ tcValida.isr }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcValida.iva">Iva</span></dt>
+                <dd>
+                    <span>{{ tcValida.iva }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcValida.usuario">Usuario</span></dt>
+                <dd>
+                    <span>{{ tcValida.usuario }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tc-valida', tcValida.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

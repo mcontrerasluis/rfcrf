@@ -1,0 +1,36 @@
+{
+  "rfcrfApp": {
+    "tcManifes": {
+      "home": {
+        "title": "Tc Manifes",
+        "createLabel": "Crear nuevo Tc Manifes",
+        "createOrEditLabel": "Crear o editar Tc Manifes",
+        "notFound": "Ningún Tc Manifes encontrado"
+      },
+      "created": "Un nuevo Tc Manifes ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tc Manifes ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tc Manifes ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tc Manifes {{ id }}?"
+      },
+      "detail": {
+        "title": "Tc Manifes"
+      },
+      "clave": "Clave",
+      "descripcion": "Descripcion",
+      "moral": "Moral",
+      "fisica": "Fisica",
+      "isr": "Isr",
+      "iva": "Iva",
+      "rfnorte": "Rfnorte",
+      "rfsur": "Rfsur",
+      "s01": "S 01",
+      "s02": "S 02",
+      "s03": "S 03",
+      "s04": "S 04",
+      "fecha": "Fecha",
+      "usuario": "Usuario",
+      "general": "General"
+    }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "rfcrfApp": {
+    "tcValida": {
+      "home": {
+        "title": "Tc Validas",
+        "createLabel": "Crear nuevo Tc Valida",
+        "createOrEditLabel": "Crear o editar Tc Valida",
+        "notFound": "Ningún Tc Validas encontrado"
+      },
+      "created": "Un nuevo Tc Valida ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tc Valida ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tc Valida ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tc Valida {{ id }}?"
+      },
+      "detail": {
+        "title": "Tc Valida"
+      },
+      "clave": "Clave",
+      "descripcion": "Descripcion",
+      "moral": "Moral",
+      "fisica": "Fisica",
+      "isr": "Isr",
+      "iva": "Iva",
+      "usuario": "Usuario",
+      "general": "General"
+    }
+  }
+}

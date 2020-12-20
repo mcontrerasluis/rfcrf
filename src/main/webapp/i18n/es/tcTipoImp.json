@@ -1,0 +1,26 @@
+{
+  "rfcrfApp": {
+    "tcTipoImp": {
+      "home": {
+        "title": "Tc Tipo Imps",
+        "createLabel": "Crear nuevo Tc Tipo Imp",
+        "createOrEditLabel": "Crear o editar Tc Tipo Imp",
+        "notFound": "Ningún Tc Tipo Imps encontrado"
+      },
+      "created": "Un nuevo Tc Tipo Imp ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tc Tipo Imp ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tc Tipo Imp ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tc Tipo Imp {{ id }}?"
+      },
+      "detail": {
+        "title": "Tc Tipo Imp"
+      },
+      "clave": "Clave",
+      "descripcion": "Descripcion",
+      "fechaInicio": "Fecha Inicio",
+      "fechaFin": "Fecha Fin",
+      "usuario": "Usuario"
+    }
+  }
+}

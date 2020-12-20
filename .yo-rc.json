@@ -37,6 +37,10 @@
     "enableTranslation": true,
     "nativeLanguage": "es",
     "languages": ["es"],
-    "blueprints": []
-  }
+    "blueprints": [],
+    "skipUserManagement": true,
+    "skipClient": false,
+    "skipServer": false
+  },
+  "entities": ["TcEjerc", "TcManifes", "TcTipoImp", "TcTipoSol", "TcValida", "TdGeneral", "TdRegFront"]
 }

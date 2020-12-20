@@ -1,0 +1,38 @@
+{
+  "rfcrfApp": {
+    "tdRegFront": {
+      "home": {
+        "title": "Td Reg Fronts",
+        "createLabel": "Crear nuevo Td Reg Front",
+        "createOrEditLabel": "Crear o editar Td Reg Front",
+        "notFound": "Ningún Td Reg Fronts encontrado"
+      },
+      "created": "Un nuevo Td Reg Front ha sido creado con el identificador {{ param }}",
+      "updated": "Un Td Reg Front ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Td Reg Front ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Td Reg Front {{ id }}?"
+      },
+      "detail": {
+        "title": "Td Reg Front"
+      },
+      "region": "Region",
+      "domicilioRegion": "Domicilio Region",
+      "sucursalRegion": "Sucursal Region",
+      "tipoImpuestod": "Tipo Impuestod",
+      "tipoSolicitudd": "Tipo Solicitudd",
+      "ejerciciod": "Ejerciciod",
+      "estatus": "Estatus",
+      "folio": "Folio",
+      "rfc": "Rfc",
+      "fecha": "Fecha",
+      "usuario": "Usuario",
+      "tipoSolicitud": "Tipo Solicitud",
+      "tipoImpuesto": "Tipo Impuesto",
+      "ejercicio": "Ejercicio",
+      "manifestacion": "Manifestacion",
+      "validacion": "Validacion",
+      "general": "General"
+    }
+  }
+}

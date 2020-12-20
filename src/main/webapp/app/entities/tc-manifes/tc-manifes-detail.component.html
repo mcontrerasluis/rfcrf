@@ -1,0 +1,82 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tcManifes">
+            <h2><span jhiTranslate="rfcrfApp.tcManifes.detail.title">Tc Manifes</span> {{ tcManifes.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.clave">Clave</span></dt>
+                <dd>
+                    <span>{{ tcManifes.clave }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.descripcion">Descripcion</span></dt>
+                <dd>
+                    <span>{{ tcManifes.descripcion }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.moral">Moral</span></dt>
+                <dd>
+                    <span>{{ tcManifes.moral }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.fisica">Fisica</span></dt>
+                <dd>
+                    <span>{{ tcManifes.fisica }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.isr">Isr</span></dt>
+                <dd>
+                    <span>{{ tcManifes.isr }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.iva">Iva</span></dt>
+                <dd>
+                    <span>{{ tcManifes.iva }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.rfnorte">Rfnorte</span></dt>
+                <dd>
+                    <span>{{ tcManifes.rfnorte }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.rfsur">Rfsur</span></dt>
+                <dd>
+                    <span>{{ tcManifes.rfsur }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.s01">S 01</span></dt>
+                <dd>
+                    <span>{{ tcManifes.s01 }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.s02">S 02</span></dt>
+                <dd>
+                    <span>{{ tcManifes.s02 }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.s03">S 03</span></dt>
+                <dd>
+                    <span>{{ tcManifes.s03 }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.s04">S 04</span></dt>
+                <dd>
+                    <span>{{ tcManifes.s04 }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.fecha">Fecha</span></dt>
+                <dd>
+                    <span>{{ tcManifes.fecha }}</span>
+                </dd>
+                <dt><span jhiTranslate="rfcrfApp.tcManifes.usuario">Usuario</span></dt>
+                <dd>
+                    <span>{{ tcManifes.usuario }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tc-manifes', tcManifes.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

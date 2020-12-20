@@ -1,0 +1,52 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tdGeneral">
+            <h2><span jhiTranslate="fronterizaApp.serviciosTdGeneral.detail.title">Td General</span> {{ tdGeneral.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdGeneral.rfc">Rfc</span></dt>
+                <dd>
+                    <span>{{ tdGeneral.rfc }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdGeneral.fecha">Fecha</span></dt>
+                <dd>
+                    <span>{{ tdGeneral.fecha }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdGeneral.tipoSolicitudd">Tipo Solicitudd</span></dt>
+                <dd>
+                    <span>{{ tdGeneral.tipoSolicitudd }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdGeneral.folio">Folio</span></dt>
+                <dd>
+                    <span>{{ tdGeneral.folio }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdGeneral.estatus">Estatus</span></dt>
+                <dd>
+                    <span>{{ tdGeneral.estatus }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTdGeneral.tipoSolicitud">Tipo Solicitud</span></dt>
+                <dd>
+                    <div *ngIf="tdGeneral.tipoSolicitudId">
+                        <a [routerLink]="['/td-reg-front', tdGeneral.tipoSolicitudId, 'view']">{{ tdGeneral.tipoSolicitudId }}</a>
+                    </div>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/td-general', tdGeneral.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>

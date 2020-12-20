@@ -1,0 +1,29 @@
+{
+  "rfcrfApp": {
+    "tcTipoSol": {
+      "home": {
+        "title": "Tc Tipo Sols",
+        "createLabel": "Crear nuevo Tc Tipo Sol",
+        "createOrEditLabel": "Crear o editar Tc Tipo Sol",
+        "notFound": "Ningún Tc Tipo Sols encontrado"
+      },
+      "created": "Un nuevo Tc Tipo Sol ha sido creado con el identificador {{ param }}",
+      "updated": "Un Tc Tipo Sol ha sido actualizado con el identificador {{ param }}",
+      "deleted": "Un Tc Tipo Sol ha sido eliminado con el identificador {{ param }}",
+      "delete": {
+        "question": "¿Seguro que quiere eliminar Tc Tipo Sol {{ id }}?"
+      },
+      "detail": {
+        "title": "Tc Tipo Sol"
+      },
+      "clave": "Clave",
+      "descripcion": "Descripcion",
+      "isr": "Isr",
+      "iva": "Iva",
+      "efirma": "Efirma",
+      "fechaInicio": "Fecha Inicio",
+      "fechaFin": "Fecha Fin",
+      "usuario": "Usuario"
+    }
+  }
+}

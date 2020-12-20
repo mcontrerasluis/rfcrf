@@ -1,0 +1,111 @@
+{
+  "name": "TcManifes",
+  "fields": [
+    {
+      "fieldName": "clave",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "descripcion",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "moral",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "fisica",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "isr",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "iva",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "rfnorte",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "rfsur",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "s01",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "s02",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "s03",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "s04",
+      "fieldType": "Integer",
+      "fieldValidateRules": ["required", "min", "max"],
+      "fieldValidateRulesMin": "0",
+      "fieldValidateRulesMax": "1"
+    },
+    {
+      "fieldName": "fecha",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "usuario",
+      "fieldType": "String"
+    }
+  ],
+  "relationships": [
+    {
+      "relationshipType": "many-to-many",
+      "otherEntityName": "tdRegFront",
+      "otherEntityRelationshipName": "manifestacion",
+      "relationshipName": "general",
+      "otherEntityField": "id",
+      "ownerSide": false
+    }
+  ],
+  "changelogDate": "20201220154714",
+  "entityTableName": "tc_manifes",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass",
+  "jpaMetamodelFiltering": false,
+  "fluentMethods": true,
+  "readOnly": false,
+  "embedded": false,
+  "clientRootFolder": "",
+  "applications": ["rfcrf"],
+  "microserviceName": "servicios"
+}

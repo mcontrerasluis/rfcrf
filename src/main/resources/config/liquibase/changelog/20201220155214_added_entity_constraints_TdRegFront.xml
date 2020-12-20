@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.9.xsd">
+    <!--
+        Added the constraints for entity TdRegFront.
+    -->
+    <changeSet id="20201220155214-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="tipo_solicitud_id"
+                                 baseTableName="td_reg_front"
+                                 constraintName="td_reg_front_tipo_solicitud_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tc_tipo_sol"/>
+
+        <addForeignKeyConstraint baseColumnNames="tipo_impuesto_id"
+                                 baseTableName="td_reg_front"
+                                 constraintName="td_reg_front_tipo_impuesto_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tc_tipo_imp"/>
+
+        <addForeignKeyConstraint baseColumnNames="ejercicio_id"
+                                 baseTableName="td_reg_front"
+                                 constraintName="fk_td_reg_front_ejercicio_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tc_ejerc"/>
+
+        <addForeignKeyConstraint baseColumnNames="td_reg_front_id"
+                                 baseTableName="td_reg_front_manifestacion"
+                                 constraintName="td_reg_front_m_td_reg_front_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="td_reg_front"/>
+
+        <addForeignKeyConstraint baseColumnNames="manifestacion_id"
+                                 baseTableName="td_reg_front_manifestacion"
+                                 constraintName="td_reg_front_m_manifestacio_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tc_manifes"/>
+        
+        <addForeignKeyConstraint baseColumnNames="td_reg_front_id"
+                                 baseTableName="td_reg_front_validacion"
+                                 constraintName="td_reg_front_v_td_reg_front_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="td_reg_front"/>
+
+        <addForeignKeyConstraint baseColumnNames="validacion_id"
+                                 baseTableName="td_reg_front_validacion"
+                                 constraintName="td_reg_front_v_validacion_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="tc_valida"/>
+        
+    </changeSet>
+</databaseChangeLog>

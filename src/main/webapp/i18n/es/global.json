@@ -7,6 +7,13 @@
       "jhipster-needle-menu-add-element": "JHipster will add additional menu entries here (do not translate!)",
       "entities": {
         "main": "Entidades",
+        "tcEjerc": "Tc Ejerc",
+        "tcManifes": "Tc Manifes",
+        "tcTipoImp": "Tc Tipo Imp",
+        "tcTipoSol": "Tc Tipo Sol",
+        "tcValida": "Tc Valida",
+        "tdGeneral": "Td General",
+        "tdRegFront": "Td Reg Front",
         "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
       },
       "account": {

@@ -1,0 +1,50 @@
+<div class="row justify-content-center">
+    <div class="col-8">
+        <div *ngIf="tcManifes">
+            <h2><span jhiTranslate="fronterizaApp.serviciosTcManifes.detail.title">Tc Manifes</span> {{ tcManifes.id }}</h2>
+
+            <hr>
+
+            <jhi-alert-error></jhi-alert-error>
+
+            <dl class="row-md jh-entity-details">
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcManifes.clave">Clave</span></dt>
+                <dd>
+                    <span>{{ tcManifes.clave }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcManifes.descripcion">Descripcion</span></dt>
+                <dd>
+                    <span>{{ tcManifes.descripcion }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcManifes.moral">Moral</span></dt>
+                <dd>
+                    <span>{{ tcManifes.moral }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcManifes.fisica">Fisica</span></dt>
+                <dd>
+                    <span>{{ tcManifes.fisica }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcManifes.isr">Isr</span></dt>
+                <dd>
+                    <span>{{ tcManifes.isr }}</span>
+                </dd>
+                <dt><span jhiTranslate="fronterizaApp.serviciosTcManifes.iva">Iva</span></dt>
+                <dd>
+                    <span>{{ tcManifes.iva }}</span>
+                </dd>
+            </dl>
+
+            <button type="submit"
+                    (click)="previousState()"
+                    class="btn btn-info">
+                <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+            </button>
+
+            <button type="button"
+                    [routerLink]="['/tc-manifes', tcManifes.id, 'edit']"
+                    class="btn btn-primary">
+                <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+            </button>
+        </div>
+    </div>
+</div>
