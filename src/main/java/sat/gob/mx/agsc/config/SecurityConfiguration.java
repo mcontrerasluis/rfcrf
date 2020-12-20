@@ -30,6 +30,9 @@ import sat.gob.mx.agsc.security.oauth2.JwtGrantedAuthorityConverter;
 import org.springframework.security.web.header.writers.ReferrerPolicyHeaderWriter;
 import org.springframework.web.filter.CorsFilter;
 import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
+import static org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI;
+import org.springframework.core.env.Environment;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -44,10 +47,18 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JHipsterProperties jHipsterProperties;
     private final SecurityProblemSupport problemSupport;
 
-    public SecurityConfiguration(CorsFilter corsFilter, JHipsterProperties jHipsterProperties, SecurityProblemSupport problemSupport) {
+    private ClientRegistrationRepository clientRegistrationRepository;
+
+    private Environment env;
+    
+
+    public SecurityConfiguration(CorsFilter corsFilter, JHipsterProperties jHipsterProperties, SecurityProblemSupport problemSupport, ClientRegistrationRepository clientRegistrationRepository, Environment env) {
         this.corsFilter = corsFilter;
         this.problemSupport = problemSupport;
         this.jHipsterProperties = jHipsterProperties;
+        this.clientRegistrationRepository = clientRegistrationRepository;
+
+        this.env = env;
     }
 
     @Override
@@ -94,7 +105,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/prometheus").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
         .and()
-            .oauth2Login()
+            .oauth2Login()            
         .and()
             .oauth2ResourceServer()
                 .jwt()
@@ -103,6 +114,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .and()
                 .oauth2Client();
         // @formatter:on
+
+        http
+            .oauth2Login() 
+            .authorizationEndpoint()
+            .authorizationRequestResolver(new CustomAuthorizationRequestResolver(clientRegistrationRepository, DEFAULT_AUTHORIZATION_REQUEST_BASE_URI));
     }
 
     Converter<Jwt, AbstractAuthenticationToken> authenticationConverter() {

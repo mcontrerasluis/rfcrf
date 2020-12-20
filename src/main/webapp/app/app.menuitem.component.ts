@@ -120,6 +120,8 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
   constructor(public app: MainComponent, public router: Router, private cd: ChangeDetectorRef, private menuService: MenuService) {
     this.menuSourceSubscription = this.menuService.menuSource$.subscribe(key => {
       // deactivate current active menu
+      // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
       if (this.active && this.key !== key && key.indexOf(this.key!) !== 0) {
         //eslint-disable-line
         this.active = false;
