@@ -98,7 +98,7 @@ module.exports = (options) => ({
             chunks: ['polyfills', 'main', 'global'],
             chunksSortMode: 'manual',
             inject: 'body',
-            base: '/',
+            base: '/RFCSolZnFr/',
         }),
         new AngularCompilerPlugin({
             mainPath: utils.root('src/main/webapp/app/app.main.ts'),
