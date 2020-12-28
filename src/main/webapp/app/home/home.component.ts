@@ -131,7 +131,7 @@ export class HomeComponent implements OnInit {
     event.preventDefault();
   }
 
-  onMenuClick($event: any) {
+  onMenuClick($event: any) {//eslint-disable-line
     // eslint-disable-line
     this.menuClick = true;
   }
@@ -175,8 +175,7 @@ export class HomeComponent implements OnInit {
     this.ripple = event.checked;
   }
 
-  onConfigClick(event: any) {
-    // eslint-disable-line
+  onConfigClick(event: any) {// eslint-disable-line
     this.configClick = true;
   }
 

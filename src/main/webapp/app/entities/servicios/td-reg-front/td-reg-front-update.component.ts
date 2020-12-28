@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -35,11 +36,13 @@ export class TdRegFrontUpdateComponent implements OnInit {
   tctipoimps: ITcTipoImp[] = [];
   tcejercs: ITcEjerc[] = [];
   tcmanifes: ITcManifes[] = [];
+  tcmanifesS: ITcManifes[] = [];
   tcvalidas: ITcValida[] = [];
   items: MenuItem[];
   activeIndex = 0;
   general = true;
   manifiesta = false;
+  sucursalDesactiva = false;
 
   regionesF: SelectItem[];
   selectedDrop: SelectItem;
@@ -49,15 +52,15 @@ export class TdRegFrontUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     region: [null, [Validators.required]],
-    domicilioRegion: [null, [Validators.required]],
-    sucursalRegion: [null, [Validators.required]],
-    tipoImpuestod: [null, [Validators.required]],
-    tipoSolicitudd: [null, [Validators.required]],
-    ejerciciod: [null, [Validators.required]],
-    tipoSolicitudId: [],
-    tipoImpuestoId: [],
-    ejercicioId: [],
-    manifestacions: [],
+    domicilioRegion: [],
+    sucursalRegion: [],
+    tipoImpuestod: [],
+    tipoSolicitudd: [],
+    ejerciciod: [],
+    tipoSolicitudId: [null,[Validators.required]],
+    tipoImpuestoId: [null, [Validators.required]],
+    ejercicioId: [null, [Validators.required]],
+    manifestacions: [null, [Validators.required]],
     validacions: [],
   });
 
@@ -81,7 +84,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
 
       this.tcTipoImpService.query().subscribe((res: HttpResponse<ITcTipoImp[]>) => (this.tctipoimps = res.body || []));
 
-      this.tcEjercService.query().subscribe((res: HttpResponse<ITcEjerc[]>) => (this.tcejercs = res.body || []));
+      this.tcEjercService.query().subscribe((res: HttpResponse<ITcEjerc[]>) => (this.tcejercs = res.body || []));      
 
       this.tcManifesService.query().subscribe((res: HttpResponse<ITcManifes[]>) => (this.tcmanifes = res.body || []));
 
@@ -109,6 +112,9 @@ export class TdRegFrontUpdateComponent implements OnInit {
           this.activeIndex = 1;
           this.general = false;
           this.manifiesta = true;
+          
+          
+          this.cargaManifestaciones();
           this.messageService.add({ severity: 'info', summary: 'First Step', detail: event.item.label });
         },
       },
@@ -122,6 +128,109 @@ export class TdRegFrontUpdateComponent implements OnInit {
         },
       },
     ];
+  }
+
+  private cargaManifestaciones():void{
+    let cla = '';
+    let sol = '';
+    let reg = '';    
+    let solicitud = null;
+    let impuesto = null;
+    let ciclo = null;
+
+    
+    solicitud = this.tctiposols.find(obj =>{
+      return obj.id===this.editForm.get(['tipoSolicitudId']).value
+    })
+
+    impuesto = this.tctipoimps.find(obj =>{
+      return obj.id===this.editForm.get(['tipoImpuestoId']).value
+    })
+
+    ciclo = this.tcejercs.find(obj =>{
+      return obj.id===this.editForm.get(['ejercicioId']).value
+    })
+
+    console.log(solicitud);
+    console.log(impuesto);
+    console.log(ciclo);
+
+    if(impuesto.clave === '01'){
+      cla = 'isr'
+    }else if(impuesto.clave === '02'){
+      cla = 'iva'
+    }
+
+    if(solicitud.clave === 'S01'){
+      sol = 's01';
+    }else if(solicitud.clave === 'S02'){
+      sol = 's02';
+    }else if(solicitud.clave === 'S03'){
+      sol = 's03';
+    }else if(solicitud.clave === 'S04'){
+      sol = 's04';
+    }
+    
+    if(this.editForm.get(['region'])!.value==='Región Frontera Sur'){
+      reg ='rfsur';
+    }else{
+      reg ='rfnorte'
+    }
+
+    console.log(cla + sol + reg)
+
+    this.tcmanifesS = this.tcmanifes.filter(function(v, i) {
+      return ((v[cla] === 1 && v[sol] === 1 && v[reg]===1) );
+    })
+  
+  }
+
+  nextPage():void {
+
+    if (this.activeIndex === 0) {
+          
+        this.activeIndex = 1;
+        this.general = false;
+        this.manifiesta = true;  
+        this.cargaManifestaciones();  
+
+        
+
+        return;
+    }
+
+    if (this.activeIndex === 1) {
+          
+        this.activeIndex = 2;
+        this.general = false;
+        this.manifiesta = false;
+
+      return;
+  }
+
+    
+}
+
+  previousPage():void {
+ 
+    if (this.activeIndex === 1) {
+          
+      this.activeIndex = 0;
+      this.general = true;
+      this.manifiesta = false;    
+
+      return;
+  }
+
+  if (this.activeIndex === 2) {
+        
+      this.activeIndex = 1;
+      this.general = false;
+      this.manifiesta = true;
+
+    return;
+}
+
   }
 
   updateForm(tdRegFront: ITdRegFront): void {
@@ -155,6 +264,19 @@ export class TdRegFrontUpdateComponent implements OnInit {
     }
   }
 
+  desactivaSucursal():void {
+    // eslint-disable-next-line no-console
+    console.log(this.editForm.get(['domicilioRegion']).value);    
+    
+    if (this.sucursalDesactiva) {
+      this.sucursalDesactiva = false;
+      return;
+    }
+    if (!this.sucursalDesactiva) {
+      this.sucursalDesactiva = true;
+    }
+  }
+
   private createFromForm(): ITdRegFront {
     return {
       ...new TdRegFront(),
@@ -168,7 +290,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
       tipoSolicitudId: this.editForm.get(['tipoSolicitudId'])!.value,
       tipoImpuestoId: this.editForm.get(['tipoImpuestoId'])!.value,
       ejercicioId: this.editForm.get(['ejercicioId'])!.value,
-      manifestacions: this.editForm.get(['manifestacions'])!.value,
+      manifestacions: this.tcmanifesS,
       validacions: this.editForm.get(['validacions'])!.value,
       estatus: 'Recibido',
     };

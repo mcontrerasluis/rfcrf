@@ -16,7 +16,7 @@
 					<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Región</label>
 					<div class="p-col-12 p-md-10">
 						<p-dropdown [options]="regionesF" name="region" formControlName="region" id="field_region" placeholder="Seleccione Región" [showClear]="true"></p-dropdown>
-					</div>
+					</div>					 
 				</div>
 				<div class="p-field p-grid">
 					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Impuesto</label>
@@ -27,13 +27,13 @@
                 <div class="p-field p-grid">
 					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">¿Tienes domicilio fiscal en esa región?</label>
 					<div class="p-col-12 p-md-10">
-						<p-toggleButton name="domicilioRegion" formControlName="domicilioRegion" id="field_domicilioRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+						<p-toggleButton (onChange)="desactivaSucursal()" name="domicilioRegion" formControlName="domicilioRegion" id="field_domicilioRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
 					</div>
 				</div>
                 <div class="p-field p-grid">
 					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">¿Tienes al menos una sucursal o establecimiento en esa región?</label>
 					<div class="p-col-12 p-md-10">
-						<p-toggleButton name="sucursalRegion" formControlName="sucursalRegion" id="field_sucursalRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+						<p-toggleButton [disabled]="sucursalDesactiva" name="sucursalRegion" formControlName="sucursalRegion" id="field_sucursalRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
 					</div>
 				</div>
                 <div class="p-field p-grid">
@@ -53,8 +53,8 @@
 
         <div class="card box p-shadow-18" *ngIf="manifiesta">			
 			<div class="p-fluid">    			   
-                <div class="p-field p-grid" *ngFor="let tcManifesOption of tcmanifes; trackBy: trackById">
-					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><p-toggleButton onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right"></p-toggleButton></label>
+                <div class="p-field p-grid" *ngFor="let tcManifesOption of tcmanifesS; trackBy: trackById">
+					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><p-toggleButton name="manifestacions" formControlName="manifestacions" id="manifestacions" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right" required></p-toggleButton></label>
 					<div class="p-col-12 p-md-10">
 						<blockquote> {{ tcManifesOption.descripcion }} </blockquote>
 					</div>
@@ -64,11 +64,15 @@
 						<fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
 					</button>
 
-					<button type="submit" id="save-entity"  class="btn btn-primary">
+					<button type="submit" id="save-entity"  class="btn btn-primary" [disabled]="!editForm.valid">
 						<fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
 					</button>
             	</div>            
 			</div>
+		</div>
+		<div class="p-grid p-nogutter p-justify-between">    			   		
+		<p-button label="Anterior" (onClick)="previousPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
+		<p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
 		</div>
 	</form>	
 </div>

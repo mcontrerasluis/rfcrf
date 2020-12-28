@@ -18,7 +18,7 @@
             <column name="clave" type="varchar(255)">
                 <constraints nullable="false" />
             </column>
-            <column name="descripcion" type="varchar(255)">
+            <column name="descripcion" type="varchar(1000)">
                 <constraints nullable="false" />
             </column>
             <column name="moral" type="integer">
