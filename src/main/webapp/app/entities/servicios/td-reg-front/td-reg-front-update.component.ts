@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
-import { HttpResponse } from '@angular/common/http';
+import { HttpResponse, HttpClient } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -20,6 +20,7 @@ import { ITcValida } from 'app/shared/model/servicios/tc-valida.model';
 import { TcValidaService } from 'app/entities/servicios/tc-valida/tc-valida.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
+import { arrayBufferToBlob } from 'blob-util'
 
 type SelectableEntity = ITcTipoSol | ITcTipoImp | ITcEjerc | ITcManifes | ITcValida;
 
@@ -42,17 +43,21 @@ export class TdRegFrontUpdateComponent implements OnInit {
   activeIndex = 0;
   general = true;
   manifiesta = false;
+  vistaPrevia = false;
   sucursalDesactiva = false;
+  pdfSrc = "http://localhost:8080/RFCSolZnFr/api/getpdf"
+
+  public src: Blob;
 
   regionesF: SelectItem[];
   selectedDrop: SelectItem;
   selectedRegiones: SelectItem;
-  valToggle = false;
+  valToggle = false;  
 
   editForm = this.fb.group({
     id: [],
     region: [null, [Validators.required]],
-    domicilioRegion: [],
+    domicilioRegion: [null,[Validators.required]],
     sucursalRegion: [],
     tipoImpuestod: [],
     tipoSolicitudd: [],
@@ -73,7 +78,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
     protected tcValidaService: TcValidaService,
     protected activatedRoute: ActivatedRoute,
     public messageService: MessageService,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private http: HttpClient, 
   ) {}
 
   ngOnInit(): void {
@@ -103,6 +109,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
           this.activeIndex = 0;
           this.general = true;
           this.manifiesta = false;
+          this.vistaPrevia = false;
+          this.loadLargeFile();
           this.messageService.add({ severity: 'info', summary: 'First Step', detail: event.item.label });
         },
       },
@@ -112,19 +120,20 @@ export class TdRegFrontUpdateComponent implements OnInit {
           this.activeIndex = 1;
           this.general = false;
           this.manifiesta = true;
-          
+          this.vistaPrevia = false;
           
           this.cargaManifestaciones();
-          this.messageService.add({ severity: 'info', summary: 'First Step', detail: event.item.label });
+          
         },
       },
       {
-        label: 'Firma',
+        label: 'Vista Previa',
         command: (event: any) => {
           this.activeIndex = 2;
           this.general = false;
           this.manifiesta = false;
-          this.messageService.add({ severity: 'info', summary: 'First Step', detail: event.item.label });
+          this.vistaPrevia = true;
+          
         },
       },
     ];
@@ -191,7 +200,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
           
         this.activeIndex = 1;
         this.general = false;
-        this.manifiesta = true;  
+        this.manifiesta = true; 
+        this.vistaPrevia = false; 
         this.cargaManifestaciones();  
 
         
@@ -204,9 +214,10 @@ export class TdRegFrontUpdateComponent implements OnInit {
         this.activeIndex = 2;
         this.general = false;
         this.manifiesta = false;
+        this.vistaPrevia = true;
 
       return;
-  }
+  } 
 
     
 }
@@ -218,6 +229,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
       this.activeIndex = 0;
       this.general = true;
       this.manifiesta = false;    
+      this.vistaPrevia = false;
 
       return;
   }
@@ -227,6 +239,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
       this.activeIndex = 1;
       this.general = false;
       this.manifiesta = true;
+      this.vistaPrevia = false;
 
     return;
 }
@@ -326,4 +339,15 @@ export class TdRegFrontUpdateComponent implements OnInit {
     }
     return option;
   }
+
+  public loadLargeFile(): void {
+    this.http
+      .get(
+        'http://localhost:8080/RFCSolZnFr/content/css/reportExample.pdf',
+        { responseType: 'blob' }
+      )
+      .subscribe((res) =>  this.src = res)                  
+  }
+
+  
 }

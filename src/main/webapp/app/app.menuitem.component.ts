@@ -62,7 +62,7 @@ import { MainComponent } from './layouts/main/main.component';
   },
   animations: [
     trigger('children', [
-      state(
+      state( 
         'void',
         style({
           height: '0px',
@@ -122,8 +122,7 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
       // deactivate current active menu
       // eslint-disable-next-line @typescript-eslint/prefer-string-starts-ends-with
       // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-      if (this.active && this.key !== key && key.indexOf(this.key!) !== 0) {
-        //eslint-disable-line
+      if (this.active && this.key !== key && key.indexOf(this.key!) !== 0) {//eslint-disable-line
         this.active = false;
       }
     });
@@ -132,7 +131,7 @@ export class AppMenuitemComponent implements OnInit, OnDestroy {
       this.active = false;
     });
 
-    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(params => {
+    this.router.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(params => {//eslint-disable-line
       //eslint-disable-line
       if (this.app.isHorizontal() || this.app.isSlim()) {
         this.active = false;

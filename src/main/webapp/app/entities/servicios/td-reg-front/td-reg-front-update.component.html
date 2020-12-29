@@ -10,8 +10,7 @@
 	<form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
 
 		<div class="card box p-shadow-18"*ngIf="general">			
-			<div class="p-fluid">
-            
+			<div class="p-fluid">            
 				<div class="p-field p-grid">
 					<label for="firstname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Región</label>
 					<div class="p-col-12 p-md-10">
@@ -42,12 +41,13 @@
 						<p-dropdown [options]="tctiposols" name="tipoSolicitudId" formControlName="tipoSolicitudId" id="field_tipoSolicitudId" optionLabel="descripcion" optionValue="id" placeholder="Seleccione Aviso" [showClear]="true"></p-dropdown>
 					</div>
 				</div>
-                <div class="p-field p-grid">
+                <div class="p-field p-grid">				
 					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">Ejercicio Fiscal</label>
 					<div class="p-col-12 p-md-10">
 						<p-dropdown [options]="tcejercs" name="ejercicioId" formControlName="ejercicioId" id="field_ejercicioId" optionLabel="valor" optionValue="id" placeholder="Seleccione Ejercicio" [showClear]="true"></p-dropdown>
-					</div>
-				</div>
+					</div>				
+					
+				</div>				
 			</div>	
 		</div>	
 
@@ -58,8 +58,12 @@
 					<div class="p-col-12 p-md-10">
 						<blockquote> {{ tcManifesOption.descripcion }} </blockquote>
 					</div>
-				</div>
-                <div>
+				</div>                
+			</div>
+		</div>
+		<div class="card box p-shadow-18" *ngIf="vistaPrevia">			
+		<ngx-extended-pdf-viewer [src]="'/RFCSolZnFr/content/images/reportExample1.pdf'" [height]="'90vh'" ></ngx-extended-pdf-viewer>
+		<div>
 					<button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
 						<fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
 					</button>
@@ -68,7 +72,6 @@
 						<fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
 					</button>
             	</div>            
-			</div>
 		</div>
 		<div class="p-grid p-nogutter p-justify-between">    			   		
 		<p-button label="Anterior" (onClick)="previousPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
@@ -79,5 +82,8 @@
 
 
 </div>
+
+
+
 
 

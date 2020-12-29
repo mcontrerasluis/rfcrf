@@ -21,6 +21,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { PaginatorModule } from 'primeng/paginator';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 
+import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+
 @NgModule({
   imports: [
     RfcrfSharedModule,
@@ -38,6 +40,7 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
     DropdownModule,
     PaginatorModule,
     ToggleButtonModule,
+    NgxExtendedPdfViewerModule,
   ],
   declarations: [TdRegFrontComponent, TdRegFrontDetailComponent, TdRegFrontUpdateComponent, TdRegFrontDeleteDialogComponent],
   entryComponents: [TdRegFrontDeleteDialogComponent],
