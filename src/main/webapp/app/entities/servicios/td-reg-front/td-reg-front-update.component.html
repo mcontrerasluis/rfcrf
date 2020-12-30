@@ -26,13 +26,13 @@
                 <div class="p-field p-grid">
 					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">¿Tienes domicilio fiscal en esa región?</label>
 					<div class="p-col-12 p-md-10">
-						<p-toggleButton (onChange)="desactivaSucursal()" name="domicilioRegion" formControlName="domicilioRegion" id="field_domicilioRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+						<p-toggleButton [disabled]="domicilioDesactiva" (onChange)="desactivaSucursal()" name="domicilioRegion" formControlName="domicilioRegion" id="field_domicilioRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
 					</div>
 				</div>
                 <div class="p-field p-grid">
 					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">¿Tienes al menos una sucursal o establecimiento en esa región?</label>
 					<div class="p-col-12 p-md-10">
-						<p-toggleButton [disabled]="sucursalDesactiva" name="sucursalRegion" formControlName="sucursalRegion" id="field_sucursalRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
+						<p-toggleButton [disabled]="sucursalDesactiva" (onChange)="desactivaDomicilio()" name="sucursalRegion" formControlName="sucursalRegion" id="field_sucursalRegion" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times"></p-toggleButton>
 					</div>
 				</div>
                 <div class="p-field p-grid">
@@ -62,7 +62,7 @@
 			</div>
 		</div>
 		<div class="card box p-shadow-18" *ngIf="vistaPrevia">			
-		<ngx-extended-pdf-viewer [src]="'/RFCSolZnFr/content/images/reportExample1.pdf'" [height]="'90vh'" ></ngx-extended-pdf-viewer>
+		<ngx-extended-pdf-viewer [base64Src]="srcS" [height]="'90vh'" ></ngx-extended-pdf-viewer>
 		<div>
 					<button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
 						<fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
@@ -74,8 +74,8 @@
             	</div>            
 		</div>
 		<div class="p-grid p-nogutter p-justify-between">    			   		
-		<p-button label="Anterior" (onClick)="previousPage()" icon="pi pi-angle-left" iconPos="left"></p-button>
-		<p-button label="Siguiente" (onClick)="nextPage()" icon="pi pi-angle-right" iconPos="right"></p-button>
+		<p-button label="Anterior" (onClick)="previousPage()" [disabled]="activaAnterior" icon="pi pi-angle-left" iconPos="left"></p-button>
+		<p-button label="Siguiente" (onClick)="nextPage()" [disabled]="!editForm.valid" icon="pi pi-angle-right" iconPos="right"></p-button>
 		</div>
 	</form>	
 </div>

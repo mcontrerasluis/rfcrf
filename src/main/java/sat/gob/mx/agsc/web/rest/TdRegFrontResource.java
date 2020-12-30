@@ -26,6 +26,7 @@ import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 import java.util.ArrayList;
+import java.util.Base64;
 
 import sat.gob.mx.agsc.GeneraAcuseZonaFronteriza;
 import sat.gob.mx.agsc.acuse.AbstractAcuse;
@@ -78,6 +79,38 @@ public class TdRegFrontResource {
         return ResponseEntity.created(new URI("/api/td-reg-fronts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
+    }
+
+    @PostMapping(
+    value = "/getpdf",
+    produces = MediaType.TEXT_PLAIN_VALUE)
+    public @ResponseBody String getPDFP(@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO) throws URISyntaxException {
+        byte[] contents = null;
+        doConfigAcuse();
+		try {
+            log.debug("REST request to generate Acuse : {}", tdRegFrontDTO);
+			AbstractAcuse<AcuseZonaFronterizaVO> service = new GeneraAcuseZonaFronteriza();
+			service.setNombreTemplate("AcuseZonaFronteriza.jrxml");
+			service.setDataAcuse(this.acuseVo);
+			// se aguantan los 3 tipos de acuses.
+            service.doGeneraAcusePDF(TIPO_ACUSE.SOLICITUD);
+			contents = service.doGeneraAcuseStreamPDF(TIPO_ACUSE.SOLICITUD).toByteArray();
+            
+            log.info("Informacion del pdf generado...");
+            
+			
+		} catch (ExceptionAcuseConfig e) {
+			log.info(e.getMessage());
+		}
+        HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.TEXT_PLAIN);
+            // Here you have to set the actual filename of your pdf
+            String filename = "output.pdf";
+            
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+        return Base64.getEncoder().encodeToString(contents);			
+        
     }
 
     @GetMapping("/getpdf")

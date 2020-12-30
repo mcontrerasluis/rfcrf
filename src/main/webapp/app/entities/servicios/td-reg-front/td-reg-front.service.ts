@@ -35,4 +35,8 @@ export class TdRegFrontService {
   delete(id: number): Observable<HttpResponse<{}>> {
     return this.http.delete(`${this.resourceUrl}/${id}`, { observe: 'response' });
   }
+
+  acuse(): any {
+    return SERVER_API_URL + 'api/getpdf';
+  }
 }

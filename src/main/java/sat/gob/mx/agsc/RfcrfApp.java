@@ -19,6 +19,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Properties;
 
 @SpringBootApplication
 @EnableConfigurationProperties({LiquibaseProperties.class, ApplicationProperties.class})
@@ -42,8 +43,9 @@ public class RfcrfApp {
     @PostConstruct
     public void initApplication() {
         Collection<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        System.setProperty("javax.net.ssl.trustStore","/cacerts");
-        System.setProperty("javax.net.ssl.trustStorePassword","changeit");
+        //System.setProperty("javax.net.ssl.trustStore","/home/marcos/sat/region_fronteriza/src/main/jib/cacerts");
+        //System.setProperty("javax.net.ssl.trustStorePassword","changeit");
+        System.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
         if (activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_DEVELOPMENT) && activeProfiles.contains(JHipsterConstants.SPRING_PROFILE_PRODUCTION)) {
             log.error("You have misconfigured your application! It should not run " +
                 "with both the 'dev' and 'prod' profiles at the same time.");
@@ -60,6 +62,11 @@ public class RfcrfApp {
      * @param args the command line arguments.
      */
     public static void main(String[] args) {
+        //System.setProperty("javax.net.ssl.trustStore","/home/marcos/sat/region_fronteriza/src/main/jib/cacerts");
+        //System.setProperty("javax.net.ssl.trustStorePassword","changeiti");
+        System.setProperty("jdk.internal.httpclient.disableHostnameVerification", "true");
+        final Properties props = System.getProperties(); 
+        props.setProperty("jdk.internal.httpclient.disableHostnameVerification", Boolean.TRUE.toString()); 
         SpringApplication app = new SpringApplication(RfcrfApp.class);
         DefaultProfileUtil.addDefaultProfile(app);
         Environment env = app.run(args).getEnvironment();

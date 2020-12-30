@@ -20,7 +20,7 @@ import { ITcValida } from 'app/shared/model/servicios/tc-valida.model';
 import { TcValidaService } from 'app/entities/servicios/tc-valida/tc-valida.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { arrayBufferToBlob } from 'blob-util'
+import { base64StringToBlob } from 'blob-util'
 
 type SelectableEntity = ITcTipoSol | ITcTipoImp | ITcEjerc | ITcManifes | ITcValida;
 
@@ -44,10 +44,12 @@ export class TdRegFrontUpdateComponent implements OnInit {
   general = true;
   manifiesta = false;
   vistaPrevia = false;
-  sucursalDesactiva = false;
-  pdfSrc = "http://localhost:8080/RFCSolZnFr/api/getpdf"
+  sucursalDesactiva = false;  
+  domicilioDesactiva = false;
+  activaAnterior = true;
 
   public src: Blob;
+  public srcS: any;
 
   regionesF: SelectItem[];
   selectedDrop: SelectItem;
@@ -57,15 +59,15 @@ export class TdRegFrontUpdateComponent implements OnInit {
   editForm = this.fb.group({
     id: [],
     region: [null, [Validators.required]],
-    domicilioRegion: [null,[Validators.required]],
-    sucursalRegion: [],
+    domicilioRegion: [null,[Validators.requiredTrue]],
+    sucursalRegion: [null,[Validators.requiredTrue]],
     tipoImpuestod: [],
     tipoSolicitudd: [],
     ejerciciod: [],
     tipoSolicitudId: [null,[Validators.required]],
     tipoImpuestoId: [null, [Validators.required]],
     ejercicioId: [null, [Validators.required]],
-    manifestacions: [null, [Validators.required]],
+    manifestacions: [],
     validacions: [],
   });
 
@@ -110,30 +112,58 @@ export class TdRegFrontUpdateComponent implements OnInit {
           this.general = true;
           this.manifiesta = false;
           this.vistaPrevia = false;
-          this.loadLargeFile();
-          this.messageService.add({ severity: 'info', summary: 'First Step', detail: event.item.label });
+          this.activaAnterior= true;          
+          this.editForm.get(['manifestacions']).clearValidators();
         },
       },
       {
         label: 'Manifestaciones',
         command: (event: any) => {
-          this.activeIndex = 1;
-          this.general = false;
-          this.manifiesta = true;
-          this.vistaPrevia = false;
+
+          if(this.editForm.valid){
           
-          this.cargaManifestaciones();
+            this.activeIndex = 1;
+            this.general = false;
+            this.manifiesta = true;
+            this.vistaPrevia = false;
+            this.activaAnterior= false;
+            
+            this.cargaManifestaciones();
+            this.editForm.get(['manifestacions']).setValidators(Validators.requiredTrue)
+
+            return;
+          
+          }else if(!this.editForm.valid){
+            this.messageService.add({ severity: 'error', summary: 'Información Incompleta', detail: 'Se deben capturar todos los campos para continuar' });
+            this.activeIndex = 0;
+            
+            return;
+          }  
+          
           
         },
       },
       {
         label: 'Vista Previa',
         command: (event: any) => {
-          this.activeIndex = 2;
-          this.general = false;
-          this.manifiesta = false;
-          this.vistaPrevia = true;
+
+          if(this.editForm.valid){
           
+            this.activeIndex = 2;
+            this.general = false;
+            this.cargaAcuse()
+            this.manifiesta = false;
+            this.vistaPrevia = true;
+            this.activaAnterior= false;
+
+            return;
+
+          }else if(!this.editForm.valid){
+            this.messageService.add({ severity: 'error', summary: 'Información Incompleta', detail: 'Se deben capturar todos los campos para continuar' });
+            this.activeIndex = 1;
+            
+            return;
+          }  
         },
       },
     ];
@@ -144,8 +174,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
     let sol = '';
     let reg = '';    
     let solicitud = null;
-    let impuesto = null;
-    let ciclo = null;
+    let impuesto = null;    
 
     
     solicitud = this.tctiposols.find(obj =>{
@@ -155,14 +184,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
     impuesto = this.tctipoimps.find(obj =>{
       return obj.id===this.editForm.get(['tipoImpuestoId']).value
     })
-
-    ciclo = this.tcejercs.find(obj =>{
-      return obj.id===this.editForm.get(['ejercicioId']).value
-    })
-
-    console.log(solicitud);
-    console.log(impuesto);
-    console.log(ciclo);
+    
 
     if(impuesto.clave === '01'){
       cla = 'isr'
@@ -184,9 +206,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
       reg ='rfsur';
     }else{
       reg ='rfnorte'
-    }
-
-    console.log(cla + sol + reg)
+    }    
 
     this.tcmanifesS = this.tcmanifes.filter(function(v, i) {
       return ((v[cla] === 1 && v[sol] === 1 && v[reg]===1) );
@@ -197,16 +217,25 @@ export class TdRegFrontUpdateComponent implements OnInit {
   nextPage():void {
 
     if (this.activeIndex === 0) {
-          
+
+      if(this.editForm.valid){
         this.activeIndex = 1;
         this.general = false;
         this.manifiesta = true; 
         this.vistaPrevia = false; 
+        this.activaAnterior= false;
         this.cargaManifestaciones();  
+        this.editForm.get(['manifestacions']).setValidators(Validators.requiredTrue)
+        
+        return;
+
+      }else if(!this.editForm.valid){
+        this.messageService.add({ severity: 'error', summary: 'Información Incompleta', detail: 'Se deben capturar todos los campos para continuar' });
+        
+        return;
+      }  
 
         
-
-        return;
     }
 
     if (this.activeIndex === 1) {
@@ -215,6 +244,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
         this.general = false;
         this.manifiesta = false;
         this.vistaPrevia = true;
+        this.cargaAcuse()
 
       return;
   } 
@@ -230,6 +260,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
       this.general = true;
       this.manifiesta = false;    
       this.vistaPrevia = false;
+      this.activaAnterior= true;
+      this.editForm.get(['manifestacions']).clearValidators();
 
       return;
   }
@@ -240,6 +272,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
       this.general = false;
       this.manifiesta = true;
       this.vistaPrevia = false;
+      this.activaAnterior= false;
 
     return;
 }
@@ -278,15 +311,35 @@ export class TdRegFrontUpdateComponent implements OnInit {
   }
 
   desactivaSucursal():void {
-    // eslint-disable-next-line no-console
-    console.log(this.editForm.get(['domicilioRegion']).value);    
+    // eslint-disable-next-line no-console    
     
-    if (this.sucursalDesactiva) {
-      this.sucursalDesactiva = false;
+    if (this.editForm.get(['domicilioRegion']).value === true) {
+      this.sucursalDesactiva = true;
+      this.editForm.get(['sucursalRegion']).clearValidators();
+      this.editForm.get(['sucursalRegion']).setValue(false);
+
+      
       return;
     }
-    if (!this.sucursalDesactiva) {
-      this.sucursalDesactiva = true;
+    if (this.editForm.get(['domicilioRegion']).value === false) {
+      this.editForm.get(['sucursalRegion']).setValidators(Validators.requiredTrue)
+      this.sucursalDesactiva = false;      
+    }
+  }
+
+  desactivaDomicilio():void {
+    
+    if (this.editForm.get(['sucursalRegion']).value === true) {
+      this.domicilioDesactiva = true;
+      this.editForm.get(['domicilioRegion']).clearValidators();
+      this.editForm.get(['domicilioRegion']).setValue(false);
+
+      
+      return;
+    }
+    if (this.editForm.get(['sucursalRegion']).value === false) {
+      this.editForm.get(['domicilioRegion']).setValidators(Validators.requiredTrue)
+      this.domicilioDesactiva = false;      
     }
   }
 
@@ -349,5 +402,19 @@ export class TdRegFrontUpdateComponent implements OnInit {
       .subscribe((res) =>  this.src = res)                  
   }
 
-  
+  public cargaAcuse(): void {
+    const tdRegFront = this.createFromForm();
+    this.http.post(this.tdRegFrontService.acuse(), tdRegFront, { responseType: 'text', headers: {'Accept': 'text/plain'} }).subscribe(
+    // this.tdRegFrontService.acuse(tdRegFront).subscribe(
+      (response) => {
+      // const blob = new Blob([response], { type: 'application/octet-stream' });
+      // const blob = new Blob([response], { type: 'application/octet-stream' });
+      // const blob = base64StringToBlob(response, 'text/plain')
+      this.srcS = response;
+      // this.src = blob;
+      console.log(response)      
+      console.log(this.srcS)      
+  },
+  e => { console.log(e); })    
+  }  
 }
