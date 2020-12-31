@@ -61,7 +61,7 @@ spring:
   application:
     name: rfcrf
   profiles:
-    #include: no-liquibase
+    include: no-liquibase
     # The commented value for `active` can be replaced with valid Spring profiles to load.
     # Otherwise, it will be filled in by gradle when building the JAR file
     # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
@@ -124,11 +124,11 @@ spring:
       client:
         provider:
           oidc:
-            issuer-uri: https://localhost:9443/auth/realms/jhipster
+            issuer-uri: https://login.dev.cloudb.sat.gob.mx/nidp/oauth/nam
         registration:
           oidc:
-            client-id: web_app
-            client-secret: web_app
+            client-id: 7a6ed749-d545-4651-9e41-e58dc8efc9b2
+            client-secret: 9QSwXvJeKwAmKWqC995-wXJPUss1_OTivNd4oRAY_f42c6iNHvkyFP7wDb1AxX0nzOr_LUCpNoH4PLRgmRag_Q
 
 server:
   servlet:

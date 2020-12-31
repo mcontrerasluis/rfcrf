@@ -1,5 +1,6 @@
 dependencies {
     testImplementation "com.h2database:h2"
+    implementation "com.h2database:h2"
 }
 
 def profiles = "prod"
