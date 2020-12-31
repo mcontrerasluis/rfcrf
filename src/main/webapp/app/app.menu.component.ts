@@ -21,8 +21,7 @@ export class AppMenuComponent implements OnInit {
         label: 'Región Fronteriza',
         icon: 'pi pi-fw pi-compass',
         routerLink: ['utilities'],
-        items: [
-          { label: 'Display', icon: 'pi pi-fw pi-desktop', routerLink: ['td-general'] },
+        items: [          
           { label: 'Registro de Solicitud', icon: 'pi pi-fw pi-external-link', routerLink: ['td-reg-front'] },
           { label: 'Catalogo Manifiesto', icon: 'pi pi-fw pi-directions', routerLink: ['tc-manifes'] },
           { label: 'Catalogo Solicitudes', icon: 'pi pi-fw pi-search', routerLink: ['tc-tipo-sol'] },

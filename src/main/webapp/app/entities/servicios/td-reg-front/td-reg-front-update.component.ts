@@ -20,7 +20,6 @@ import { ITcValida } from 'app/shared/model/servicios/tc-valida.model';
 import { TcValidaService } from 'app/entities/servicios/tc-valida/tc-valida.service';
 import { MenuItem, MessageService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
-import { base64StringToBlob } from 'blob-util'
 
 type SelectableEntity = ITcTipoSol | ITcTipoImp | ITcEjerc | ITcManifes | ITcValida;
 
@@ -34,6 +33,7 @@ type SelectableManyToManyEntity = ITcManifes | ITcValida;
 export class TdRegFrontUpdateComponent implements OnInit {
   isSaving = false;
   tctiposols: ITcTipoSol[] = [];
+  tctiposolsS: ITcTipoSol[] = [];
   tctipoimps: ITcTipoImp[] = [];
   tcejercs: ITcEjerc[] = [];
   tcmanifes: ITcManifes[] = [];
@@ -47,6 +47,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
   sucursalDesactiva = false;  
   domicilioDesactiva = false;
   activaAnterior = true;
+  control: string[]=[];
 
   public src: Blob;
   public srcS: any;
@@ -86,7 +87,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tdRegFront }) => {
-      this.updateForm(tdRegFront);
+      this.updateForm(tdRegFront);      
 
       this.tcTipoSolService.query().subscribe((res: HttpResponse<ITcTipoSol[]>) => (this.tctiposols = res.body || []));
 
@@ -100,8 +101,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
     });
 
     this.regionesF = [
-      { label: 'Región Frontera Sur', value: 'Región Frontera Sur' },
       { label: 'Región Frontera Norte', value: 'Región Frontera Norte' },
+      { label: 'Región Frontera Sur', value: 'Región Frontera Sur' },      
     ];
 
     this.items = [
@@ -129,7 +130,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
             this.activaAnterior= false;
             
             this.cargaManifestaciones();
-            this.editForm.get(['manifestacions']).setValidators(Validators.requiredTrue)
+            // this.editForm.get(['manifestacions']).setValidators(Validators.requiredTrue)
 
             return;
           
@@ -167,6 +168,26 @@ export class TdRegFrontUpdateComponent implements OnInit {
         },
       },
     ];
+  }
+
+  filtraSolicitud(event:any):void {    
+    
+    let cla = '';
+    const impuesto = this.tctipoimps.find(obj =>{
+      return obj.id===this.editForm.get(['tipoImpuestoId']).value
+    })
+
+    if(impuesto.clave === '01'){
+      
+      cla = 'isr'
+    }else if(impuesto.clave === '02'){
+      cla = 'iva'
+    }
+    
+    this.tctiposolsS = this.tctiposols.filter(function(v, i) {
+      return ((v[cla] === 1));
+    })    
+
   }
 
   private cargaManifestaciones():void{
@@ -209,7 +230,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
     }    
 
     this.tcmanifesS = this.tcmanifes.filter(function(v, i) {
-      return ((v[cla] === 1 && v[sol] === 1 && v[reg]===1) );
+      return ((v[cla] === 1 && v[sol] === 1 && v[reg]===1 ));
     })
   
   }
@@ -225,7 +246,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
         this.vistaPrevia = false; 
         this.activaAnterior= false;
         this.cargaManifestaciones();  
-        this.editForm.get(['manifestacions']).setValidators(Validators.requiredTrue)
+        // this.editForm.get(['manifestacions']).setValidators(Validators.requiredTrue)
         
         return;
 
@@ -239,18 +260,71 @@ export class TdRegFrontUpdateComponent implements OnInit {
     }
 
     if (this.activeIndex === 1) {
-          
+
+      console.log(this.control.filter((n, i) => this.control.indexOf(n) === i));
+      console.log(this.tcmanifesS);
+
+      if((this.control.filter((n, i) => this.control.indexOf(n) === i)).length === this.tcmanifesS.length){
         this.activeIndex = 2;
         this.general = false;
         this.manifiesta = false;
         this.vistaPrevia = true;
-        this.cargaAcuse()
+        this.cargaAcuse();
+        return;
+      }else {
+        this.messageService.add({ severity: 'error', summary: 'Información Incompleta', detail: 'Se deben contestar todas las manifestaciones para continuar' });
+      }    
 
       return;
   } 
 
     
 }
+
+  seleccionaManifestacion(e: any, clave:any) {
+
+    this.tcmanifes.find(item => item.clave === clave).activa = false;
+
+    this.control.push(clave);
+
+    if(clave === 'M01'){
+      this.tcmanifes.find(item => item.clave === 'M02').activa = e.checked;      
+      this.control.push("M02");      
+      return;
+    }else if(clave==='M02'){
+      this.tcmanifes.find(item => item.clave === 'M01').activa = e.checked;
+      this.control.push("M01");
+      return;
+    }
+    if(clave === 'M03'){
+      this.tcmanifes.find(item => item.clave === 'M04').activa = e.checked;
+      this.control.push("M04");
+      return;
+    }else if(clave==='M04'){
+      this.tcmanifes.find(item => item.clave === 'M03').activa = e.checked;
+      this.control.push("M03");
+      return;
+    }
+    if(clave === 'M05'){
+      this.tcmanifes.find(item => item.clave === 'M06').activa = e.checked;
+      this.control.push("M06");
+      return;
+    }else if(clave==='M06'){
+      this.tcmanifes.find(item => item.clave === 'M05').activa = e.checked;
+      this.control.push("M05");
+      return;
+    }
+    if(clave === 'M11'){
+      this.tcmanifes.find(item => item.clave === 'M12').activa = e.checked;
+      this.control.push("M12");
+      return;
+    }else if(clave==='M12'){
+      this.tcmanifes.find(item => item.clave === 'M11').activa = e.checked;
+      this.control.push("M11");
+      return;
+    }   
+    
+  }
 
   previousPage():void {
  
@@ -356,7 +430,10 @@ export class TdRegFrontUpdateComponent implements OnInit {
       tipoSolicitudId: this.editForm.get(['tipoSolicitudId'])!.value,
       tipoImpuestoId: this.editForm.get(['tipoImpuestoId'])!.value,
       ejercicioId: this.editForm.get(['ejercicioId'])!.value,
-      manifestacions: this.tcmanifesS,
+      // manifestacions: this.tcmanifesS,
+      manifestacions: this.tcmanifes.filter(function(v, i) {
+        return ((v['activa'] === false));
+      }),
       validacions: this.editForm.get(['validacions'])!.value,
       estatus: 'Recibido',
     };
@@ -370,8 +447,9 @@ export class TdRegFrontUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
+    this.messageService.add({ severity: 'success', summary: 'Información Registrada', detail: 'La información se ha registrado de manera Exitosa' });
     this.isSaving = false;
-    this.previousState();
+    this.previousState();    
   }
 
   protected onSaveError(): void {

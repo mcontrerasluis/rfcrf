@@ -6,6 +6,7 @@ import { TdRegFrontComponent } from './td-reg-front.component';
 import { TdRegFrontDetailComponent } from './td-reg-front-detail.component';
 import { TdRegFrontUpdateComponent } from './td-reg-front-update.component';
 import { TdRegFrontDeleteDialogComponent } from './td-reg-front-delete-dialog.component';
+import {ControlManifestacionComponent} from '../../../control-manifestacion/control-manifestacion.component'
 import { tdRegFrontRoute } from './td-reg-front.route';
 
 import { TableModule } from 'primeng/table';
@@ -42,7 +43,7 @@ import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
     ToggleButtonModule,
     NgxExtendedPdfViewerModule,
   ],
-  declarations: [TdRegFrontComponent, TdRegFrontDetailComponent, TdRegFrontUpdateComponent, TdRegFrontDeleteDialogComponent],
+  declarations: [TdRegFrontComponent, TdRegFrontDetailComponent, TdRegFrontUpdateComponent, TdRegFrontDeleteDialogComponent, ControlManifestacionComponent],
   entryComponents: [TdRegFrontDeleteDialogComponent],
 })
 export class ServiciosTdRegFrontModule {}

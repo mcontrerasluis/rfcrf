@@ -3,6 +3,7 @@ package sat.gob.mx.agsc.web.rest;
 import sat.gob.mx.agsc.service.TdRegFrontService;
 import sat.gob.mx.agsc.web.rest.errors.BadRequestAlertException;
 import sat.gob.mx.agsc.service.dto.TdRegFrontDTO;
+import sat.gob.mx.agsc.service.dto.TcManifesDTO;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -85,8 +86,28 @@ public class TdRegFrontResource {
     value = "/getpdf",
     produces = MediaType.TEXT_PLAIN_VALUE)
     public @ResponseBody String getPDFP(@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO) throws URISyntaxException {
-        byte[] contents = null;
-        doConfigAcuse();
+        byte[] contents = null;        
+
+        this.acuseVo = new AcuseZonaFronterizaVO();
+		this.acuseVo.setNumFolio("ERF202122888310");
+		this.acuseVo.setFechaCreacion("11 de Diciembre del 2020");
+		this.acuseVo.setRfc("OPO140101E76");
+		this.acuseVo.setRazonSocial("OPERACION DE PADRONES ORIGINAL SA DE CV");
+		this.acuseVo.setFechaPresentacion("09 de enero de 2021");
+		this.acuseVo.setTipoSolicitud("Incorporación al padrón de beneficiarios");
+		this.acuseVo.setRegion("Norte");
+		this.acuseVo.setImpuesto("ISR");
+		this.acuseVo.setEjercicio(tdRegFrontDTO.getEjercicioId().toString() );
+		this.acuseVo.setCadenaOriginal("OPO140101E76|20210109|ERF202122888310|S01|E03");
+		this.acuseVo.setSelloDigital("yBv5DUh0/IR4sDxqVnOT8X94dODuWtFg8Um3UY4jhmG6J9UUZvIrdPlmH/qbzBWwFkt0DyJlESJglvcZcaJsty72ouhHOL5kIcBZQkG81xfk076J4RM8YRiLJJ0Q9MJVxbW5wE9EEwSCBzMLHn6mEauHkwM0Pk1eLpIXRS5aUvA=");
+		
+		List<String> manifestaciones =  new ArrayList<String>();
+        for (TcManifesDTO i : tdRegFrontDTO.getManifestacions()) {
+            manifestaciones.add(i.getDescripcion());
+        }		
+        this.acuseVo.setManifestaciones(manifestaciones);
+
+
 		try {
             log.debug("REST request to generate Acuse : {}", tdRegFrontDTO);
 			AbstractAcuse<AcuseZonaFronterizaVO> service = new GeneraAcuseZonaFronteriza();
@@ -117,6 +138,7 @@ public class TdRegFrontResource {
     public ResponseEntity<byte[]> getPDF() {
         byte[] contents = null;
         doConfigAcuse();
+        
 		try {
 			AbstractAcuse<AcuseZonaFronterizaVO> service = new GeneraAcuseZonaFronteriza();
 			service.setNombreTemplate("AcuseZonaFronteriza.jrxml");

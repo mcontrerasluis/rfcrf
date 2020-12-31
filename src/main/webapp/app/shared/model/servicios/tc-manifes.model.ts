@@ -14,6 +14,7 @@ export interface ITcManifes {
   s02?: number;
   s03?: number;
   s04?: number;
+  activa: boolean;
   generals?: ITdRegFront[];
 }
 
@@ -32,6 +33,7 @@ export class TcManifes implements ITcManifes {
     public s02?: number,
     public s03?: number,
     public s04?: number,
+    public activa: boolean = false,
     public generals?: ITdRegFront[]
   ) {}
 }

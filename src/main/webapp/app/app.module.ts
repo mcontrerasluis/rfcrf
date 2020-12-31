@@ -33,6 +33,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { MenuService } from './app.menu.service';
 import { BreadcrumbService } from './app.breadcrumb.service';
 
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -63,7 +64,7 @@ import { BreadcrumbService } from './app.breadcrumb.service';
     AppBreadcrumbComponent,
     AppFooterComponent,
     AppConfigComponent,
-    AppMenuitemComponent,
+    AppMenuitemComponent,    
   ],
   bootstrap: [MainComponent],
   providers: [MenuService, BreadcrumbService],
