@@ -26,4 +26,7 @@ public interface TdRegFrontRepository extends JpaRepository<TdRegFront, Long> {
 
     @Query("select tdRegFront from TdRegFront tdRegFront left join fetch tdRegFront.manifestacions left join fetch tdRegFront.validacions where tdRegFront.id =:id")
     Optional<TdRegFront> findOneWithEagerRelationships(@Param("id") Long id);
+
+    @Query(value = "select distinct tdRegFront from TdRegFront tdRegFront left join tdRegFront.manifestacions left join  tdRegFront.validacions where tdRegFront.rfc=:rfc")
+    Page<TdRegFront> findAllWithEagerRelationshipsbyRfc(Pageable pageable, @Param("rfc") String rfc);
 }

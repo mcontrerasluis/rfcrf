@@ -101,6 +101,18 @@ public class TdRegFrontService {
     }
 
     /**
+     * Get all the tdRegFronts with eager load of many-to-many relationships.
+     *
+     * @return the list of entities.
+     */
+     @Transactional(readOnly = true)
+    public Page<TdRegFrontDTO> findAllWithEagerRelationshipsByRfc(Pageable pageable, String rfc) {
+        return tdRegFrontRepository.findAllWithEagerRelationshipsbyRfc(pageable, rfc).map(tdRegFrontMapper::toDto);
+    }
+
+    
+
+    /**
      * Delete the tdRegFront by id.
      *
      * @param id the id of the entity.

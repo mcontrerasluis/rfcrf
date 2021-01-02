@@ -220,9 +220,9 @@ public class TdRegFrontResource {
         log.debug("REST request to get a page of TdRegFronts");
         Page<TdRegFrontDTO> page;
         if (eagerload) {
-            page = tdRegFrontService.findAllWithEagerRelationships(pageable);
+            page = tdRegFrontService.findAllWithEagerRelationshipsByRfc(pageable, this.usuario.getRfc());
         } else {
-            page = tdRegFrontService.findAll(pageable);
+            page = tdRegFrontService.findAllWithEagerRelationshipsByRfc(pageable, this.usuario.getRfc());
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
