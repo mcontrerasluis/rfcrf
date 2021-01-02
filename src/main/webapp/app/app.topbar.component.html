@@ -17,15 +17,12 @@
                 
                 <div class="col-md-3 text-xs-center text-sm-center text-md-left">
                     
-                    <div class="row align-items-center">
+                    <div class="row align-items-center">                     
                         
-                        <div class="col-5 text-right pr-0">
-                            <i class="far fa-user iconTable iconUser mt-2"></i>
-                        </div>
                         
-                        <div class="col-7 text-left" [ngSwitch]="isAuthenticated()">
-                        <p class="small mb-0"><b>{{ (account != null) ? (account.rfc | uppercase) : "" }}<b></p><br>
-                        <p class="small mb-0"><b>{{ (account != null) ? (account.firstName | uppercase) : "" }}<b></p>
+                        <div class="col-7 text-right">
+                            <p class="small mb-0"><b>{{ (account != null) ? (account.rfc | uppercase) : "" }} {{ (account != null) ? (account.firstName | uppercase) : "" }}<b>
+                            </p>
                         </div>
 
                     </div>
