@@ -22,7 +22,7 @@ public class UserDTO {
     @Size(min = 1, max = 50)
     private String login;
 
-    @Size(max = 50)
+    @Size(max = 250)
     private String firstName;
 
     @Size(max = 50)
@@ -36,6 +36,10 @@ public class UserDTO {
     private String imageUrl;
 
     private boolean activated = false;
+
+    private String rfc;
+
+    private String tipoContribuyente;
 
     @Size(min = 2, max = 10)
     private String langKey;
@@ -67,6 +71,8 @@ public class UserDTO {
         this.createdDate = user.getCreatedDate();
         this.lastModifiedBy = user.getLastModifiedBy();
         this.lastModifiedDate = user.getLastModifiedDate();
+        this.rfc = user.getRfc();
+        this.tipoContribuyente = user.getTipoContribuyente();
         this.authorities = user.getAuthorities().stream()
             .map(Authority::getName)
             .collect(Collectors.toSet());
@@ -174,6 +180,22 @@ public class UserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getRfc() {
+        return rfc;
+    }
+
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
+
+    public String getTipoContribuyente() {
+        return tipoContribuyente;
+    }
+
+    public void setTipoContribuyente(String tipoContribuyente) {
+        this.tipoContribuyente = tipoContribuyente;
     }
 
     // prettier-ignore

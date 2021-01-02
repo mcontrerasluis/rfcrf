@@ -18,6 +18,8 @@ import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 
+import sat.gob.mx.agsc.security.AuthoritiesConstants;
+
 /**
  * A user.
  */
@@ -37,15 +39,15 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(length = 50, unique = true, nullable = false)
     private String login;
 
-    @Size(max = 50)
-    @Column(name = "first_name", length = 50)
+    @Size(max = 250)
+    @Column(name = "first_name", length = 250)
     private String firstName;
 
     @Size(max = 50)
     @Column(name = "last_name", length = 50)
     private String lastName;
 
-    @Email
+    
     @Size(min = 5, max = 254)
     @Column(length = 254, unique = true)
     private String email;
@@ -61,6 +63,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Size(max = 256)
     @Column(name = "image_url", length = 256)
     private String imageUrl;
+
+    private String rfc;
+
+    private String tipoContribuyente;
 
     @JsonIgnore
     @ManyToMany
@@ -96,6 +102,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getRfc() {
+        return rfc;
+    }
+
+    public void setRfc(String rfc) {
+        this.rfc = rfc;
+    }
+
+    public String getTipoContribuyente() {
+        return tipoContribuyente;
+    }
+
+    public void setTipoContribuyente(String tipoContribuyente) {
+        this.tipoContribuyente = tipoContribuyente;
     }
 
     public String getLastName() {
@@ -142,7 +164,10 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return authorities;
     }
 
-    public void setAuthorities(Set<Authority> authorities) {
+    public void setAuthorities(Set<Authority> authorities) {        
+        /**Authority authority = new Authority();        
+        authority.setName(AuthoritiesConstants.USER);
+        this.authorities.add(authority);                */        
         this.authorities = authorities;
     }
 

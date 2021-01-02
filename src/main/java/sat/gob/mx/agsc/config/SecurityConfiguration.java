@@ -33,6 +33,11 @@ import org.zalando.problem.spring.web.advice.security.SecurityProblemSupport;
 import static org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter.DEFAULT_AUTHORIZATION_REQUEST_BASE_URI;
 import org.springframework.core.env.Environment;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.registration.ClientRegistration.Builder;
+import org.springframework.security.oauth2.client.registration.ClientRegistration;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
@@ -76,9 +81,14 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        http
-            .csrf()
+        http.csrf()
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+         .and()   
+            .oauth2Login().authorizationEndpoint()
+            .authorizationRequestResolver(new CustomAuthorizationRequestResolver(clientRegistrationRepository, DEFAULT_AUTHORIZATION_REQUEST_BASE_URI));        
+         
+            
+        /**
         .and()
             .addFilterBefore(corsFilter, CsrfFilter.class)
             .exceptionHandling()
@@ -94,8 +104,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         .and()
             .frameOptions()
             .deny()
-        .and()
-            .authorizeRequests()
+        .and()*/
+        http.authorizeRequests()
             .antMatchers("/api/auth-info").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
@@ -103,29 +113,50 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/management/health").permitAll()
             .antMatchers("/management/info").permitAll()
             .antMatchers("/management/prometheus").permitAll()
-            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-        .and()
-            .oauth2Login()            
-        .and()
-            .oauth2ResourceServer()
+            .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN);            
+        
+       /** .and()
+        .oauth2ResourceServer()
                 .jwt()
                 .jwtAuthenticationConverter(authenticationConverter())
                 .and()
             .and()
-                .oauth2Client();
+                .oauth2Client();*/
         // @formatter:on
 
-        http
-            .oauth2Login() 
-            .authorizationEndpoint()
-            .authorizationRequestResolver(new CustomAuthorizationRequestResolver(clientRegistrationRepository, DEFAULT_AUTHORIZATION_REQUEST_BASE_URI));
+
     }
 
+  /**  @Autowired
+    private ClientRegistration clientRegistration() {
+
+    return ClientRegistration.withRegistrationId("nam")
+            .clientId("7a6ed749-d545-4651-9e41-e58dc8efc9b2")
+            .clientSecret("9QSwXvJeKwAmKWqC995-wXJPUss1_OTivNd4oRAY_f42c6iNHvkyFP7wDb1AxX0nzOr_LUCpNoH4PLRgmRag_Q")
+            .scope(new String[]{"RFCRF"})
+            .authorizationUri(
+            "https://login.dev.cloudb.sat.gob.mx/nidp/oauth/nam/authz")
+            .tokenUri("https://login.dev.cloudb.sat.gob.mx/nidp/oauth/nam/token")
+            .userInfoUri("https://login.dev.cloudb.sat.gob.mx/nidp/oauth/nam/userinfo")
+            .userNameAttributeName("cn")
+            .clientName("nam")
+            .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+            .redirectUriTemplate("{baseUrl}/{action}/oauth2/code/oidc")
+            .build();
+
+    }
+
+    @Bean
+    public ClientRegistrationRepository clientRepository() {
+        return new InMemoryClientRegistrationRepository(
+        this.clientRegistration());
+    }
+*/
     Converter<Jwt, AbstractAuthenticationToken> authenticationConverter() {
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new JwtGrantedAuthorityConverter());
         return jwtAuthenticationConverter;
-    }
+    } 
     /**
      * Map authorities from "groups" or "roles" claim in ID Token.
      *
@@ -134,6 +165,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
      */
     @Bean
     public GrantedAuthoritiesMapper userAuthoritiesMapper() {
+        System.out.println("decoder entra");
         return (authorities) -> {
             Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
 
@@ -151,11 +183,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     JwtDecoder jwtDecoder() {
+        System.out.println("decoder entra");
         NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder) JwtDecoders.fromOidcIssuerLocation(issuerUri);
 
         OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(jHipsterProperties.getSecurity().getOauth2().getAudience());
         OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(issuerUri);
-        OAuth2TokenValidator<Jwt> withAudience = new DelegatingOAuth2TokenValidator<>(withIssuer, audienceValidator);
+        OAuth2TokenValidator<Jwt> withAudience = new DelegatingOAuth2TokenValidator<>(audienceValidator);
 
         jwtDecoder.setJwtValidator(withAudience);
 

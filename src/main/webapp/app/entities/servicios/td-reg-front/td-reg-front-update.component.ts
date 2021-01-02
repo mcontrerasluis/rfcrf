@@ -18,8 +18,11 @@ import { ITcManifes } from 'app/shared/model/servicios/tc-manifes.model';
 import { TcManifesService } from 'app/entities/servicios/tc-manifes/tc-manifes.service';
 import { ITcValida } from 'app/shared/model/servicios/tc-valida.model';
 import { TcValidaService } from 'app/entities/servicios/tc-valida/tc-valida.service';
-import { MenuItem, MessageService } from 'primeng/api';
+import { MenuItem, MessageService, ConfirmationService } from 'primeng/api';
 import { SelectItem } from 'primeng/api';
+
+import { AccountService } from 'app/core/auth/account.service';
+import { Account } from 'app/core/user/account.model';
 
 type SelectableEntity = ITcTipoSol | ITcTipoImp | ITcEjerc | ITcManifes | ITcValida;
 
@@ -28,9 +31,10 @@ type SelectableManyToManyEntity = ITcManifes | ITcValida;
 @Component({
   selector: 'jhi-td-reg-front-update',
   templateUrl: './td-reg-front-update.component.html',
-  providers: [MessageService],
+  providers: [MessageService, ConfirmationService],
 })
 export class TdRegFrontUpdateComponent implements OnInit {
+  account: Account | null = null;
   isSaving = false;
   tctiposols: ITcTipoSol[] = [];
   tctiposolsS: ITcTipoSol[] = [];
@@ -81,8 +85,10 @@ export class TdRegFrontUpdateComponent implements OnInit {
     protected tcValidaService: TcValidaService,
     protected activatedRoute: ActivatedRoute,
     public messageService: MessageService,
+    public confirmationService: ConfirmationService,
     private fb: FormBuilder,
-    private http: HttpClient, 
+    private http: HttpClient,
+    private accountService: AccountService, 
   ) {}
 
   ngOnInit(): void {
@@ -98,6 +104,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
       this.tcManifesService.query().subscribe((res: HttpResponse<ITcManifes[]>) => (this.tcmanifes = res.body || []));
 
       this.tcValidaService.query().subscribe((res: HttpResponse<ITcValida[]>) => (this.tcvalidas = res.body || []));
+
+      this.accountService.identity().subscribe(account => (this.account = account));    
     });
 
     this.regionesF = [
@@ -195,7 +203,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
     let sol = '';
     let reg = '';    
     let solicitud = null;
-    let impuesto = null;    
+    let impuesto = null;
+    let tipo = '' ;
 
     
     solicitud = this.tctiposols.find(obj =>{
@@ -227,10 +236,16 @@ export class TdRegFrontUpdateComponent implements OnInit {
       reg ='rfsur';
     }else{
       reg ='rfnorte'
+    }
+    
+    if(this.account.tipoContribuyente === 'F'){
+      tipo = 'fisica';
+    }else{
+      tipo = 'moral';
     }    
 
     this.tcmanifesS = this.tcmanifes.filter(function(v, i) {
-      return ((v[cla] === 1 && v[sol] === 1 && v[reg]===1 ));
+      return ((v[tipo] ===1 && v[cla] === 1 && v[sol] === 1 && v[reg]===1 ));
     })
   
   }

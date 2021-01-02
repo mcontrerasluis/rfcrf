@@ -5,6 +5,9 @@ import sat.gob.mx.agsc.web.rest.errors.BadRequestAlertException;
 import sat.gob.mx.agsc.service.dto.TdRegFrontDTO;
 import sat.gob.mx.agsc.service.dto.TcManifesDTO;
 
+import sat.gob.mx.agsc.service.UserService;
+import sat.gob.mx.agsc.service.dto.UserDTO;
+
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
 import io.github.jhipster.web.util.ResponseUtil;
@@ -18,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -25,6 +29,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
+import java.time.Instant;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -36,6 +41,7 @@ import sat.gob.mx.agsc.exception.acuse.ExceptionAcuseConfig;
 import sat.gob.mx.agsc.vo.AcuseZonaFronterizaVO;
 
 import org.springframework.http.MediaType;
+import java.security.Principal;
 
 
 /**
@@ -53,13 +59,18 @@ public class TdRegFrontResource {
 	
 	private AcuseZonaFronterizaVO acuseVo;
 
+    private UserDTO usuario;
+
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
 
     private final TdRegFrontService tdRegFrontService;
 
-    public TdRegFrontResource(TdRegFrontService tdRegFrontService) {
+    private final UserService userService;
+
+    public TdRegFrontResource(TdRegFrontService tdRegFrontService, UserService userService) {
         this.tdRegFrontService = tdRegFrontService;
+        this.userService = userService;
     }
 
     /**
@@ -70,9 +81,14 @@ public class TdRegFrontResource {
      * @throws URISyntaxException if the Location URI syntax is incorrect.
      */
     @PostMapping("/td-reg-fronts")
-    public ResponseEntity<TdRegFrontDTO> createTdRegFront(@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO) throws URISyntaxException {
+    public ResponseEntity<TdRegFrontDTO> createTdRegFront(@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO,Principal principal) throws URISyntaxException {
         log.debug("REST request to save TdRegFront : {}", tdRegFrontDTO);
-        //runTestPDF("AcuseZonaFronteriza.jrxml");
+        
+        
+        tdRegFrontDTO.setRfc(usuario.getRfc());
+        tdRegFrontDTO.setUsuario(usuario.getFirstName());
+        tdRegFrontDTO.setFecha(Instant.now());
+
         if (tdRegFrontDTO.getId() != null) {
             throw new BadRequestAlertException("A new tdRegFront cannot already have an ID", ENTITY_NAME, "idexists");
         } 
@@ -91,8 +107,8 @@ public class TdRegFrontResource {
         this.acuseVo = new AcuseZonaFronterizaVO();
 		this.acuseVo.setNumFolio("ERF202122888310");
 		this.acuseVo.setFechaCreacion("11 de Diciembre del 2020");
-		this.acuseVo.setRfc("OPO140101E76");
-		this.acuseVo.setRazonSocial("OPERACION DE PADRONES ORIGINAL SA DE CV");
+		this.acuseVo.setRfc(this.usuario.getRfc());
+		this.acuseVo.setRazonSocial(this.usuario.getFirstName());
 		this.acuseVo.setFechaPresentacion("09 de enero de 2021");
 		this.acuseVo.setTipoSolicitud("Incorporación al padrón de beneficiarios");
 		this.acuseVo.setRegion("Norte");
@@ -194,12 +210,13 @@ public class TdRegFrontResource {
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and the list of tdRegFronts in body.
      */
     @GetMapping("/td-reg-fronts")
-    public ResponseEntity<List<TdRegFrontDTO>> getAllTdRegFronts(Pageable pageable, @RequestParam(required = false) String filter, @RequestParam(required = false, defaultValue = "false") boolean eagerload) {
+    public ResponseEntity<List<TdRegFrontDTO>> getAllTdRegFronts(Pageable pageable, @RequestParam(required = false) String filter, @RequestParam(required = false, defaultValue = "false") boolean eagerload, Principal principal) {
         if ("general-is-null".equals(filter)) {
             log.debug("REST request to get all TdRegFronts where general is null");
             return new ResponseEntity<>(tdRegFrontService.findAllWhereGeneralIsNull(),
                     HttpStatus.OK);
         }
+        this.usuario = userService.getUserFromAuthentication((AbstractAuthenticationToken) principal);
         log.debug("REST request to get a page of TdRegFronts");
         Page<TdRegFrontDTO> page;
         if (eagerload) {

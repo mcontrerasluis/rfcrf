@@ -24,7 +24,7 @@ public final class SecurityUtils {
     /**
      * Get the login of the current user.
      *
-     * @return the login of the current user.
+     * @return the login of the current user. 
      */
     public static Optional<String> getCurrentUserLogin() {
         SecurityContext securityContext = SecurityContextHolder.getContext();
@@ -32,6 +32,7 @@ public final class SecurityUtils {
     }
 
     private static String extractPrincipal(Authentication authentication) {
+        System.out.println("extractPrincipal");
         if (authentication == null) {
             return null;
         } else if (authentication.getPrincipal() instanceof UserDetails) {
@@ -47,6 +48,7 @@ public final class SecurityUtils {
         } else if (authentication.getPrincipal() instanceof String) {
             return (String) authentication.getPrincipal();
         }
+        System.out.println("extractPrincipal1");
         return null;
     }
 
@@ -57,6 +59,7 @@ public final class SecurityUtils {
      * @return true if the user is authenticated, false otherwise.
      */
     public static boolean isAuthenticated() {
+        System.out.println("isAuthenticated");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null &&
             getAuthorities(authentication).noneMatch(AuthoritiesConstants.ANONYMOUS::equals);
@@ -71,12 +74,14 @@ public final class SecurityUtils {
      * @return true if the current user has the authority, false otherwise.
      */
     public static boolean isCurrentUserInRole(String authority) {
+        System.out.println("isCurrentUserInRole");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         return authentication != null &&
             getAuthorities(authentication).anyMatch(authority::equals);
     }
 
     private static Stream<String> getAuthorities(Authentication authentication) {
+        System.out.println("authentication");
         Collection<? extends GrantedAuthority> authorities = authentication instanceof JwtAuthenticationToken ?
             extractAuthorityFromClaims(((JwtAuthenticationToken) authentication).getToken().getClaims())
             : authentication.getAuthorities();
@@ -85,16 +90,19 @@ public final class SecurityUtils {
     }
 
     public static List<GrantedAuthority> extractAuthorityFromClaims(Map<String, Object> claims) {
+        System.out.println("extractAuthorityFromClaims");
         return mapRolesToGrantedAuthorities(getRolesFromClaims(claims));
     }
 
     @SuppressWarnings("unchecked")
     private static Collection<String> getRolesFromClaims(Map<String, Object> claims) {
+        System.out.println("getRolesFromClaims");
         return (Collection<String>) claims.getOrDefault("groups",
             claims.getOrDefault("roles", new ArrayList<>()));
     }
 
     private static List<GrantedAuthority> mapRolesToGrantedAuthorities(Collection<String> roles) {
+        System.out.println("mapRolesToGrantedAuthorities");
         return roles.stream()
             .filter(role -> role.startsWith("ROLE_"))
             .map(SimpleGrantedAuthority::new)

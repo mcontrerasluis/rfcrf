@@ -78,13 +78,14 @@ public abstract class AbstractAcuse<T> implements AcuseService {
 	 */
 	protected void doConfigLogos(Map<String, Object> paramsJRXML) throws ExceptionAcuseConfig {
         try {
-	        paramsJRXML.put("logoSHCP", ImageIO.read(new File(getPropertyBy(PROPERTY_PATH_IMG_SHCP))));
-            paramsJRXML.put("logoSAT", ImageIO.read(new File(getPropertyBy(PROPERTY_PATH_IMG_SAT))));
-            paramsJRXML.put("logoMexico", ImageIO.read(new File(getPropertyBy(PROPERTY_PATH_IMG_MEXICO))));
+	        paramsJRXML.put("logoSHCP", ImageIO.read(getClass().getResource(getPropertyBy(PROPERTY_PATH_IMG_SHCP))));
+            paramsJRXML.put("logoSAT", ImageIO.read(getClass().getResource(getPropertyBy(PROPERTY_PATH_IMG_SAT))));
+            paramsJRXML.put("logoMexico", ImageIO.read(getClass().getResource(getPropertyBy(PROPERTY_PATH_IMG_MEXICO))));
 		} catch (ExceptionAcuse e) {
 			log.warn( new StringBuilder("Error al configurar la ruta de los logos del acuse, causa: ").append(e.getMessage()));
 			throw new ExceptionAcuseConfig("Error al configurar la ruta de los logos del acuse.");
-		} catch (IOException e) {
+		}
+		catch (IOException e) {
 			log.warn( new StringBuilder("Error al configurar los logos del acuse, causa: ").append(e.getMessage()));
 			throw new ExceptionAcuseConfig("Error al configurar el reader del acuse.");
 		}

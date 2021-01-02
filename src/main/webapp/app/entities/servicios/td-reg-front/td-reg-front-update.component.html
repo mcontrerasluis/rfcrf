@@ -53,7 +53,7 @@
 
         <div class="card box p-shadow-18" *ngIf="manifiesta">			
 			<div class="p-fluid"> 
-			<div class="p-text-bold"><h2>Respecto del aviso de la presente solicitud para la región fronteriza, manifiesto bajo protesta de decir verdad que la información señalada en el mismo  es verídica y cumplo con lo siguiente: </h2></div>
+			<div class="p-text-bold"><h3>Respecto del aviso de la presente solicitud para la región fronteriza, manifiesto bajo protesta de decir verdad que la información señalada en el mismo  es verídica y cumplo con lo siguiente: </h3></div>
                 <div class="p-field p-grid" *ngFor="let tcManifesOption of tcmanifesS; trackBy: trackById; ">					
 					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><p-toggleButton name="manifestacions" [disabled]="tcManifesOption.activa" (onChange)="seleccionaManifestacion($event, tcManifesOption.clave)" formControlName="manifestacions" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right" ></p-toggleButton></label>
 					<div class="p-col-12 p-md-10">

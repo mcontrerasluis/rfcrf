@@ -55,8 +55,10 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
         attributes.put(PkceParameterNames.CODE_VERIFIER, codeVerifier);
         try {
             String codeChallenge = createHash(codeVerifier);
-            additionalParameters.put(PkceParameterNames.CODE_CHALLENGE, codeChallenge);
-            additionalParameters.put(PkceParameterNames.CODE_CHALLENGE_METHOD, "S256");
+            //additionalParameters.put(PkceParameterNames.CODE_CHALLENGE, codeChallenge);
+            //additionalParameters.put(PkceParameterNames.CODE_CHALLENGE_METHOD, "S256");
+            additionalParameters.put("resourceServer", "RFCRF");
+            // additionalParameters.put("redirect_uri", "http://localhost:8080/RFCSolZnFr/login/oauth2/code/oidc");
         } catch (NoSuchAlgorithmException e) {
             additionalParameters.put(PkceParameterNames.CODE_CHALLENGE, codeVerifier);
         }

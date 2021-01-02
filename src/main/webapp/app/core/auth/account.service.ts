@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
@@ -47,6 +48,7 @@ export class AccountService {
   }
 
   identity(force?: boolean): Observable<Account | null> {
+    console.log('llamado2');
     if (!this.accountCache$ || force || !this.isAuthenticated()) {
       this.accountCache$ = this.fetch().pipe(
         catchError(() => {
@@ -74,6 +76,7 @@ export class AccountService {
 
   isAuthenticated(): boolean {
     return this.userIdentity !== null;
+    // return true;
   }
 
   getAuthenticationState(): Observable<Account | null> {
@@ -84,7 +87,7 @@ export class AccountService {
     return this.userIdentity ? this.userIdentity.imageUrl : '';
   }
 
-  private fetch(): Observable<Account> {
+  private fetch(): Observable<Account> {    
     return this.http.get<Account>(SERVER_API_URL + 'api/account');
   }
 

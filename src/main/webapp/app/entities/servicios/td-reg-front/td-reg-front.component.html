@@ -46,7 +46,7 @@
 						<td>{{product.ejercicioValor}}</td>						
 						<td><span [class]="'product-badge status-'+product.estatus.toLowerCase()">{{product.estatus}}</span></td>
 						<td>{{product.folio}}</td>	
-						<td>{{product.fecha}}</td>	
+						<td>{{product.fecha | date: 'dd/MM/yyyy'}}</td>	
 						<td>
 							<button type="submit" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" [routerLink]="['/td-reg-front', product.id, 'view']"></button>
 							<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
@@ -55,7 +55,7 @@
 				</ng-template>
 				<ng-template pTemplate="summary">
 					<div class="p-d-flex p-ai-center p-jc-between">
-						In total there are {{products ? products.length : 0 }} products.
+						En total se tienen {{products ? products.length : 0 }} solicitudes.
 					</div>
 				</ng-template>
 			</p-table>

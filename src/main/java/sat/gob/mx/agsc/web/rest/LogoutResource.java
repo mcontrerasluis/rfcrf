@@ -32,11 +32,12 @@ public class LogoutResource {
     @PostMapping("/api/logout")
     public ResponseEntity<?> logout(HttpServletRequest request,
                                     @AuthenticationPrincipal(expression = "idToken") OidcIdToken idToken) {
-        String logoutUrl = this.registration.getProviderDetails()
-            .getConfigurationMetadata().get("end_session_endpoint").toString();
+        /*String logoutUrl = this.registration.getProviderDetails()
+            .getConfigurationMetadata().get("revocation_endpoint").toString();*/
 
         Map<String, String> logoutDetails = new HashMap<>();
-        logoutDetails.put("logoutUrl", logoutUrl);
+        //logoutDetails.put("logoutUrl", logoutUrl);
+        logoutDetails.put("logoutUrl", "https://login.dev.cloudb.sat.gob.mx/nidp/app/plogout");        
         logoutDetails.put("idToken", idToken.getTokenValue());
         request.getSession().invalidate();
         return ResponseEntity.ok().body(logoutDetails);

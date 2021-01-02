@@ -137,18 +137,24 @@ public class UserService {
      * @param authToken the authentication token.
      * @return the user from the authentication.
      */
-    @Transactional
+    @Transactional 
     public UserDTO getUserFromAuthentication(AbstractAuthenticationToken authToken) {
+        log.debug("entra al sistema {}", authToken);
+        System.out.println("usuario");
         Map<String, Object> attributes;
         if (authToken instanceof OAuth2AuthenticationToken) {
             attributes = ((OAuth2AuthenticationToken) authToken).getPrincipal().getAttributes();
+            System.out.println("oauth2" +attributes);
+            System.out.println("authorities"+ ((OAuth2AuthenticationToken) authToken).getPrincipal().getAuthorities());
         } else if (authToken instanceof JwtAuthenticationToken) {
             attributes = ((JwtAuthenticationToken) authToken).getTokenAttributes();
+            System.out.println("jwt" +attributes);
         } else {
             throw new IllegalArgumentException("AuthenticationToken is not OAuth2 or JWT!");
         }
         User user = getUser(attributes);
-        user.setAuthorities(authToken.getAuthorities().stream()
+        System.out.println("attributes" +authToken.getAuthorities());
+        user.setAuthorities(((OAuth2AuthenticationToken) authToken).getPrincipal().getAuthorities().stream()
             .map(GrantedAuthority::getAuthority)
             .map(authority -> {
                 Authority auth = new Authority();
@@ -171,10 +177,16 @@ public class UserService {
         if (details.get("preferred_username") != null) {
             user.setLogin(((String) details.get("preferred_username")).toLowerCase());
         } else if (user.getLogin() == null) {
-            user.setLogin(user.getId());
+            user.setLogin((String) details.get("cn"));
         }
-        if (details.get("given_name") != null) {
-            user.setFirstName((String) details.get("given_name"));
+        if (details.get("fullname") != null) {
+            user.setFirstName((String) details.get("fullname"));
+        }
+        if (details.get("cn") != null) {
+            user.setRfc((String) details.get("cn"));
+        }
+        if (details.get("tipoContribuyente") != null) {
+            user.setTipoContribuyente((String) details.get("tipoContribuyente"));
         }
         if (details.get("family_name") != null) {
             user.setLastName((String) details.get("family_name"));
