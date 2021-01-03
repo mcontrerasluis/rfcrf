@@ -50,6 +50,10 @@ public class TdRegFrontDTO implements Serializable {
 
     private Long ejercicioId;
 
+    private String cadena;
+
+    private String sello;
+
     private String ejercicioValor;
     private Set<TcManifesDTO> manifestacions = new HashSet<>();
     private Set<TcValidaDTO> validacions = new HashSet<>();
@@ -100,6 +104,22 @@ public class TdRegFrontDTO implements Serializable {
 
     public void setTipoSolicitudd(String tipoSolicitudd) {
         this.tipoSolicitudd = tipoSolicitudd;
+    }
+
+    public String getCadena() {
+        return cadena;
+    }
+
+    public void setCadena(String cadena) {
+        this.cadena = cadena;
+    }
+
+    public String getSello() {
+        return sello;
+    }
+
+    public void setSello(String sello) {
+        this.sello = sello;
     }
 
     public Integer getEjerciciod() {

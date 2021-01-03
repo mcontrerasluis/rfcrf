@@ -59,6 +59,12 @@ public class TdRegFront implements Serializable {
     @Column(name = "rfc")
     private String rfc;
 
+    @Column(name = "cadena")
+    private String cadena;
+
+    @Column(name = "sello")
+    private String sello;
+
     @Column(name = "fecha")
     private Instant fecha;
 
@@ -155,6 +161,35 @@ public class TdRegFront implements Serializable {
     public void setTipoImpuestod(String tipoImpuestod) {
         this.tipoImpuestod = tipoImpuestod;
     }
+
+    public String getCadena() {
+        return cadena;
+    }
+
+    public void setCadena(String cadena) {
+        this.cadena = cadena;
+    }
+
+    public TdRegFront cadena(String cadena){
+        this.cadena = cadena;
+        
+        return this;
+    }
+
+    public String getSello() {
+        return sello;
+    }
+
+    public void setSello(String sello) {
+        this.sello = sello;
+    }
+
+    public TdRegFront sello(String sello){
+        this.sello = sello;
+        
+        return this;
+    }
+
 
     public String getTipoSolicitudd() {
         return tipoSolicitudd;

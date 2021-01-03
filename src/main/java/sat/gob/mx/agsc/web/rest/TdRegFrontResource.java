@@ -6,7 +6,12 @@ import sat.gob.mx.agsc.service.dto.TdRegFrontDTO;
 import sat.gob.mx.agsc.service.dto.TcManifesDTO;
 
 import sat.gob.mx.agsc.service.UserService;
+import sat.gob.mx.agsc.service.TcTipoSolService;
+import sat.gob.mx.agsc.service.TcTipoImpService;
 import sat.gob.mx.agsc.service.dto.UserDTO;
+import sat.gob.mx.agsc.service.dto.TcTipoImpDTO;
+import sat.gob.mx.agsc.service.dto.TcTipoSolDTO;
+import java.time.format.DateTimeFormatter;
 
 import io.github.jhipster.web.util.HeaderUtil;
 import io.github.jhipster.web.util.PaginationUtil;
@@ -30,6 +35,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.StreamSupport;
 import java.time.Instant;
+import java.time.format.FormatStyle;
+import java.time.ZoneId;
 
 import java.util.ArrayList;
 import java.util.Base64;
@@ -68,9 +75,15 @@ public class TdRegFrontResource {
 
     private final UserService userService;
 
-    public TdRegFrontResource(TdRegFrontService tdRegFrontService, UserService userService) {
+    private final TcTipoSolService tcTipoSolService;
+
+    private final TcTipoImpService tcTipoImpService;
+
+    public TdRegFrontResource(TdRegFrontService tdRegFrontService, UserService userService, TcTipoSolService tcTipoSolService, TcTipoImpService tcTipoImpService) {
         this.tdRegFrontService = tdRegFrontService;
         this.userService = userService;
+        this.tcTipoSolService= tcTipoSolService;
+        this.tcTipoImpService = tcTipoImpService;
     }
 
     /**
@@ -89,10 +102,17 @@ public class TdRegFrontResource {
         tdRegFrontDTO.setUsuario(usuario.getFirstName());
         tdRegFrontDTO.setFecha(Instant.now());
 
+        TcTipoSolDTO tcTipoSolDTO = tcTipoSolService.findOne(tdRegFrontDTO.getTipoSolicitudId()).get();
+        
+
         if (tdRegFrontDTO.getId() != null) {
             throw new BadRequestAlertException("A new tdRegFront cannot already have an ID", ENTITY_NAME, "idexists");
         } 
         TdRegFrontDTO result = tdRegFrontService.save(tdRegFrontDTO);
+        tdRegFrontDTO.setFolio("ERF"+"2021"+ String.format("%06d", tdRegFrontDTO.getId()));
+
+        tdRegFront.setCadena(usuario.getRfc()+"|"+ tdRegFrontDTO.getFolio()+ "|" + tcTipoSolDTO.getDescripcion()+"|Solicitado");
+        
         return ResponseEntity.created(new URI("/api/td-reg-fronts/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
             .body(result);
@@ -102,18 +122,28 @@ public class TdRegFrontResource {
     value = "/getpdf",
     produces = MediaType.TEXT_PLAIN_VALUE)
     public @ResponseBody String getPDFP(@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO) throws URISyntaxException {
-        byte[] contents = null;        
+        byte[] contents = null;
 
+        TcTipoSolDTO tcTipoSolDTO = tcTipoSolService.findOne(tdRegFrontDTO.getTipoSolicitudId()).get();
+        TcTipoImpDTO tcTipoImpDTO = tcTipoImpService.findOne(tdRegFrontDTO.getTipoImpuestoId()).get();
+        
+
+        Instant instant = Instant.now();
+
+        // format instant to string
+        String dtStr = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+        .withZone(ZoneId.systemDefault())
+        .format(instant);
         this.acuseVo = new AcuseZonaFronterizaVO();
-		this.acuseVo.setNumFolio("ERF202122888310");
-		this.acuseVo.setFechaCreacion("11 de Diciembre del 2020");
+		this.acuseVo.setNumFolio("");
+		this.acuseVo.setFechaCreacion(dtStr);
 		this.acuseVo.setRfc(this.usuario.getRfc());
 		this.acuseVo.setRazonSocial(this.usuario.getFirstName());
-		this.acuseVo.setFechaPresentacion("09 de enero de 2021");
-		this.acuseVo.setTipoSolicitud("Incorporación al padrón de beneficiarios");
-		this.acuseVo.setRegion("Norte");
-		this.acuseVo.setImpuesto("ISR");
-		this.acuseVo.setEjercicio(tdRegFrontDTO.getEjercicioId().toString() );
+		this.acuseVo.setFechaPresentacion(dtStr);
+		this.acuseVo.setTipoSolicitud(tcTipoSolDTO.getDescripcion());
+		this.acuseVo.setRegion(tdRegFrontDTO.getRegion());
+		this.acuseVo.setImpuesto(tcTipoImpDTO.getDescripcion());
+		this.acuseVo.setEjercicio("2021");
 		this.acuseVo.setCadenaOriginal("OPO140101E76|20210109|ERF202122888310|S01|E03");
 		this.acuseVo.setSelloDigital("yBv5DUh0/IR4sDxqVnOT8X94dODuWtFg8Um3UY4jhmG6J9UUZvIrdPlmH/qbzBWwFkt0DyJlESJglvcZcaJsty72ouhHOL5kIcBZQkG81xfk076J4RM8YRiLJJ0Q9MJVxbW5wE9EEwSCBzMLHn6mEauHkwM0Pk1eLpIXRS5aUvA=");
 		

@@ -26,6 +26,8 @@
             <column name="last_name" type="varchar(50)"/>
             <column name="rfc" type="varchar(50)"/>
             <column name="tipo_contribuyente" type="varchar(10)"/>
+            <column name="cadena" type="varchar(500)"/>
+            <column name="sello" type="varchar(1000)"/>
             <column name="email" type="varchar(191)">
                 <constraints unique="true" nullable="true" uniqueConstraintName="ux_user_email"/>
             </column>

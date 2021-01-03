@@ -13,6 +13,8 @@ export interface ITdRegFront {
   estatus?: string;
   folio?: string;
   rfc?: string;
+  cadena?: string;
+  sello?: string;
   fecha?: Moment;
   usuario?: string;
   tipoSolicitudDescripcion?: string;
@@ -38,6 +40,8 @@ export class TdRegFront implements ITdRegFront {
     public estatus?: string,
     public folio?: string,
     public rfc?: string,
+    public cadena?: string,
+    public sello?: string,
     public fecha?: Moment,
     public usuario?: string,
     public tipoSolicitudDescripcion?: string,
