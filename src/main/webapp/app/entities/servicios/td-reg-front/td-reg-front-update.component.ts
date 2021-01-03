@@ -279,7 +279,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
       console.log(this.control.filter((n, i) => this.control.indexOf(n) === i));
       console.log(this.tcmanifesS);
 
-      if((this.control.filter((n, i) => this.control.indexOf(n) === i)).length === this.tcmanifesS.length){
+      if((this.control.filter((n, i) => this.control.indexOf(n) === i)).length >= this.tcmanifesS.length){
         this.activeIndex = 2;
         this.general = false;
         this.manifiesta = false;

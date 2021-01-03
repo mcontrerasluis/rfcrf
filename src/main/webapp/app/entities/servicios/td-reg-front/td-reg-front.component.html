@@ -31,8 +31,7 @@
 						<th pSortableColumn="ejercicioValor">Ejercicio </th>
 						<th pSortableColumn="estatus">Estatus </th>
 						<th pSortableColumn="Folio">Folio </th>
-						<th pSortableColumn="Fecha">Fecha </th>
-						<th pSortableColumn="inventoryStatus">Acciones </th>
+						<th pSortableColumn="Fecha">Fecha </th>						
 						<th></th>
 					</tr>
 				</ng-template>
@@ -46,11 +45,7 @@
 						<td>{{product.ejercicioValor}}</td>						
 						<td><span [class]="'product-badge status-'+product.estatus.toLowerCase()">{{product.estatus}}</span></td>
 						<td>{{product.folio}}</td>	
-						<td>{{product.fecha | date: 'dd/MM/yyyy'}}</td>	
-						<td>
-							<button type="submit" pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success p-mr-2" [routerLink]="['/td-reg-front', product.id, 'view']"></button>
-							<button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
-						</td>
+						<td>{{product.fecha | date: 'dd/MM/yyyy'}}</td>							
 					</tr>
 				</ng-template>
 				<ng-template pTemplate="summary">

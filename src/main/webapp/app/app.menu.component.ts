@@ -22,12 +22,7 @@ export class AppMenuComponent implements OnInit {
         icon: 'pi pi-fw pi-compass',
         routerLink: ['utilities'],
         items: [          
-          { label: 'Registro de Solicitud', icon: 'pi pi-fw pi-external-link', routerLink: ['td-reg-front'] },
-          { label: 'Catalogo Manifiesto', icon: 'pi pi-fw pi-directions', routerLink: ['tc-manifes'] },
-          { label: 'Catalogo Solicitudes', icon: 'pi pi-fw pi-search', routerLink: ['tc-tipo-sol'] },
-          { label: 'Catalogo Impuestos', icon: 'pi pi-fw pi-pencil', routerLink: ['tc-tipo-imp'] },
-          { label: 'Catalogo Validaciones', icon: 'pi pi-fw pi-star-o', routerLink: ['tc-valida'] },
-          { label: 'Catalogo Ejercicios', icon: 'pi pi-fw pi-th-large', routerLink: ['tc-ejerc'] },
+          { label: 'Registro de Solicitud', icon: 'pi pi-fw pi-external-link', routerLink: ['td-reg-front'] },          
         ],
       },
       {
