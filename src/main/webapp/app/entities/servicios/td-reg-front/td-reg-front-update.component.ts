@@ -359,7 +359,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
 
   seleccionaManifestacion(e: any, clave:any) {
 
-    this.tcmanifes.find(item => item.clave === clave).activa = false;
+    if(e.checked){
+      this.tcmanifes.find(item => item.clave === clave).activa = false;
 
     this.control.push(clave);
 
@@ -398,9 +399,64 @@ export class TdRegFrontUpdateComponent implements OnInit {
       this.tcmanifes.find(item => item.clave === 'M13').activa = e.checked;
       this.control.push("M13");
       return;
-    }   
+    }
+    }else if(!e.checked){
+    
+
+    this.deleteMsg(clave);    
+
+    if(clave === 'M01'){
+      this.tcmanifes.find(item => item.clave === 'M02').activa = e.checked;      
+      this.deleteMsg("M02");          
+      return;
+    }else if(clave==='M02'){
+      this.tcmanifes.find(item => item.clave === 'M01').activa = e.checked;
+      this.deleteMsg("M01");                
+      return;
+    }
+    if(clave === 'M03'){
+      this.tcmanifes.find(item => item.clave === 'M04').activa = e.checked;
+      this.deleteMsg("M04");                      
+      return;
+    }else if(clave==='M04'){
+      this.tcmanifes.find(item => item.clave === 'M03').activa = e.checked;
+      this.deleteMsg("M03");                            
+      return;
+    }
+    if(clave === 'M05'){
+      this.tcmanifes.find(item => item.clave === 'M06').activa = e.checked;
+      this.deleteMsg("M06");                            
+      
+      return;
+    }else if(clave==='M06'){
+      this.tcmanifes.find(item => item.clave === 'M05').activa = e.checked;
+      this.deleteMsg("M05");                                  
+      return;
+    }
+    if(clave === 'M13'){
+      this.tcmanifes.find(item => item.clave === 'M14').activa = e.checked;
+      this.deleteMsg("M14");                                        
+      return;
+    }else if(clave==='M14'){
+      this.tcmanifes.find(item => item.clave === 'M13').activa = e.checked;
+      this.deleteMsg("M13");                                              
+      return;
+    } 
+
+    }
+
+    console.log(this.control.filter((n, i) => this.control.indexOf(n) === i));
+    console.log(this.tcmanifesS);
+   
     
   }
+
+  deleteMsg(msg:string) {
+    const index: number = this.control.indexOf(msg);
+    if (index !== -1) {
+        this.control.splice(index, 1);
+    }        
+}
 
   previousPage():void {
  
