@@ -9,8 +9,11 @@ import { AccountService } from 'app/core/auth/account.service';
 import { PrimeNGConfig } from 'primeng/api';
 import { MenuService } from '../../app.menu.service';
 
+
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+
+declare let $: any;
 
 @Component({
   selector: 'jhi-main',
@@ -54,6 +57,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
   configClick?: boolean;
 
+  displayModal: boolean;
+
   constructor(
     private accountService: AccountService,
     private titleService: Title,
@@ -61,7 +66,7 @@ export class MainComponent implements OnInit, OnDestroy {
     private translateService: TranslateService,
     private menuService: MenuService,
     private primengConfig: PrimeNGConfig,
-    private $storageService: StateStorageService,
+    private $storageService: StateStorageService,    
     rootRenderer: RendererFactory2
   ) {
     this.renderer = rootRenderer.createRenderer(document.querySelector('html'), null);
@@ -258,4 +263,10 @@ export class MainComponent implements OnInit, OnDestroy {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  showModalDialog() {
+    this.displayModal = true;
+}
+
+
 }

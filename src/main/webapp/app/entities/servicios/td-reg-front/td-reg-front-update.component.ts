@@ -28,6 +28,8 @@ type SelectableEntity = ITcTipoSol | ITcTipoImp | ITcEjerc | ITcManifes | ITcVal
 
 type SelectableManyToManyEntity = ITcManifes | ITcValida;
 
+declare let $: any;
+
 @Component({
   selector: 'jhi-td-reg-front-update',
   templateUrl: './td-reg-front-update.component.html',
@@ -180,7 +182,10 @@ export class TdRegFrontUpdateComponent implements OnInit {
 
   filtraSolicitud(event:any):void {    
     
-    let cla = '';
+    let cla = '';    
+
+    
+
     const impuesto = this.tctipoimps.find(obj =>{
       return obj.id===this.editForm.get(['tipoImpuestoId']).value
     })
@@ -194,7 +199,11 @@ export class TdRegFrontUpdateComponent implements OnInit {
     
     this.tctiposolsS = this.tctiposols.filter(function(v, i) {
       return ((v[cla] === 1));
-    })    
+    })
+    
+    this.editForm.get(['tipoSolicitudId']).setValidators(Validators.required);
+
+    this.editForm.get(['tipoSolicitudId']).setValue(null);
 
   }
 
@@ -503,10 +512,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
       // const blob = new Blob([response], { type: 'application/octet-stream' });
       // const blob = new Blob([response], { type: 'application/octet-stream' });
       // const blob = base64StringToBlob(response, 'text/plain')
-      this.srcS = response;
-      // this.src = blob;
-      console.log(response)      
-      console.log(this.srcS)      
+      this.srcS = response;      // this.src = blob;
+      
   },
   e => { console.log(e); })    
   }  

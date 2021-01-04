@@ -33,6 +33,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.Locale;
 import java.util.stream.StreamSupport;
 import java.time.Instant;
 import java.time.format.FormatStyle;
@@ -64,9 +65,7 @@ public class TdRegFrontResource {
     private static final String ENTITY_NAME = "tdRegFront";
     
 	
-	private AcuseZonaFronterizaVO acuseVo;
-
-    private UserDTO usuario;
+	private AcuseZonaFronterizaVO acuseVo;    
 
     @Value("${jhipster.clientApp.name}")
     private String applicationName;
@@ -97,7 +96,7 @@ public class TdRegFrontResource {
     public ResponseEntity<TdRegFrontDTO> createTdRegFront(@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO,Principal principal) throws URISyntaxException {
         log.debug("REST request to save TdRegFront : {}", tdRegFrontDTO);
         
-        
+        UserDTO usuario = userService.getUserFromAuthentication((AbstractAuthenticationToken) principal);
         tdRegFrontDTO.setRfc(usuario.getRfc());
         tdRegFrontDTO.setUsuario(usuario.getFirstName());
         tdRegFrontDTO.setFecha(Instant.now());
@@ -109,43 +108,48 @@ public class TdRegFrontResource {
             throw new BadRequestAlertException("A new tdRegFront cannot already have an ID", ENTITY_NAME, "idexists");
         } 
         TdRegFrontDTO result = tdRegFrontService.save(tdRegFrontDTO);
-        tdRegFrontDTO.setFolio("ERF"+"2021"+ String.format("%06d", tdRegFrontDTO.getId()));
+        result.setFolio("ERF"+"2021"+ String.format("%06d", result.getId()));
 
-        tdRegFront.setCadena(usuario.getRfc()+"|"+ tdRegFrontDTO.getFolio()+ "|" + tcTipoSolDTO.getDescripcion()+"|Solicitado");
+        result.setCadena(usuario.getRfc()+"|"+ tdRegFrontDTO.getFolio()+ "|" + tcTipoSolDTO.getDescripcion()+"|Solicitado");
+
+        TdRegFrontDTO resultFinal = tdRegFrontService.save(result);
         
-        return ResponseEntity.created(new URI("/api/td-reg-fronts/" + result.getId()))
-            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, result.getId().toString()))
+        return ResponseEntity.created(new URI("/api/td-reg-fronts/" + resultFinal.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, resultFinal.getId().toString()))
             .body(result);
     }
 
     @PostMapping(
     value = "/getpdf",
     produces = MediaType.TEXT_PLAIN_VALUE)
-    public @ResponseBody String getPDFP(@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO) throws URISyntaxException {
+    public @ResponseBody String getPDFP(@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO, Principal principal) throws URISyntaxException {
         byte[] contents = null;
 
         TcTipoSolDTO tcTipoSolDTO = tcTipoSolService.findOne(tdRegFrontDTO.getTipoSolicitudId()).get();
         TcTipoImpDTO tcTipoImpDTO = tcTipoImpService.findOne(tdRegFrontDTO.getTipoImpuestoId()).get();
+        UserDTO usuario = userService.getUserFromAuthentication((AbstractAuthenticationToken) principal);
         
 
         Instant instant = Instant.now();
 
         // format instant to string
-        String dtStr = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.SHORT)
+        String dtStr = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG).withLocale(new Locale("es", "ES"))
         .withZone(ZoneId.systemDefault())
         .format(instant);
+
+        System.out.println("fecha" + dtStr);
         this.acuseVo = new AcuseZonaFronterizaVO();
 		this.acuseVo.setNumFolio("");
 		this.acuseVo.setFechaCreacion(dtStr);
-		this.acuseVo.setRfc(this.usuario.getRfc());
-		this.acuseVo.setRazonSocial(this.usuario.getFirstName());
+		this.acuseVo.setRfc(usuario.getRfc());
+		this.acuseVo.setRazonSocial(usuario.getFirstName());
 		this.acuseVo.setFechaPresentacion(dtStr);
 		this.acuseVo.setTipoSolicitud(tcTipoSolDTO.getDescripcion());
 		this.acuseVo.setRegion(tdRegFrontDTO.getRegion());
 		this.acuseVo.setImpuesto(tcTipoImpDTO.getDescripcion());
 		this.acuseVo.setEjercicio("2021");
-		this.acuseVo.setCadenaOriginal("OPO140101E76|20210109|ERF202122888310|S01|E03");
-		this.acuseVo.setSelloDigital("yBv5DUh0/IR4sDxqVnOT8X94dODuWtFg8Um3UY4jhmG6J9UUZvIrdPlmH/qbzBWwFkt0DyJlESJglvcZcaJsty72ouhHOL5kIcBZQkG81xfk076J4RM8YRiLJJ0Q9MJVxbW5wE9EEwSCBzMLHn6mEauHkwM0Pk1eLpIXRS5aUvA=");
+		this.acuseVo.setCadenaOriginal("");
+		this.acuseVo.setSelloDigital("");
 		
 		List<String> manifestaciones =  new ArrayList<String>();
         for (TcManifesDTO i : tdRegFrontDTO.getManifestacions()) {
@@ -246,13 +250,13 @@ public class TdRegFrontResource {
             return new ResponseEntity<>(tdRegFrontService.findAllWhereGeneralIsNull(),
                     HttpStatus.OK);
         }
-        this.usuario = userService.getUserFromAuthentication((AbstractAuthenticationToken) principal);
+        UserDTO usuario = userService.getUserFromAuthentication((AbstractAuthenticationToken) principal);        
         log.debug("REST request to get a page of TdRegFronts");
         Page<TdRegFrontDTO> page;
         if (eagerload) {
-            page = tdRegFrontService.findAllWithEagerRelationshipsByRfc(pageable, this.usuario.getRfc());
+            page = tdRegFrontService.findAllWithEagerRelationshipsByRfc(pageable, usuario.getRfc());
         } else {
-            page = tdRegFrontService.findAllWithEagerRelationshipsByRfc(pageable, this.usuario.getRfc());
+            page = tdRegFrontService.findAllWithEagerRelationshipsByRfc(pageable, usuario.getRfc());
         }
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());

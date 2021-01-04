@@ -47,8 +47,7 @@ export class AccountService {
     return this.userIdentity.authorities.some((authority: string) => authorities.includes(authority));
   }
 
-  identity(force?: boolean): Observable<Account | null> {
-    console.log('llamado2');
+  identity(force?: boolean): Observable<Account | null> {    
     if (!this.accountCache$ || force || !this.isAuthenticated()) {
       this.accountCache$ = this.fetch().pipe(
         catchError(() => {

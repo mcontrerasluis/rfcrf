@@ -1,5 +1,6 @@
 <div class="row justify-content-center">
-    
+        <div id="firmado-widget-container"></div>        
+
     <div class="p-col-8 p-md-8">
 
 	
@@ -53,7 +54,7 @@
 
         <div class="card box p-shadow-18" *ngIf="manifiesta">			
 			<div class="p-fluid"> 
-			<div class="p-text-bold"><h4>Respecto del aviso de la presente solicitud para la región fronteriza, manifiesto bajo protesta de decir verdad que la información señalada en el mismo  es verídica y cumplo con lo siguiente: </h4></div>
+			<div class="p-text-bold"><h5>Respecto del aviso de la presente solicitud para la región fronteriza, manifiesto bajo protesta de decir verdad que la información señalada en el mismo  es verídica y cumplo con lo siguiente: </h5></div>
                 <div class="p-field p-grid" *ngFor="let tcManifesOption of tcmanifesS; trackBy: trackById; ">					
 					<label for="lastname4" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><p-toggleButton name="manifestacions" [disabled]="tcManifesOption.activa" (onChange)="seleccionaManifestacion($event, tcManifesOption.clave)" formControlName="manifestacions" onLabel="Si" offLabel="No" [style]="{'width': '10em'}" onIcon="pi pi-check" offIcon="pi pi-times" iconPos="right" ></p-toggleButton></label>
 					<div class="p-col-12 p-md-10">
@@ -70,11 +71,12 @@
 					</button>
 
 					<button type="submit" id="save-entity"  class="btn btn-primary" [disabled]="!editForm.valid">
-						<fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+						<fa-icon icon="save"></fa-icon>&nbsp;Finalizar Registro</span>
 					</button>
             	</div>            
 		</div>
 		<div class="p-grid p-nogutter p-justify-between">    			   				
+		
 		<p-button label="Siguiente" (onClick)="nextPage()" [disabled]="!editForm.valid" icon="pi pi-angle-right" iconPos="right"></p-button>
 		</div>
 	</form>	
@@ -82,6 +84,8 @@
 
 
 </div>
+
+
 
 
 

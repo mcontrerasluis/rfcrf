@@ -28,6 +28,7 @@ import { TableModule } from 'primeng/table';
 import { CheckboxModule } from 'primeng/checkbox';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import {DialogModule} from 'primeng/dialog';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 
 import { MenuService } from './app.menu.service';
@@ -50,6 +51,7 @@ import { BreadcrumbService } from './app.breadcrumb.service';
     ToastModule,
     ToolbarModule,
     ConfirmDialogModule,
+    DialogModule
   ],
   declarations: [
     MainComponent,

@@ -7,6 +7,7 @@ import { Account } from 'app/core/user/account.model';
 import { PrimeNGConfig } from 'primeng/api';
 import { MenuService } from '../app.menu.service';
 
+
 @Component({
   selector: 'jhi-home',
   templateUrl: './home.component.html',
@@ -49,6 +50,9 @@ export class HomeComponent implements OnInit {
 
   configClick?: boolean;
 
+  
+  
+
   constructor(
     private accountService: AccountService,
     private loginService: LoginService,
@@ -56,9 +60,11 @@ export class HomeComponent implements OnInit {
     private primengConfig: PrimeNGConfig
   ) {}
 
+  
+
   ngOnInit(): void {
     this.accountService.identity().subscribe(account => (this.account = account));
-    this.primengConfig.ripple = true;
+    this.primengConfig.ripple = true;    
   }
 
   isAuthenticated(): boolean {

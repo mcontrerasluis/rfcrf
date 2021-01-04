@@ -46,7 +46,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final CorsFilter corsFilter;
 
-    @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
+    // @Value("${spring.security.oauth2.client.provider.oidc.issuer-uri}")
     private String issuerUri;
 
     private final JHipsterProperties jHipsterProperties;
@@ -85,7 +85,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()
             .headers()
-            .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; font-src 'self' data:")
+            .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com https://aplicaciones.sat.gob.mx/PTSC/fwidget/; style-src 'self' 'unsafe-inline' 'unsafe-eval' https://aplicaciones.sat.gob.mx/PTSC/fwidget/; img-src 'self' data:; font-src 'self' data: ")
         .and()
             .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
@@ -162,46 +162,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         this.clientRegistration());
     }
 */
-    Converter<Jwt, AbstractAuthenticationToken> authenticationConverter() {
-        JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
-        jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(new JwtGrantedAuthorityConverter());
-        return jwtAuthenticationConverter;
-    } 
+   
     /**
      * Map authorities from "groups" or "roles" claim in ID Token.
      *
      * @return a {@link GrantedAuthoritiesMapper} that maps groups from
      * the IdP to Spring Security Authorities.
      */
-    @Bean
-    public GrantedAuthoritiesMapper userAuthoritiesMapper() {
-        System.out.println("decoder entra");
-        return (authorities) -> {
-            Set<GrantedAuthority> mappedAuthorities = new HashSet<>();
-
-            authorities.forEach(authority -> {
-                // Check for OidcUserAuthority because Spring Security 5.2 returns
-                // each scope as a GrantedAuthority, which we don't care about.
-                if (authority instanceof OidcUserAuthority) {
-                    OidcUserAuthority oidcUserAuthority = (OidcUserAuthority) authority;
-                    mappedAuthorities.addAll(SecurityUtils.extractAuthorityFromClaims(oidcUserAuthority.getUserInfo().getClaims()));
-                }
-            });
-            return mappedAuthorities;
-        };
-    }
-
-    @Bean
-    JwtDecoder jwtDecoder() {
-        System.out.println("decoder entra");
-        NimbusJwtDecoder jwtDecoder = (NimbusJwtDecoder) JwtDecoders.fromOidcIssuerLocation(issuerUri);
-
-        OAuth2TokenValidator<Jwt> audienceValidator = new AudienceValidator(jHipsterProperties.getSecurity().getOauth2().getAudience());
-        OAuth2TokenValidator<Jwt> withIssuer = JwtValidators.createDefaultWithIssuer(issuerUri);
-        OAuth2TokenValidator<Jwt> withAudience = new DelegatingOAuth2TokenValidator<>(audienceValidator);
-
-        jwtDecoder.setJwtValidator(withAudience);
-
-        return jwtDecoder;
-    }
-}
+   }
