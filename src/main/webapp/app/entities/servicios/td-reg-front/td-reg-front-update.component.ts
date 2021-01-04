@@ -1,5 +1,7 @@
 /* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
+import {ElementRef,Renderer2, ViewChild} from '@angular/core';
+import {formatDate} from '@angular/common';
 import { HttpResponse, HttpClient } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
@@ -24,11 +26,15 @@ import { SelectItem } from 'primeng/api';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 
+declare let btnEnviarFIELOnClick:Function; 
+
 type SelectableEntity = ITcTipoSol | ITcTipoImp | ITcEjerc | ITcManifes | ITcValida;
 
 type SelectableManyToManyEntity = ITcManifes | ITcValida;
 
 declare let $: any;
+
+
 
 @Component({
   selector: 'jhi-td-reg-front-update',
@@ -36,6 +42,8 @@ declare let $: any;
   providers: [MessageService, ConfirmationService],
 })
 export class TdRegFrontUpdateComponent implements OnInit {
+  @ViewChild('cadenaorigi') userNameId: ElementRef;
+  loadAPI: Promise<any>;
   account: Account | null = null;
   isSaving = false;
   tctiposols: ITcTipoSol[] = [];
@@ -54,6 +62,14 @@ export class TdRegFrontUpdateComponent implements OnInit {
   domicilioDesactiva = false;
   activaAnterior = true;
   control: string[]=[];
+  displayModal: boolean;
+  impuesto:any = null;
+  solicitud:any = null;
+  ocultaboton = true;
+  myDate = new Date();
+  cadena = '';
+  sello = '';
+  finaliza = false;
 
   public src: Blob;
   public srcS: any;
@@ -90,8 +106,10 @@ export class TdRegFrontUpdateComponent implements OnInit {
     public confirmationService: ConfirmationService,
     private fb: FormBuilder,
     private http: HttpClient,
-    private accountService: AccountService, 
-  ) {}
+    private accountService: AccountService,     
+  ) {   
+    
+  }
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tdRegFront }) => {
@@ -107,7 +125,9 @@ export class TdRegFrontUpdateComponent implements OnInit {
 
       this.tcValidaService.query().subscribe((res: HttpResponse<ITcValida[]>) => (this.tcvalidas = res.body || []));
 
-      this.accountService.identity().subscribe(account => (this.account = account));    
+      this.accountService.identity().subscribe(account => (this.account = account));     
+      
+      
     });
 
     this.regionesF = [
@@ -123,7 +143,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
           this.general = true;
           this.manifiesta = false;
           this.vistaPrevia = false;
-          this.activaAnterior= true;          
+          this.activaAnterior= true;           
           this.editForm.get(['manifestacions']).clearValidators();
         },
       },
@@ -177,6 +197,24 @@ export class TdRegFrontUpdateComponent implements OnInit {
           }  
         },
       },
+      {
+        label: 'Firmado',
+        command: (event: any) => {
+
+          
+          
+            this.activeIndex = 3;
+            this.general = false;            
+            this.manifiesta = false;
+            this.vistaPrevia = false;
+            this.activaAnterior= false;
+            this.showModalDialog();
+            btnEnviarFIELOnClick();
+
+            return;
+          
+        },
+      },
     ];
   }
 
@@ -210,34 +248,32 @@ export class TdRegFrontUpdateComponent implements OnInit {
   private cargaManifestaciones():void{
     let cla = '';
     let sol = '';
-    let reg = '';    
-    let solicitud = null;
-    let impuesto = null;
+    let reg = '';        
     let tipo = '' ;
 
     
-    solicitud = this.tctiposols.find(obj =>{
+    this.solicitud = this.tctiposols.find(obj =>{
       return obj.id===this.editForm.get(['tipoSolicitudId']).value
     })
 
-    impuesto = this.tctipoimps.find(obj =>{
+    this.impuesto = this.tctipoimps.find(obj =>{
       return obj.id===this.editForm.get(['tipoImpuestoId']).value
     })
     
 
-    if(impuesto.clave === '01'){
+    if(this.impuesto.clave === '01'){
       cla = 'isr'
-    }else if(impuesto.clave === '02'){
+    }else if(this.impuesto.clave === '02'){
       cla = 'iva'
     }
 
-    if(solicitud.clave === 'S01'){
+    if(this.solicitud.clave === 'S01'){
       sol = 's01';
-    }else if(solicitud.clave === 'S02'){
+    }else if(this.solicitud.clave === 'S02'){
       sol = 's02';
-    }else if(solicitud.clave === 'S03'){
+    }else if(this.solicitud.clave === 'S03'){
       sol = 's03';
-    }else if(solicitud.clave === 'S04'){
+    }else if(this.solicitud.clave === 'S04'){
       sol = 's04';
     }
     
@@ -294,13 +330,29 @@ export class TdRegFrontUpdateComponent implements OnInit {
         this.manifiesta = false;
         this.vistaPrevia = true;
         this.cargaAcuse();
+        if(this.impuesto.clave === '02'){
+
+        this.ocultaboton = false;
+        }
         return;
       }else {
         this.messageService.add({ severity: 'error', summary: 'Información Incompleta', detail: 'Se deben contestar todas las manifestaciones para continuar' });
       }    
 
       return;
-  } 
+  }
+  if (this.activeIndex === 2) {
+    
+    if(this.impuesto.clave === '01'){
+    
+    this.activeIndex = 3;
+    this.general = false;
+    this.manifiesta = false;
+    this.vistaPrevia = false;
+    this.showModalDialog();        
+    this.ocultaboton = false;
+    }
+  }
 
     
 }
@@ -338,13 +390,13 @@ export class TdRegFrontUpdateComponent implements OnInit {
       this.control.push("M05");
       return;
     }
-    if(clave === 'M11'){
-      this.tcmanifes.find(item => item.clave === 'M12').activa = e.checked;
-      this.control.push("M12");
+    if(clave === 'M13'){
+      this.tcmanifes.find(item => item.clave === 'M14').activa = e.checked;
+      this.control.push("M14");
       return;
-    }else if(clave==='M12'){
-      this.tcmanifes.find(item => item.clave === 'M11').activa = e.checked;
-      this.control.push("M11");
+    }else if(clave==='M14'){
+      this.tcmanifes.find(item => item.clave === 'M13').activa = e.checked;
+      this.control.push("M13");
       return;
     }   
     
@@ -399,13 +451,24 @@ export class TdRegFrontUpdateComponent implements OnInit {
   }
 
   save(): void {
-    this.isSaving = true;
-    const tdRegFront = this.createFromForm();
-    if (tdRegFront.id !== undefined) {
-      this.subscribeToSaveResponse(this.tdRegFrontService.update(tdRegFront));
-    } else {
-      this.subscribeToSaveResponse(this.tdRegFrontService.create(tdRegFront));
-    }
+
+    setTimeout(() => {
+      console.log('sleep');
+      console.log('valor4' +this.userNameId.nativeElement.value );
+      console.log('window'+ window['data']);
+      this.sello = window['data'];
+      // And any other code that should run only after 5s
+    }, 40000);
+
+      
+      this.isSaving = true;
+      const tdRegFront = this.createFromForm();
+      if (tdRegFront.id !== undefined) {
+        this.subscribeToSaveResponse(this.tdRegFrontService.update(tdRegFront));
+      } else {
+        this.subscribeToSaveResponse(this.tdRegFrontService.create(tdRegFront));
+      }
+       
   }
 
   desactivaSucursal():void {
@@ -454,6 +517,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
       tipoSolicitudId: this.editForm.get(['tipoSolicitudId'])!.value,
       tipoImpuestoId: this.editForm.get(['tipoImpuestoId'])!.value,
       ejercicioId: this.editForm.get(['ejercicioId'])!.value,
+      sello: window['data'],
+      cadena: this.cadena,
       // manifestacions: this.tcmanifesS,
       manifestacions: this.tcmanifes.filter(function(v, i) {
         return ((v['activa'] === false));
@@ -493,16 +558,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
       }
     }
     return option;
-  }
-
-  public loadLargeFile(): void {
-    this.http
-      .get(
-        'http://localhost:8080/RFCSolZnFr/content/css/reportExample.pdf',
-        { responseType: 'blob' }
-      )
-      .subscribe((res) =>  this.src = res)                  
-  }
+  }  
 
   public cargaAcuse(): void {
     const tdRegFront = this.createFromForm();
@@ -516,5 +572,66 @@ export class TdRegFrontUpdateComponent implements OnInit {
       
   },
   e => { console.log(e); })    
-  }  
+  }
+  
+public loadScript() {
+    console.log('preparing to load...')
+    let node = document.createElement('script');
+    node.src = 'content/m2.firmado.sat.general.js';
+    node.type = 'text/javascript';
+    node.async = true;
+    node.charset = 'utf-8';
+    document.getElementsByTagName('head')[0].appendChild(node);
+    node = document.createElement('script');
+    node.src = 'content/jquery-1.6.4.min.js';
+    node.type = 'text/javascript';
+    node.async = true;
+    node.charset = 'utf-8';
+    document.getElementsByTagName('head')[0].appendChild(node);
+}
+
+showModalDialog() {
+  this.displayModal = true;
+  console.log('preparing to load...')
+    let node = document.createElement('script');
+    node.src = 'content/m2.firmado.sat.general.js';
+    node.type = 'text/javascript';
+    node.async = true;
+    node.charset = 'utf-8';
+    document.getElementsByTagName('head')[0].appendChild(node);
+    node = document.createElement('script');
+    node.src = 'content/jquery-1.6.4.min.js';
+    node.type = 'text/javascript';
+    node.async = true;
+    node.charset = 'utf-8';
+    document.getElementsByTagName('head')[0].appendChild(node);
+}
+
+
+
+EjecutaLlamado(){
+  this.cadena = this.account.rfc + '|' + this.solicitud.descripcion +'|' + this.impuesto.descripcion + '|RECIBIDO|' +formatDate(new Date(), 'dd/MM/yyyy', 'en'); 
+  btnEnviarFIELOnClick(this.cadena, this.account.rfc)
+  
+  setTimeout(() => {
+    console.log('sleep');
+    console.log('valor4' +this.userNameId.nativeElement.value );
+    console.log('window'+ window['data']);
+    this.finaliza = true;  
+    // And any other code that should run only after 5s
+  }, 400);
+
+  while (this.sello === 'test') {
+    this.sello = window['data'];
+    console.log( this.sello)   
+}
+
+  this.sello = window['data']; 
+  
+}
+
+Finaliza(){
+  this.save();
+}
+  
 }

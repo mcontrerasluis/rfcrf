@@ -10,10 +10,6 @@ import { FormBuilder, Validators } from '@angular/forms';
 })
 export class ControlManifestacionComponent implements OnInit {
 
-  @Input() tcManifesOption: ITcManifes;
-
-  editForm = this.fb.group({manifestacions: [null, [Validators.required]],});
-
   constructor(private fb: FormBuilder,) { }
 
   ngOnInit(): void {
