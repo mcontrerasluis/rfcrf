@@ -109,11 +109,9 @@ public class TdRegFrontResource {
         } 
         TdRegFrontDTO result = tdRegFrontService.save(tdRegFrontDTO);
         result.setFolio("ERF"+"2021"+ String.format("%06d", result.getId()));
-
         result.setCadena(usuario.getRfc()+"|"+ tdRegFrontDTO.getFolio()+ "|" + tcTipoSolDTO.getDescripcion()+"|Solicitado");
-
         TdRegFrontDTO resultFinal = tdRegFrontService.save(result);
-        
+        tdRegFrontDTO.setCadena(usuario.getRfc()+"|"+ tdRegFrontDTO.getFolio()+ "|" + tcTipoSolDTO.getDescripcion()+"|Solicitado");
         return ResponseEntity.created(new URI("/api/td-reg-fronts/" + resultFinal.getId()))
             .headers(HeaderUtil.createEntityCreationAlert(applicationName, true, ENTITY_NAME, resultFinal.getId().toString()))
             .body(result);
