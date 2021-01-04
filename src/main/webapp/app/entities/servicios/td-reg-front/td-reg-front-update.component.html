@@ -79,7 +79,7 @@
 			<div class="p-fluid"> 
 			<div id="firmado-widget-container"></div>               			
 			</div>						
-			<p-button label="Firmar Solicitud" (onClick)="EjecutaLlamado()" [disabled]=="!finaliza"  icon="pi pi-angle-right" iconPos="right"></p-button>
+			<p-button label="Firmar Solicitud" (onClick)="EjecutaLlamado()" [disabled]="finaliza"  icon="pi pi-angle-right" iconPos="right"></p-button>
 		</div>
 
 		<div class="card box p-shadow-18" *ngIf="finaliza">			

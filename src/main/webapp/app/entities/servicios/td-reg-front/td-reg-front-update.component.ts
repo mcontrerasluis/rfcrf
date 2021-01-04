@@ -617,9 +617,15 @@ EjecutaLlamado(){
     console.log('sleep');
     console.log('valor4' +this.userNameId.nativeElement.value );
     console.log('window'+ window['data']);
-    this.finaliza = true;  
+    
     // And any other code that should run only after 5s
   }, 400);
+
+  if(window['data'] !== ''){
+    this.finaliza = true;      
+  }
+
+  console.log('error' +window['error']);
 
   while (this.sello === 'test') {
     this.sello = window['data'];

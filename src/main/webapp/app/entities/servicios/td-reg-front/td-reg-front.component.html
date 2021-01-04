@@ -8,8 +8,7 @@
 		<div class="card p-shadow-18">
 			<p-toolbar styleClass="p-mb-4">
 				
-					<button pButton pRipple label="Registrar Nueva Solicitud" icon="pi pi-plus" class="p-button-success p-mr-2" [routerLink]="['/td-reg-front/new']"></button>
-					<button pButton pRipple label="Reimprimir" icon="pi pi-print" class="p-button-success p-mr-2" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+					<button pButton pRipple label="Registrar Nueva Solicitud" icon="pi pi-plus" class="p-button-success p-mr-2" [routerLink]="['/td-reg-front/new']"></button>					
 				
 			</p-toolbar>
 
@@ -28,21 +27,22 @@
 						<th pSortableColumn="ejercicioValor">Ejercicio </th>
 						<th pSortableColumn="estatus">Estatus </th>
 						<th pSortableColumn="Folio">Folio </th>
-						<th pSortableColumn="Fecha">Fecha </th>						
+						<th pSortableColumn="Fecha">Fecha </th>	
+						<th pSortableColumn="inventoryStatus">Acciones </th>					
 						<th></th>
 					</tr>
 				</ng-template>
 				<ng-template pTemplate="body" let-product>
-					<tr>
-						<td>
-							<p-tableCheckbox [value]="product"></p-tableCheckbox>
-						</td>                        
+					<tr>						
 						<td>{{product.tipoSolicitudDescripcion}}</td>						
                         <td>{{product.tipoImpuestoDescripcion}}</td>						
 						<td>{{product.ejercicioValor}}</td>						
 						<td><span [class]="'product-badge status-'+product.estatus.toLowerCase()">{{product.estatus}}</span></td>
 						<td>{{product.folio}}</td>	
-						<td>{{product.fecha | date: 'dd/MM/yyyy'}}</td>							
+						<td>{{product.fecha | date: 'dd/MM/yyyy'}}</td>
+						<td>							
+							<button pButton pRipple icon="pi pi-print" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+						</td>							
 					</tr>
 				</ng-template>				
 			</p-table>

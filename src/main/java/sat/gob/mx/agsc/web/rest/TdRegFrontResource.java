@@ -184,11 +184,13 @@ public class TdRegFrontResource {
         
     }
 
-    @PostMapping(
-    value = "/getpdfFinal",
-    produces = MediaType.TEXT_PLAIN_VALUE)
-    public ResponseEntity<byte[]>  getPDFPFinal (@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO, Principal principal) throws URISyntaxException {
+    @GetMapping(
+    value = "/getpdfFinal/{id}",
+    produces = MediaType.APPLICATION_PDF_VALUE)
+    public ResponseEntity<byte[]>  getPDFPFinal (@PathVariable Long id, Principal principal) throws URISyntaxException {
         byte[] contents = null;
+
+        TdRegFrontDTO tdRegFrontDTO = tdRegFrontService.findOne(id).get();
 
         TcTipoSolDTO tcTipoSolDTO = tcTipoSolService.findOne(tdRegFrontDTO.getTipoSolicitudId()).get();
         TcTipoImpDTO tcTipoImpDTO = tcTipoImpService.findOne(tdRegFrontDTO.getTipoImpuestoId()).get();
@@ -200,10 +202,10 @@ public class TdRegFrontResource {
         // format instant to string
         String dtStr = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG).withLocale(new Locale("es", "ES"))
         .withZone(ZoneId.systemDefault())
-        .format(instant);
+        .format(tdRegFrontDTO.getFecha());
         
         this.acuseVo = new AcuseZonaFronterizaVO();
-		this.acuseVo.setNumFolio("");
+		this.acuseVo.setNumFolio(tdRegFrontDTO.getFolio());
 		this.acuseVo.setFechaCreacion(dtStr);
 		this.acuseVo.setRfc(usuario.getRfc());
 		this.acuseVo.setRazonSocial(usuario.getFirstName());
@@ -212,8 +214,8 @@ public class TdRegFrontResource {
 		this.acuseVo.setRegion(tdRegFrontDTO.getRegion());
 		this.acuseVo.setImpuesto(tcTipoImpDTO.getDescripcion());
 		this.acuseVo.setEjercicio("2021");
-		this.acuseVo.setCadenaOriginal("");
-		this.acuseVo.setSelloDigital("");
+		this.acuseVo.setCadenaOriginal(tdRegFrontDTO.getCadena());
+		this.acuseVo.setSelloDigital(tdRegFrontDTO.getSello());
 		
 		List<String> manifestaciones =  new ArrayList<String>();
         for (TcManifesDTO i : tdRegFrontDTO.getManifestacions()) {
