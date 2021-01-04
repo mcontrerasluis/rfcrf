@@ -176,7 +176,7 @@ export class TdRegFrontComponent implements OnInit, OnDestroy {
       icon: 'pi pi-exclamation-triangle',
       accept: () => {       
         
-        this.http.get(this.tdRegFrontService.descargaAcuse(product.id), { responseType: 'text', headers: {'Accept': 'application/pdf'} }).subscribe(
+        this.http.get(this.tdRegFrontService.descargaAcuse(product.id), { responseType: 'blob', headers: {'Accept': 'application/pdf'} }).subscribe(
         
        response => this.downLoadFile(response, "application/pdf"));        
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Acuse Descargado', life: 3000 });
@@ -189,7 +189,7 @@ export class TdRegFrontComponent implements OnInit, OnDestroy {
     const url = window.URL.createObjectURL(blob);
     const pwa = window.open(url);
     if (!pwa || pwa.closed || typeof pwa.closed === 'undefined') {
-        alert( 'Please disable your Pop-up blocker and try again.');
+        alert( 'Por favor desahbilite el bloqueo de ventanas emergentes e intente nuevamente.');
     }
   }
 
