@@ -184,6 +184,71 @@ public class TdRegFrontResource {
         
     }
 
+    @PostMapping(
+    value = "/getpdfFinal",
+    produces = MediaType.TEXT_PLAIN_VALUE)
+    public ResponseEntity<byte[]>  getPDFPFinal (@Valid @RequestBody TdRegFrontDTO tdRegFrontDTO, Principal principal) throws URISyntaxException {
+        byte[] contents = null;
+
+        TcTipoSolDTO tcTipoSolDTO = tcTipoSolService.findOne(tdRegFrontDTO.getTipoSolicitudId()).get();
+        TcTipoImpDTO tcTipoImpDTO = tcTipoImpService.findOne(tdRegFrontDTO.getTipoImpuestoId()).get();
+        UserDTO usuario = userService.getUserFromAuthentication((AbstractAuthenticationToken) principal);
+        
+
+        Instant instant = Instant.now();
+
+        // format instant to string
+        String dtStr = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG).withLocale(new Locale("es", "ES"))
+        .withZone(ZoneId.systemDefault())
+        .format(instant);
+        
+        this.acuseVo = new AcuseZonaFronterizaVO();
+		this.acuseVo.setNumFolio("");
+		this.acuseVo.setFechaCreacion(dtStr);
+		this.acuseVo.setRfc(usuario.getRfc());
+		this.acuseVo.setRazonSocial(usuario.getFirstName());
+		this.acuseVo.setFechaPresentacion(dtStr);
+		this.acuseVo.setTipoSolicitud(tcTipoSolDTO.getDescripcion());
+		this.acuseVo.setRegion(tdRegFrontDTO.getRegion());
+		this.acuseVo.setImpuesto(tcTipoImpDTO.getDescripcion());
+		this.acuseVo.setEjercicio("2021");
+		this.acuseVo.setCadenaOriginal("");
+		this.acuseVo.setSelloDigital("");
+		
+		List<String> manifestaciones =  new ArrayList<String>();
+        for (TcManifesDTO i : tdRegFrontDTO.getManifestacions()) {
+            manifestaciones.add(i.getDescripcion());
+        }		
+        this.acuseVo.setManifestaciones(manifestaciones);
+
+
+		try {
+            log.debug("REST request to generate Acuse : {}", tdRegFrontDTO);
+			AbstractAcuse<AcuseZonaFronterizaVO> service = new GeneraAcuseZonaFronteriza();
+			service.setNombreTemplate("AcuseZonaFronteriza.jrxml");
+			service.setDataAcuse(this.acuseVo);
+			// se aguantan los 3 tipos de acuses.
+            service.doGeneraAcusePDF(TIPO_ACUSE.SOLICITUD);
+			contents = service.doGeneraAcuseStreamPDF(TIPO_ACUSE.SOLICITUD).toByteArray();
+            
+            log.info("Informacion del pdf generado...");
+            
+			
+		} catch (ExceptionAcuseConfig e) {
+			log.info(e.getMessage());
+		}
+        HttpHeaders headers = new HttpHeaders();
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            // Here you have to set the actual filename of your pdf
+            String filename = "output.pdf";
+            
+            headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+            ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+        return response;
+        
+    }
+
+
     @GetMapping("/getpdf")
     public ResponseEntity<byte[]> getPDF() {
         byte[] contents = null;

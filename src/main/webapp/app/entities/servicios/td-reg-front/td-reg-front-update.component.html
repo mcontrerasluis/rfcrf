@@ -1,5 +1,4 @@
-<div class="row justify-content-center">
-        <div id="firmado-widget-container"></div>        
+<div class="row justify-content-center">       
 
     <div class="p-col-8 p-md-8">
 
@@ -65,7 +64,7 @@
 		</div>
 		<div class="card box p-shadow-18" *ngIf="vistaPrevia">			
 		<ngx-extended-pdf-viewer [base64Src]="srcS" [height]="'90vh'" ></ngx-extended-pdf-viewer>
-		<div>
+		<div *ngIf="ocultaboton === false">
 					<button type="button" id="cancel-save" class="btn btn-secondary" (click)="previousState()">
 						<fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
 					</button>
@@ -75,14 +74,28 @@
 					</button>
             	</div>            
 		</div>
-		<div class="p-grid p-nogutter p-justify-between">    			   				
+
+		<div class="card box p-shadow-18" *ngIf="displayModal">			
+			<div class="p-fluid"> 
+			<div id="firmado-widget-container"></div>               			
+			</div>						
+			<p-button label="Firmar Solicitud" (onClick)="EjecutaLlamado()" [disabled]=="!finaliza"  icon="pi pi-angle-right" iconPos="right"></p-button>
+		</div>
+
+		<div class="card box p-shadow-18" *ngIf="finaliza">			
+			<div class="p-fluid"> 
+			<div id="firmado-widget-container"></div>               			
+			</div>						
+			<p-button label="Finalizar Registro" (onClick)="Finaliza()"  icon="pi pi-angle-right" iconPos="right"></p-button>
+		</div>
+		<div class="p-grid p-nogutter p-justify-between" *ngIf="ocultaboton">    			   				
 		
 		<p-button label="Siguiente" (onClick)="nextPage()" [disabled]="!editForm.valid" icon="pi pi-angle-right" iconPos="right"></p-button>
+		
 		</div>
+		<input type="text" id="cadenaoriginal" #cadenaorigi></input>		
 	</form>	
 </div>
-
-
 </div>
 
 

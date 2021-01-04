@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.data.domain.PageRequest;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -93,7 +94,7 @@ public class TcManifesResource {
     @GetMapping("/tc-manifes")
     public ResponseEntity<List<TcManifesDTO>> getAllTcManifes(Pageable pageable) {
         log.debug("REST request to get a page of TcManifes");
-        Page<TcManifesDTO> page = tcManifesService.findAll(pageable);
+        Page<TcManifesDTO> page = tcManifesService.findAll(PageRequest.of(0, 25));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(ServletUriComponentsBuilder.fromCurrentRequest(), page);
         return ResponseEntity.ok().headers(headers).body(page.getContent());
     }
