@@ -70,16 +70,16 @@
 					</button>
 
 					<button type="submit" id="save-entity"  class="btn btn-primary" [disabled]="!editForm.valid">
-                        <fa-icon icon="save"></fa-icon>&nbsp;<span>Finalizar Registro</span>
+						<fa-icon icon="save"></fa-icon>&nbsp;Finalizar Registro</span>
 					</button>
             	</div>            
 		</div>
 
 		<div class="card box p-shadow-18" *ngIf="displayModal">			
 			<div class="p-fluid"> 
-			<div id="firmado-widget-container"></div>
-            </div>
-			<p-button label="Firmar Solicitud" (onClick)="EjecutaLlamado()" [disabled]="!finaliza"  icon="pi pi-angle-right" iconPos="right"></p-button>
+			<div id="firmado-widget-container"></div>               			
+			</div>						
+			<p-button label="Firmar Solicitud" (onClick)="EjecutaLlamado()" [disabled]="finaliza"  icon="pi pi-angle-right" iconPos="right"></p-button>
 		</div>
 
 		<div class="card box p-shadow-18" *ngIf="finaliza">			
@@ -88,9 +88,10 @@
 			</div>						
 			<p-button label="Finalizar Registro" (onClick)="Finaliza()"  icon="pi pi-angle-right" iconPos="right"></p-button>
 		</div>
-
 		<div class="p-grid p-nogutter p-justify-between" *ngIf="ocultaboton">    			   				
-		    <p-button label="Siguiente" (onClick)="nextPage()" [disabled]="!editForm.valid" icon="pi pi-angle-right" iconPos="right"></p-button>
+		
+		<p-button label="Siguiente" (onClick)="nextPage()" [disabled]="!editForm.valid" icon="pi pi-angle-right" iconPos="right"></p-button>
+		
 		</div>
 		<input type="text" id="cadenaoriginal" #cadenaorigi></input>		
 	</form>	

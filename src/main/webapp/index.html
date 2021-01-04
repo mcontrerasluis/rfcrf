@@ -11,6 +11,76 @@
     <link rel="icon" href="favicon.ico" />
     <link rel="manifest" href="manifest.webapp" />
     <link rel="stylesheet" href="content/css/loading.css">
+    <script type="text/javascript">
+        var data = '';
+        var error='';
+        
+        //Revisa cada 0.2 seg a que btnEnviarForm del Widget esté desplegado
+        //para activarlo y añadirle el evento
+        var timer = setInterval(function() {
+            
+            if (document.getElementById('btnEnviarForm') !== null) {
+
+                console.log('Se cargó el Widget de Firmado');
+
+                //Añadirle un evento
+                document.getElementById('btnEnviarForm').onclick = btnEnviarFIELOnClick;
+
+                document.getElementById('btnEnviarForm').style.visibility = 'hidden';
+
+                clearTimeout(timer);
+            }
+
+        }, 200);
+
+        /**
+         * Método que maneja el evento onClick del botón enviar del widget FIEL
+         * Se debe de definir obligatorio
+         * 
+         * @returns {undefined}
+         */
+
+		 
+        function btnEnviarFIELOnClick(param1, param2) {
+            var cadena_original = '10000|10001|001|002|003';
+
+            //Validaciones aqui
+            //....
+            //
+            //
+            
+            
+			var objFileCertificate = document.getElementById('fileInputCer');// FIEL EN EL FORMULARIO
+
+            document.getElementById('btnEnviarForm').style.visibility = 'hidden';
+			
+			
+            generaFirmaIndividual([{cadenaOriginal: param1}],//Parámetro 1: Cadena original
+                    {validarRFCSession: param2},//Parámetro 2: RFC 
+            function(error, resultado) {//Parámetro 3: Función callback. Se ejecuta al terminar el firmado
+
+                console.log("Terminó el firmado");
+                console.log("error: " + error); // Éxito 0                
+
+//                if (error === 0) {
+                if (resultado.length > 0) {
+                    console.log(resultado[0]);            
+                    var s = document.getElementById('cadenaoriginal');
+                    s.value = resultado[0].firmaDigital;                    
+
+                    data =resultado[0].firmaDigital;        
+                            
+                            
+                }else {
+					alert("error:["+error+"] --> "+catalogoErrores[error].msg_vista);
+                    error = catalogoErrores[error].msg_vista;
+                }
+
+            });
+
+        }
+
+    </script>
     <!-- jhipster-needle-add-resources-to-root - JHipster will add new resources here -->
 </head>
 <body>
@@ -30,7 +100,8 @@
                 <h1>An error has occurred :-(</h1>                
                 <!-- end of troubleshooting content -->
             </div>
-        </div>
+        </div>        
+        <input type="text" id="cadenaoriginal" #cadenaorigi></input>		
     </jhi-main>
     <noscript>
         <h1>You must enable javascript to view this page.</h1>
@@ -47,6 +118,8 @@
             }
         }
     </script>
+
+    
     <!-- uncomment this for adding service worker
         <script>
             if ('serviceWorker' in navigator) {

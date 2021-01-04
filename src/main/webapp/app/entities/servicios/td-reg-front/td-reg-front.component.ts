@@ -1,5 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, ParamMap, Router, Data } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -49,7 +50,8 @@ export class TdRegFrontComponent implements OnInit, OnDestroy {
     protected eventManager: JhiEventManager,
     protected modalService: NgbModal,
     private messageService: MessageService,
-    private confirmationService: ConfirmationService
+    private confirmationService: ConfirmationService,
+    private http: HttpClient
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -169,15 +171,25 @@ export class TdRegFrontComponent implements OnInit, OnDestroy {
 
   deleteProduct(product: ITdRegFront) {
     this.confirmationService.confirm({
-      message: 'Are you sure you want to delete  ?',
-      header: 'Confirm',
+      message: '¿Esta seguro de Imprimir su Acuse de Recepción?',
+      header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
       accept: () => {
-        this.products = this.products.filter(val => val.id !== product.id);
-        this.product = {};
-        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
+        this.http
+          .get(this.tdRegFrontService.descargaAcuse(product.id), { responseType: 'text', headers: { Accept: 'application/pdf' } })
+          .subscribe(response => this.downLoadFile(response, 'application/pdf'));
+        this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Acuse Descargado', life: 3000 });
       },
     });
+  }
+
+  downLoadFile(data: any, type: string) {
+    const blob = new Blob([data], { type });
+    const url = window.URL.createObjectURL(blob);
+    const pwa = window.open(url);
+    if (!pwa || pwa.closed || typeof pwa.closed === 'undefined') {
+      alert('Please disable your Pop-up blocker and try again.');
+    }
   }
 
   hideDialog() {

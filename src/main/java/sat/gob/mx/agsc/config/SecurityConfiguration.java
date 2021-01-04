@@ -85,7 +85,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()
             .headers()
-            .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com https://ptscdev.siat.sat.gob.mx/PTSC/fwidget/ https://aplicaciones.sat.gob.mx/PTSC/fwidget/; style-src 'self' 'unsafe-inline' 'unsafe-eval' https://aplicaciones.sat.gob.mx/PTSC/fwidget/ https://ptscdev.siat.sat.gob.mx/PTSC/fwidget/; img-src 'self' data:; font-src 'self' 'unsafe-eval' https://aplicaciones.sat.gob.mx/PTSC/fwidget/ https://ptscdev.siat.sat.gob.mx/PTSC/fwidget/ data: ")
+            .contentSecurityPolicy("default-src 'self'; frame-src 'self' data:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://storage.googleapis.com https://ptscdev.siat.sat.gob.mx/PTSC/fwidget/ https://aplicaciones.sat.gob.mx/PTSC/fwidget/ https://wwwuat.siat.sat.gob.mx/PTSC/fwidget/; style-src 'self' 'unsafe-inline' 'unsafe-eval' https://aplicaciones.sat.gob.mx/PTSC/fwidget/ https://ptscdev.siat.sat.gob.mx/PTSC/fwidget/ https://wwwuat.siat.sat.gob.mx/PTSC/fwidget/; img-src 'self' data:; font-src 'self' 'unsafe-eval' https://aplicaciones.sat.gob.mx/PTSC/fwidget/ https://ptscdev.siat.sat.gob.mx/PTSC/fwidget/ https://wwwuat.siat.sat.gob.mx/PTSC/fwidget/ data: ")
         .and()
             .referrerPolicy(ReferrerPolicyHeaderWriter.ReferrerPolicy.STRICT_ORIGIN_WHEN_CROSS_ORIGIN)
         .and()
