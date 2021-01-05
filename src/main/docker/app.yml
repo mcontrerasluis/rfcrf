@@ -6,10 +6,10 @@ services:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod,swagger
       - MANAGEMENT_METRICS_EXPORT_PROMETHEUS_ENABLED=true
-      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@amsacdevrdsorcl01a.c4wqk48tq4m2.us-east-1.rds.amazonaws.com:1521:MTDSAC
+      - SPRING_DATASOURCE_URL=jdbc:oracle:thin:@amsacprdrdsorcl01a.cthpbw3isi6l.us-east-1.rds.amazonaws.com:1521:MTUSAC
       - SPRING_SECURITY_OAUTH2_CLIENT_PROVIDER_OIDC_ISSUER_URI=https://login.cloudb.sat.gob.mx/nidp/oauth/nam
-      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=7a6ed749-d545-4651-9e41-e58dc8efc9b2
-      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=9QSwXvJeKwAmKWqC995-wXJPUss1_OTivNd4oRAY_f42c6iNHvkyFP7wDb1AxX0nzOr_LUCpNoH4PLRgmRag_Q
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_ID=4e82a980-3e2c-4ef8-9b65-c65f3d864122
+      - SPRING_SECURITY_OAUTH2_CLIENT_REGISTRATION_OIDC_CLIENT_SECRET=HDJv_fNmkH0sWY97o4cI-KGp4NM9d0nkUQeLBmKndt0JQATdS9FPSECM1aoO-8IhlrAf6Ne2hX4MRR5TiIzjJg
       - JHIPSTER_SLEEP=30 # gives time for other services to boot before the application
     ports:
       - 8080:8080
