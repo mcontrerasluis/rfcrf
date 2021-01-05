@@ -41,7 +41,7 @@ export class TdRegFrontService {
   }
 
   descargaAcuse(id: number): any {
-    const resource = SERVER_API_URL +'api/getpdfFinal';
-    return resource + '/' +id;
+    const resource = SERVER_API_URL + 'api/getpdfFinal';
+    return resource + '/' + id;
   }
 }

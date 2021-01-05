@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
 import { Component, OnInit } from '@angular/core';
-import {ElementRef,Renderer2, ViewChild} from '@angular/core';
-import {formatDate} from '@angular/common';
+import { ElementRef, Renderer2, ViewChild } from '@angular/core';
+import { formatDate } from '@angular/common';
 import { HttpResponse, HttpClient } from '@angular/common/http';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { FormBuilder, Validators } from '@angular/forms';
@@ -26,17 +26,15 @@ import { SelectItem } from 'primeng/api';
 import { AccountService } from 'app/core/auth/account.service';
 import { Account } from 'app/core/user/account.model';
 
-declare let btnEnviarFIELOnClick:Function; 
+declare let btnEnviarFIELOnClick: Function;
 
-declare let clearVariable:Function; 
+declare let clearVariable: Function;
 
 type SelectableEntity = ITcTipoSol | ITcTipoImp | ITcEjerc | ITcManifes | ITcValida;
 
 type SelectableManyToManyEntity = ITcManifes | ITcValida;
 
 declare let $: any;
-
-
 
 @Component({
   selector: 'jhi-td-reg-front-update',
@@ -60,13 +58,13 @@ export class TdRegFrontUpdateComponent implements OnInit {
   general = true;
   manifiesta = false;
   vistaPrevia = false;
-  sucursalDesactiva = false;  
+  sucursalDesactiva = false;
   domicilioDesactiva = false;
   activaAnterior = true;
-  control: string[]=[];
+  control: string[] = [];
   displayModal: boolean;
-  impuesto:any = null;
-  solicitud:any = null;
+  impuesto: any = null;
+  solicitud: any = null;
   ocultaboton = true;
   myDate = new Date();
   cadena = '';
@@ -79,17 +77,17 @@ export class TdRegFrontUpdateComponent implements OnInit {
   regionesF: SelectItem[];
   selectedDrop: SelectItem;
   selectedRegiones: SelectItem;
-  valToggle = false;  
+  valToggle = false;
 
   editForm = this.fb.group({
     id: [],
     region: [null, [Validators.required]],
-    domicilioRegion: [null,[Validators.requiredTrue]],
-    sucursalRegion: [null,[Validators.requiredTrue]],
+    domicilioRegion: [null, [Validators.requiredTrue]],
+    sucursalRegion: [null, [Validators.requiredTrue]],
     tipoImpuestod: [],
     tipoSolicitudd: [],
     ejerciciod: [],
-    tipoSolicitudId: [null,[Validators.required]],
+    tipoSolicitudId: [null, [Validators.required]],
     tipoImpuestoId: [null, [Validators.required]],
     ejercicioId: [null, [Validators.required]],
     manifestacions: [],
@@ -108,33 +106,29 @@ export class TdRegFrontUpdateComponent implements OnInit {
     public confirmationService: ConfirmationService,
     private fb: FormBuilder,
     private http: HttpClient,
-    private accountService: AccountService,     
-  ) {   
-    
-  }
+    private accountService: AccountService
+  ) {}
 
   ngOnInit(): void {
     this.activatedRoute.data.subscribe(({ tdRegFront }) => {
-      this.updateForm(tdRegFront);      
+      this.updateForm(tdRegFront);
 
       this.tcTipoSolService.query().subscribe((res: HttpResponse<ITcTipoSol[]>) => (this.tctiposols = res.body || []));
 
       this.tcTipoImpService.query().subscribe((res: HttpResponse<ITcTipoImp[]>) => (this.tctipoimps = res.body || []));
 
-      this.tcEjercService.query().subscribe((res: HttpResponse<ITcEjerc[]>) => (this.tcejercs = res.body || []));      
+      this.tcEjercService.query().subscribe((res: HttpResponse<ITcEjerc[]>) => (this.tcejercs = res.body || []));
 
       this.tcManifesService.query().subscribe((res: HttpResponse<ITcManifes[]>) => (this.tcmanifes = res.body || []));
 
       this.tcValidaService.query().subscribe((res: HttpResponse<ITcValida[]>) => (this.tcvalidas = res.body || []));
 
-      this.accountService.identity().subscribe(account => (this.account = account));     
-      
-      
+      this.accountService.identity().subscribe(account => (this.account = account));
     });
 
     this.regionesF = [
       { label: 'Región Frontera Norte', value: 'Región Frontera Norte' },
-      { label: 'Región Frontera Sur', value: 'Región Frontera Sur' },      
+      { label: 'Región Frontera Sur', value: 'Región Frontera Sur' },
     ];
 
     this.items = [
@@ -145,340 +139,315 @@ export class TdRegFrontUpdateComponent implements OnInit {
           this.general = true;
           this.manifiesta = false;
           this.vistaPrevia = false;
-          this.activaAnterior= true;           
+          this.activaAnterior = true;
           this.editForm.get(['manifestacions']).clearValidators();
         },
       },
       {
         label: 'Manifestaciones',
         command: (event: any) => {
-
-          if(this.editForm.valid){
-          
+          if (this.editForm.valid) {
             this.activeIndex = 1;
             this.general = false;
             this.manifiesta = true;
             this.vistaPrevia = false;
-            this.activaAnterior= false;
-            
+            this.activaAnterior = false;
+
             this.cargaManifestaciones();
             // this.editForm.get(['manifestacions']).setValidators(Validators.requiredTrue)
 
             return;
-          
-          }else if(!this.editForm.valid){
-            this.messageService.add({ severity: 'error', summary: 'Información Incompleta', detail: 'Se deben capturar todos los campos para continuar' });
+          } else if (!this.editForm.valid) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Información Incompleta',
+              detail: 'Se deben capturar todos los campos para continuar',
+            });
             this.activeIndex = 0;
-            
+
             return;
-          }  
-          
-          
+          }
         },
       },
       {
         label: 'Vista Previa',
         command: (event: any) => {
-
-          if(this.editForm.valid){
-          
+          if (this.editForm.valid) {
             this.activeIndex = 2;
             this.general = false;
-            this.cargaAcuse()
+            this.cargaAcuse();
             this.manifiesta = false;
             this.vistaPrevia = true;
-            this.activaAnterior= false;
+            this.activaAnterior = false;
 
             return;
-
-          }else if(!this.editForm.valid){
-            this.messageService.add({ severity: 'error', summary: 'Información Incompleta', detail: 'Se deben capturar todos los campos para continuar' });
+          } else if (!this.editForm.valid) {
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Información Incompleta',
+              detail: 'Se deben capturar todos los campos para continuar',
+            });
             this.activeIndex = 1;
-            
+
             return;
-          }  
+          }
         },
       },
       {
         label: 'Firmado',
         command: (event: any) => {
+          this.activeIndex = 3;
+          this.general = false;
+          this.manifiesta = false;
+          this.vistaPrevia = false;
+          this.activaAnterior = false;
+          this.showModalDialog();
+          btnEnviarFIELOnClick();
 
-          
-          
-            this.activeIndex = 3;
-            this.general = false;            
-            this.manifiesta = false;
-            this.vistaPrevia = false;
-            this.activaAnterior= false;
-            this.showModalDialog();
-            btnEnviarFIELOnClick();
-
-            return;
-          
+          return;
         },
       },
     ];
   }
 
-  filtraSolicitud(event:any):void {    
-    
-    let cla = '';    
+  filtraSolicitud(event: any): void {
+    let cla = '';
 
-    
+    const impuesto = this.tctipoimps.find(obj => {
+      return obj.id === this.editForm.get(['tipoImpuestoId']).value;
+    });
 
-    const impuesto = this.tctipoimps.find(obj =>{
-      return obj.id===this.editForm.get(['tipoImpuestoId']).value
-    })
-
-    if(impuesto.clave === '01'){
-      
-      cla = 'isr'
-    }else if(impuesto.clave === '02'){
-      cla = 'iva'
+    if (impuesto.clave === '01') {
+      cla = 'isr';
+    } else if (impuesto.clave === '02') {
+      cla = 'iva';
     }
-    
-    this.tctiposolsS = this.tctiposols.filter(function(v, i) {
-      return ((v[cla] === 1));
-    })
-    
+
+    this.tctiposolsS = this.tctiposols.filter(function (v, i) {
+      return v[cla] === 1;
+    });
+
     this.editForm.get(['tipoSolicitudId']).setValidators(Validators.required);
 
     this.editForm.get(['tipoSolicitudId']).setValue(null);
-
   }
 
-  private cargaManifestaciones():void{
+  private cargaManifestaciones(): void {
     let cla = '';
     let sol = '';
-    let reg = '';        
-    let tipo = '' ;
+    let reg = '';
+    let tipo = '';
 
-    
-    this.solicitud = this.tctiposols.find(obj =>{
-      return obj.id===this.editForm.get(['tipoSolicitudId']).value
-    })
+    this.solicitud = this.tctiposols.find(obj => {
+      return obj.id === this.editForm.get(['tipoSolicitudId']).value;
+    });
 
-    this.impuesto = this.tctipoimps.find(obj =>{
-      return obj.id===this.editForm.get(['tipoImpuestoId']).value
-    })
-    
+    this.impuesto = this.tctipoimps.find(obj => {
+      return obj.id === this.editForm.get(['tipoImpuestoId']).value;
+    });
 
-    if(this.impuesto.clave === '01'){
-      cla = 'isr'
-    }else if(this.impuesto.clave === '02'){
-      cla = 'iva'
+    if (this.impuesto.clave === '01') {
+      cla = 'isr';
+    } else if (this.impuesto.clave === '02') {
+      cla = 'iva';
     }
 
-    if(this.solicitud.clave === 'S01'){
+    if (this.solicitud.clave === 'S01') {
       sol = 's01';
-    }else if(this.solicitud.clave === 'S02'){
+    } else if (this.solicitud.clave === 'S02') {
       sol = 's02';
-    }else if(this.solicitud.clave === 'S03'){
+    } else if (this.solicitud.clave === 'S03') {
       sol = 's03';
-    }else if(this.solicitud.clave === 'S04'){
+    } else if (this.solicitud.clave === 'S04') {
       sol = 's04';
     }
-    
-    if(this.editForm.get(['region'])!.value==='Región Frontera Sur'){
-      reg ='rfsur';
-    }else{
-      reg ='rfnorte'
-    }
-    
-    if(this.account.tipoContribuyente === 'F'){
-      tipo = 'fisica';
-    }else{
-      tipo = 'moral';
-    }    
 
-    this.tcmanifesS = this.tcmanifes.filter(function(v, i) {
-      return ((v[tipo] ===1 && v[cla] === 1 && v[sol] === 1 && v[reg]===1 ));
-    })
-  
+    if (this.editForm.get(['region'])!.value === 'Región Frontera Sur') {
+      reg = 'rfsur';
+    } else {
+      reg = 'rfnorte';
+    }
+
+    if (this.account.tipoContribuyente === 'F') {
+      tipo = 'fisica';
+    } else {
+      tipo = 'moral';
+    }
+
+    this.tcmanifesS = this.tcmanifes.filter(function (v, i) {
+      return v[tipo] === 1 && v[cla] === 1 && v[sol] === 1 && v[reg] === 1;
+    });
   }
 
-  nextPage():void {
-
+  nextPage(): void {
     if (this.activeIndex === 0) {
-
-      if(this.editForm.valid){
+      if (this.editForm.valid) {
         this.activeIndex = 1;
         this.general = false;
-        this.manifiesta = true; 
-        this.vistaPrevia = false; 
-        this.activaAnterior= false;
-        this.cargaManifestaciones();  
+        this.manifiesta = true;
+        this.vistaPrevia = false;
+        this.activaAnterior = false;
+        this.cargaManifestaciones();
         // this.editForm.get(['manifestacions']).setValidators(Validators.requiredTrue)
-        
-        return;
 
-      }else if(!this.editForm.valid){
-        this.messageService.add({ severity: 'error', summary: 'Información Incompleta', detail: 'Se deben capturar todos los campos para continuar' });
-        
         return;
-      }  
+      } else if (!this.editForm.valid) {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Información Incompleta',
+          detail: 'Se deben capturar todos los campos para continuar',
+        });
 
-        
+        return;
+      }
     }
 
-    if (this.activeIndex === 1) {      
-
-      if((this.control.filter((n, i) => this.control.indexOf(n) === i)).length >= this.tcmanifesS.length){
+    if (this.activeIndex === 1) {
+      if (this.control.filter((n, i) => this.control.indexOf(n) === i).length >= this.tcmanifesS.length) {
         this.activeIndex = 2;
         this.general = false;
         this.manifiesta = false;
         this.vistaPrevia = true;
         this.cargaAcuse();
-        if(this.impuesto.clave === '02'){
-
-        this.ocultaboton = false;
+        if (this.impuesto.clave === '02') {
+          this.ocultaboton = false;
         }
         return;
-      }else {
-        this.messageService.add({ severity: 'error', summary: 'Información Incompleta', detail: 'Se deben contestar todas las manifestaciones para continuar' });
-      }    
+      } else {
+        this.messageService.add({
+          severity: 'error',
+          summary: 'Información Incompleta',
+          detail: 'Se deben contestar todas las manifestaciones para continuar',
+        });
+      }
 
       return;
-  }
-  if (this.activeIndex === 2) {
-    
-    if(this.impuesto.clave === '01'){
-    
-    this.activeIndex = 3;
-    this.general = false;
-    this.manifiesta = false;
-    this.vistaPrevia = false;
-    this.showModalDialog();        
-    this.ocultaboton = false;
+    }
+    if (this.activeIndex === 2) {
+      if (this.impuesto.clave === '01') {
+        this.activeIndex = 3;
+        this.general = false;
+        this.manifiesta = false;
+        this.vistaPrevia = false;
+        this.showModalDialog();
+        this.ocultaboton = false;
+      }
     }
   }
 
-    
-}
-
-  seleccionaManifestacion(e: any, clave:any) {
-
-    if(e.checked){
+  seleccionaManifestacion(e: any, clave: any) {
+    if (e.checked) {
       this.tcmanifes.find(item => item.clave === clave).activa = false;
 
-    this.control.push(clave);
+      this.control.push(clave);
 
-    if(clave === 'M01'){
-      this.tcmanifes.find(item => item.clave === 'M02').activa = e.checked;      
-      this.control.push("M02");      
-      return;
-    }else if(clave==='M02'){
-      this.tcmanifes.find(item => item.clave === 'M01').activa = e.checked;
-      this.control.push("M01");
-      return;
-    }
-    if(clave === 'M03'){
-      this.tcmanifes.find(item => item.clave === 'M04').activa = e.checked;
-      this.control.push("M04");
-      return;
-    }else if(clave==='M04'){
-      this.tcmanifes.find(item => item.clave === 'M03').activa = e.checked;
-      this.control.push("M03");
-      return;
-    }
-    if(clave === 'M05'){
-      this.tcmanifes.find(item => item.clave === 'M06').activa = e.checked;
-      this.control.push("M06");
-      return;
-    }else if(clave==='M06'){
-      this.tcmanifes.find(item => item.clave === 'M05').activa = e.checked;
-      this.control.push("M05");
-      return;
-    }
-    if(clave === 'M13'){
-      this.tcmanifes.find(item => item.clave === 'M14').activa = e.checked;
-      this.control.push("M14");
-      return;
-    }else if(clave==='M14'){
-      this.tcmanifes.find(item => item.clave === 'M13').activa = e.checked;
-      this.control.push("M13");
-      return;
-    }
-    }else if(!e.checked){
-    
+      if (clave === 'M01') {
+        this.tcmanifes.find(item => item.clave === 'M02').activa = e.checked;
+        this.control.push('M02');
+        return;
+      } else if (clave === 'M02') {
+        this.tcmanifes.find(item => item.clave === 'M01').activa = e.checked;
+        this.control.push('M01');
+        return;
+      }
+      if (clave === 'M03') {
+        this.tcmanifes.find(item => item.clave === 'M04').activa = e.checked;
+        this.control.push('M04');
+        return;
+      } else if (clave === 'M04') {
+        this.tcmanifes.find(item => item.clave === 'M03').activa = e.checked;
+        this.control.push('M03');
+        return;
+      }
+      if (clave === 'M05') {
+        this.tcmanifes.find(item => item.clave === 'M06').activa = e.checked;
+        this.control.push('M06');
+        return;
+      } else if (clave === 'M06') {
+        this.tcmanifes.find(item => item.clave === 'M05').activa = e.checked;
+        this.control.push('M05');
+        return;
+      }
+      if (clave === 'M13') {
+        this.tcmanifes.find(item => item.clave === 'M14').activa = e.checked;
+        this.control.push('M14');
+        return;
+      } else if (clave === 'M14') {
+        this.tcmanifes.find(item => item.clave === 'M13').activa = e.checked;
+        this.control.push('M13');
+        return;
+      }
+    } else if (!e.checked) {
+      this.deleteMsg(clave);
 
-    this.deleteMsg(clave);    
+      if (clave === 'M01') {
+        this.tcmanifes.find(item => item.clave === 'M02').activa = e.checked;
+        this.deleteMsg('M02');
+        return;
+      } else if (clave === 'M02') {
+        this.tcmanifes.find(item => item.clave === 'M01').activa = e.checked;
+        this.deleteMsg('M01');
+        return;
+      }
+      if (clave === 'M03') {
+        this.tcmanifes.find(item => item.clave === 'M04').activa = e.checked;
+        this.deleteMsg('M04');
+        return;
+      } else if (clave === 'M04') {
+        this.tcmanifes.find(item => item.clave === 'M03').activa = e.checked;
+        this.deleteMsg('M03');
+        return;
+      }
+      if (clave === 'M05') {
+        this.tcmanifes.find(item => item.clave === 'M06').activa = e.checked;
+        this.deleteMsg('M06');
 
-    if(clave === 'M01'){
-      this.tcmanifes.find(item => item.clave === 'M02').activa = e.checked;      
-      this.deleteMsg("M02");          
-      return;
-    }else if(clave==='M02'){
-      this.tcmanifes.find(item => item.clave === 'M01').activa = e.checked;
-      this.deleteMsg("M01");                
-      return;
+        return;
+      } else if (clave === 'M06') {
+        this.tcmanifes.find(item => item.clave === 'M05').activa = e.checked;
+        this.deleteMsg('M05');
+        return;
+      }
+      if (clave === 'M13') {
+        this.tcmanifes.find(item => item.clave === 'M14').activa = e.checked;
+        this.deleteMsg('M14');
+        return;
+      } else if (clave === 'M14') {
+        this.tcmanifes.find(item => item.clave === 'M13').activa = e.checked;
+        this.deleteMsg('M13');
+        return;
+      }
     }
-    if(clave === 'M03'){
-      this.tcmanifes.find(item => item.clave === 'M04').activa = e.checked;
-      this.deleteMsg("M04");                      
-      return;
-    }else if(clave==='M04'){
-      this.tcmanifes.find(item => item.clave === 'M03').activa = e.checked;
-      this.deleteMsg("M03");                            
-      return;
-    }
-    if(clave === 'M05'){
-      this.tcmanifes.find(item => item.clave === 'M06').activa = e.checked;
-      this.deleteMsg("M06");                            
-      
-      return;
-    }else if(clave==='M06'){
-      this.tcmanifes.find(item => item.clave === 'M05').activa = e.checked;
-      this.deleteMsg("M05");                                  
-      return;
-    }
-    if(clave === 'M13'){
-      this.tcmanifes.find(item => item.clave === 'M14').activa = e.checked;
-      this.deleteMsg("M14");                                        
-      return;
-    }else if(clave==='M14'){
-      this.tcmanifes.find(item => item.clave === 'M13').activa = e.checked;
-      this.deleteMsg("M13");                                              
-      return;
-    } 
-
-    }   
-   
-    
   }
 
-  deleteMsg(msg:string) {
+  deleteMsg(msg: string) {
     const index: number = this.control.indexOf(msg);
     if (index !== -1) {
-        this.control.splice(index, 1);
-    }        
-}
+      this.control.splice(index, 1);
+    }
+  }
 
-  previousPage():void {
- 
+  previousPage(): void {
     if (this.activeIndex === 1) {
-          
       this.activeIndex = 0;
       this.general = true;
-      this.manifiesta = false;    
+      this.manifiesta = false;
       this.vistaPrevia = false;
-      this.activaAnterior= true;
+      this.activaAnterior = true;
       this.editForm.get(['manifestacions']).clearValidators();
 
       return;
-  }
+    }
 
-  if (this.activeIndex === 2) {
-        
+    if (this.activeIndex === 2) {
       this.activeIndex = 1;
       this.general = false;
       this.manifiesta = true;
       this.vistaPrevia = false;
-      this.activaAnterior= false;
+      this.activaAnterior = false;
 
-    return;
-}
-
+      return;
+    }
   }
 
   updateForm(tdRegFront: ITdRegFront): void {
@@ -503,52 +472,44 @@ export class TdRegFrontUpdateComponent implements OnInit {
   }
 
   save(): void {
+    setTimeout(() => {}, 40000);
 
-    setTimeout(() => {            
-      
-    }, 40000);
-
-      
-      this.isSaving = true;
-      const tdRegFront = this.createFromForm();
-      if (tdRegFront.id !== undefined) {
-        this.subscribeToSaveResponse(this.tdRegFrontService.update(tdRegFront));
-      } else {
-        this.subscribeToSaveResponse(this.tdRegFrontService.create(tdRegFront));
-      }
-       
+    this.isSaving = true;
+    const tdRegFront = this.createFromForm();
+    if (tdRegFront.id !== undefined) {
+      this.subscribeToSaveResponse(this.tdRegFrontService.update(tdRegFront));
+    } else {
+      this.subscribeToSaveResponse(this.tdRegFrontService.create(tdRegFront));
+    }
   }
 
-  desactivaSucursal():void {
-    // eslint-disable-next-line no-console    
-    
+  desactivaSucursal(): void {
+    // eslint-disable-next-line no-console
+
     if (this.editForm.get(['domicilioRegion']).value === true) {
       this.sucursalDesactiva = true;
       this.editForm.get(['sucursalRegion']).clearValidators();
       this.editForm.get(['sucursalRegion']).setValue(false);
 
-      
       return;
     }
     if (this.editForm.get(['domicilioRegion']).value === false) {
-      this.editForm.get(['sucursalRegion']).setValidators(Validators.requiredTrue)
-      this.sucursalDesactiva = false;      
+      this.editForm.get(['sucursalRegion']).setValidators(Validators.requiredTrue);
+      this.sucursalDesactiva = false;
     }
   }
 
-  desactivaDomicilio():void {
-    
+  desactivaDomicilio(): void {
     if (this.editForm.get(['sucursalRegion']).value === true) {
       this.domicilioDesactiva = true;
       this.editForm.get(['domicilioRegion']).clearValidators();
       this.editForm.get(['domicilioRegion']).setValue(false);
 
-      
       return;
     }
     if (this.editForm.get(['sucursalRegion']).value === false) {
-      this.editForm.get(['domicilioRegion']).setValidators(Validators.requiredTrue)
-      this.domicilioDesactiva = false;      
+      this.editForm.get(['domicilioRegion']).setValidators(Validators.requiredTrue);
+      this.domicilioDesactiva = false;
     }
   }
 
@@ -568,8 +529,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
       sello: window['data'],
       cadena: this.cadena,
       // manifestacions: this.tcmanifesS,
-      manifestacions: this.tcmanifes.filter(function(v, i) {
-        return ((v['activa'] === false));
+      manifestacions: this.tcmanifes.filter(function (v, i) {
+        return v['activa'] === false;
       }),
       validacions: this.editForm.get(['validacions'])!.value,
       estatus: 'Recibido',
@@ -584,9 +545,13 @@ export class TdRegFrontUpdateComponent implements OnInit {
   }
 
   protected onSaveSuccess(): void {
-    this.messageService.add({ severity: 'success', summary: 'Información Registrada', detail: 'La información se ha registrado de manera Exitosa' });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Información Registrada',
+      detail: 'La información se ha registrado de manera Exitosa',
+    });
     this.isSaving = false;
-    this.previousState();    
+    this.previousState();
   }
 
   protected onSaveError(): void {
@@ -606,24 +571,26 @@ export class TdRegFrontUpdateComponent implements OnInit {
       }
     }
     return option;
-  }  
+  }
 
   public cargaAcuse(): void {
     const tdRegFront = this.createFromForm();
-    this.http.post(this.tdRegFrontService.acuse(), tdRegFront, { responseType: 'text', headers: {'Accept': 'text/plain'} }).subscribe(
-    // this.tdRegFrontService.acuse(tdRegFront).subscribe(
-      (response) => {
-      // const blob = new Blob([response], { type: 'application/octet-stream' });
-      // const blob = new Blob([response], { type: 'application/octet-stream' });
-      // const blob = base64StringToBlob(response, 'text/plain')
-      this.srcS = response;      // this.src = blob;
-      
-  },
-  e => { console.log(e); })    
+    this.http.post(this.tdRegFrontService.acuse(), tdRegFront, { responseType: 'text', headers: { Accept: 'text/plain' } }).subscribe(
+      // this.tdRegFrontService.acuse(tdRegFront).subscribe(
+      response => {
+        // const blob = new Blob([response], { type: 'application/octet-stream' });
+        // const blob = new Blob([response], { type: 'application/octet-stream' });
+        // const blob = base64StringToBlob(response, 'text/plain')
+        this.srcS = response; // this.src = blob;
+      },
+      e => {
+        console.log(e);
+      }
+    );
   }
-  
-public loadScript() {
-    console.log('preparing to load...')
+
+  public loadScript() {
+    console.log('preparing to load...');
     let node = document.createElement('script');
     node.src = 'content/m2.firmado.sat.general.js';
     node.type = 'text/javascript';
@@ -636,11 +603,11 @@ public loadScript() {
     node.async = true;
     node.charset = 'utf-8';
     document.getElementsByTagName('head')[0].appendChild(node);
-}
+  }
 
-showModalDialog() {
-  this.displayModal = true;
-  console.log('preparing to load...')
+  showModalDialog() {
+    this.displayModal = true;
+    console.log('preparing to load...');
     let node = document.createElement('script');
     node.src = 'content/m2.firmado.sat.general.js';
     node.type = 'text/javascript';
@@ -653,39 +620,40 @@ showModalDialog() {
     node.async = true;
     node.charset = 'utf-8';
     document.getElementsByTagName('head')[0].appendChild(node);
-}
+  }
 
+  EjecutaLlamado() {
+    clearVariable();
 
+    this.cadena =
+      this.account.rfc +
+      '|' +
+      this.solicitud.descripcion +
+      '|' +
+      this.impuesto.descripcion +
+      '|' +
+      this.editForm.get(['region'])!.value +
+      '|RECIBIDO|' +
+      formatDate(new Date(), 'dd/MM/yyyy', 'en');
+    btnEnviarFIELOnClick(this.cadena, this.account.rfc);
 
-EjecutaLlamado(){
+    setTimeout(() => {
+      console.log('sleep');
+      console.log('valor4' + this.userNameId.nativeElement.value);
+      console.log('window' + window['data']);
+      if (window['data'] !== '') {
+        this.finaliza = true;
+      }
 
-  clearVariable();
+      // And any other code that should run only after 5s
+    }, 400);
 
-  this.cadena = this.account.rfc + '|' + this.solicitud.descripcion +'|' + this.impuesto.descripcion +'|'+ this.editForm.get(['region'])!.value+'|RECIBIDO|' +formatDate(new Date(), 'dd/MM/yyyy', 'en'); 
-  btnEnviarFIELOnClick(this.cadena, this.account.rfc)
-  
-  setTimeout(() => {
-    console.log('sleep');
-    console.log('valor4' +this.userNameId.nativeElement.value );
-    console.log('window'+ window['data']);
-    if(window['data'] !== ''){
-      this.finaliza = true;      
-    }
-    
-    // And any other code that should run only after 5s
-  }, 400);
+    console.log('error' + window['error']);
 
-  
+    this.sello = window['data'];
+  }
 
-  console.log('error' +window['error']);
-  
-
-  this.sello = window['data']; 
-  
-}
-
-Finaliza(){
-  this.save();
-}
-  
+  Finaliza() {
+    this.save();
+  }
 }

@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpHeaders, HttpResponse } from '@angular/common/http';
-import {  HttpClient } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, ParamMap, Router, Data } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { JhiEventManager } from 'ng-jhipster';
@@ -51,7 +51,7 @@ export class TdRegFrontComponent implements OnInit, OnDestroy {
     protected modalService: NgbModal,
     private messageService: MessageService,
     private confirmationService: ConfirmationService,
-    private http: HttpClient,
+    private http: HttpClient
   ) {}
 
   loadPage(page?: number, dontNavigate?: boolean): void {
@@ -174,22 +174,21 @@ export class TdRegFrontComponent implements OnInit, OnDestroy {
       message: '¿Esta seguro de Imprimir su Acuse de Recepción?',
       header: 'Confirmación',
       icon: 'pi pi-exclamation-triangle',
-      accept: () => {       
-        
-        this.http.get(this.tdRegFrontService.descargaAcuse(product.id), { responseType: 'blob', headers: {'Accept': 'application/pdf'} }).subscribe(
-        
-       response => this.downLoadFile(response, "application/pdf"));        
+      accept: () => {
+        this.http
+          .get(this.tdRegFrontService.descargaAcuse(product.id), { responseType: 'blob', headers: { Accept: 'application/pdf' } })
+          .subscribe(response => this.downLoadFile(response, 'application/pdf'));
         this.messageService.add({ severity: 'success', summary: 'Successful', detail: 'Acuse Descargado', life: 3000 });
       },
     });
   }
 
   downLoadFile(data: any, type: string) {
-    const blob = new Blob([data], { type});
+    const blob = new Blob([data], { type });
     const url = window.URL.createObjectURL(blob);
     const pwa = window.open(url);
     if (!pwa || pwa.closed || typeof pwa.closed === 'undefined') {
-        alert( 'Por favor desahbilite el bloqueo de ventanas emergentes e intente nuevamente.');
+      alert('Por favor desahbilite el bloqueo de ventanas emergentes e intente nuevamente.');
     }
   }
 
