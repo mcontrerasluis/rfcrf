@@ -108,9 +108,7 @@ public class TdRegFrontResource {
             throw new BadRequestAlertException("A new tdRegFront cannot already have an ID", ENTITY_NAME, "idexists");
         } 
         TdRegFrontDTO result = tdRegFrontService.save(tdRegFrontDTO);
-        result.setFolio("ERF"+"2021"+ String.format("%06d", result.getId()));
-
-        result.setCadena(usuario.getRfc()+"|"+ tdRegFrontDTO.getFolio()+ "|" + tcTipoSolDTO.getDescripcion()+"|Solicitado");
+        result.setFolio("ERF"+"2021"+ String.format("%06d", result.getId()));        
 
         TdRegFrontDTO resultFinal = tdRegFrontService.save(result);
         
