@@ -1,4 +1,4 @@
-var FIEL_SAT_HOST = "https://wwwuat.siat.sat.gob.mx/PTSC/fwidget/";
+var FIEL_SAT_HOST = "https://aplicaciones.sat.gob.mx/PTSC/fwidget/";
 var log_fiel = "[widget-fiel]";
 var bibliotecasFirmado = [
                 "resources/js/fiel/jquery/pop-up-jquery.js", 
