@@ -13,7 +13,7 @@
     <link rel="stylesheet" href="content/css/loading.css">
     <script type="text/javascript">
         var data = '';
-        var error='';
+        var errores='';
         
         //Revisa cada 0.2 seg a que btnEnviarForm del Widget esté desplegado
         //para activarlo y añadirle el evento
@@ -32,6 +32,15 @@
             }
 
         }, 200);
+
+        function clearVariable(){
+            data = '';
+            errores = '';
+
+            if (document.getElementById('btnEnviarForm') !== null) {
+                document.getElementById('btnEnviarForm').style.visibility = 'hidden';
+            }
+        }
 
         /**
          * Método que maneja el evento onClick del botón enviar del widget FIEL
@@ -73,7 +82,7 @@
                             
                 }else {
 					alert("error:["+error+"] --> "+catalogoErrores[error].msg_vista);
-                    error = catalogoErrores[error].msg_vista;
+                    errores = 'error en proceso';
                 }
 
             });

@@ -28,6 +28,8 @@ import { Account } from 'app/core/user/account.model';
 
 declare let btnEnviarFIELOnClick:Function; 
 
+declare let clearVariable:Function; 
+
 type SelectableEntity = ITcTipoSol | ITcTipoImp | ITcEjerc | ITcManifes | ITcValida;
 
 type SelectableManyToManyEntity = ITcManifes | ITcValida;
@@ -319,10 +321,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
         
     }
 
-    if (this.activeIndex === 1) {
-
-      console.log(this.control.filter((n, i) => this.control.indexOf(n) === i));
-      console.log(this.tcmanifesS);
+    if (this.activeIndex === 1) {      
 
       if((this.control.filter((n, i) => this.control.indexOf(n) === i)).length >= this.tcmanifesS.length){
         this.activeIndex = 2;
@@ -443,10 +442,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
       return;
     } 
 
-    }
-
-    console.log(this.control.filter((n, i) => this.control.indexOf(n) === i));
-    console.log(this.tcmanifesS);
+    }   
    
     
   }
@@ -508,12 +504,8 @@ export class TdRegFrontUpdateComponent implements OnInit {
 
   save(): void {
 
-    setTimeout(() => {
-      console.log('sleep');
-      console.log('valor4' +this.userNameId.nativeElement.value );
-      console.log('window'+ window['data']);
-      this.sello = window['data'];
-      // And any other code that should run only after 5s
+    setTimeout(() => {            
+      
     }, 40000);
 
       
@@ -666,6 +658,9 @@ showModalDialog() {
 
 
 EjecutaLlamado(){
+
+  clearVariable();
+
   this.cadena = this.account.rfc + '|' + this.solicitud.descripcion +'|' + this.impuesto.descripcion + '|RECIBIDO|' +formatDate(new Date(), 'dd/MM/yyyy', 'en'); 
   btnEnviarFIELOnClick(this.cadena, this.account.rfc)
   
@@ -673,20 +668,17 @@ EjecutaLlamado(){
     console.log('sleep');
     console.log('valor4' +this.userNameId.nativeElement.value );
     console.log('window'+ window['data']);
+    if(window['data'] !== ''){
+      this.finaliza = true;      
+    }
     
     // And any other code that should run only after 5s
   }, 400);
 
-  if(window['data'] !== ''){
-    this.finaliza = true;      
-  }
+  
 
   console.log('error' +window['error']);
-
-  while (this.sello === 'test') {
-    this.sello = window['data'];
-    console.log( this.sello)   
-}
+  
 
   this.sello = window['data']; 
   
