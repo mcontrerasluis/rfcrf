@@ -58,7 +58,7 @@ public class CustomAuthorizationRequestResolver implements OAuth2AuthorizationRe
             //additionalParameters.put(PkceParameterNames.CODE_CHALLENGE, codeChallenge);
             //additionalParameters.put(PkceParameterNames.CODE_CHALLENGE_METHOD, "S256");
             additionalParameters.put("resourceServer", "RFCRF");
-            // additionalParameters.put("redirect_uri", "http://localhost:8080/RFCSolZnFr/login/oauth2/code/oidc");
+            additionalParameters.put("redirect_uri", "https://www.cloudb.sat.gob.mx/RFCSolZnFr/login/oauth2/code/oidc");
         } catch (NoSuchAlgorithmException e) {
             additionalParameters.put(PkceParameterNames.CODE_CHALLENGE, codeVerifier);
         }
