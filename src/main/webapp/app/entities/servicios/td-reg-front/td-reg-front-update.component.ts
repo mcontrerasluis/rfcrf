@@ -661,7 +661,7 @@ EjecutaLlamado(){
 
   clearVariable();
 
-  this.cadena = this.account.rfc + '|' + this.solicitud.descripcion +'|' + this.impuesto.descripcion + '|RECIBIDO|' +formatDate(new Date(), 'dd/MM/yyyy', 'en'); 
+  this.cadena = this.account.rfc + '|' + this.solicitud.descripcion +'|' + this.impuesto.descripcion +'|'+ this.editForm.get(['region'])!.value+'|RECIBIDO|' +formatDate(new Date(), 'dd/MM/yyyy', 'en'); 
   btnEnviarFIELOnClick(this.cadena, this.account.rfc)
   
   setTimeout(() => {
