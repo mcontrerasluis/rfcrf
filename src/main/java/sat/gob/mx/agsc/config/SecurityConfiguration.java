@@ -68,8 +68,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) {
-        web.ignoring()
-            .antMatchers(HttpMethod.OPTIONS, "/**")
+        web.ignoring()            
             .antMatchers("/app/**/*.{js,html}")
             .antMatchers("/i18n/**")
             .antMatchers("/content/**")
@@ -116,6 +115,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .deny()
         .and()*/
         http.authorizeRequests()
+            .antMatchers("/").authenticated()
             .antMatchers("/api/auth-info").permitAll()
             .antMatchers("/api/**").authenticated()
             .antMatchers("/websocket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
