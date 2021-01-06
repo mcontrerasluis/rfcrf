@@ -128,8 +128,7 @@ spring:
             authorization-uri: https://login.dev.cloudb.sat.gob.mx/nidp/oauth/nam/authz
             user-name-attribute: cn
             jwk-set-uri: https://login.dev.cloudb.sat.gob.mx/nidp/oauth/nam/keys
-            redirect-uri: https://www.dev.cloudb.sat.gob.mx/RFCSolZnFr/login/oauth2/code/oidc
-            redirect-uri-template: https://www.dev.cloudb.sat.gob.mx/RFCSolZnFr/login/oauth2/code/oidc
+            redirect-uri-template: "${baseUrl}/login/oauth2/code/oidc"
         registration:
           oidc:
             client-id: 7a6ed749-d545-4651-9e41-e58dc8efc9b2
