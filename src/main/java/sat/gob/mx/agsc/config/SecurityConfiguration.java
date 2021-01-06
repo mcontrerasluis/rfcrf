@@ -2,6 +2,10 @@ package sat.gob.mx.agsc.config;
 
 import sat.gob.mx.agsc.security.*;
 
+import sat.gob.mx.agsc.config.MyCustomFilter;
+
+import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
+
 import io.github.jhipster.config.JHipsterProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
@@ -37,6 +41,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
 import org.springframework.security.oauth2.client.registration.ClientRegistration;
 import org.springframework.security.oauth2.core.AuthorizationGrantType;
 import org.springframework.security.oauth2.client.registration.InMemoryClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
 
 
 @EnableWebSecurity
@@ -80,7 +85,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(HttpSecurity http) throws Exception {
         // @formatter:off
-        http.csrf()
+        http.addFilterBefore(new MyCustomFilter("nuevourl"), OAuth2AuthorizationRequestRedirectFilter.class)
+            .csrf()
             .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         .and()
             .headers()
