@@ -73,6 +73,7 @@ spring:
 # ===================================================================
 server:
   forward-headers-strategy: NATIVE
+  server.tomcat.redirect-context-root: false
   port: 8080
   servlet:
     context-path: /RFCSolZnFr
