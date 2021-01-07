@@ -117,7 +117,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     }
 
     public void setTipoContribuyente(String tipoContribuyente) {
-        this.tipoContribuyente = tipoContribuyente;
+        this.tipoContribuyente = tipoContribuyente.trim();
     }
 
     public String getLastName() {

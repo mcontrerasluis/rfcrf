@@ -47,8 +47,7 @@ public class AccountResource {
     @GetMapping("/account")
     @SuppressWarnings("unchecked")
     public UserDTO getAccount(Principal principal) {
-        log.debug("entra al sistema usuario {}", principal);
-        System.out.println("Usuario" + principal);
+        log.debug("entra al sistema usuario {}", principal);        
         UserDTO user = new UserDTO();
         if (principal instanceof AbstractAuthenticationToken) {
             return userService.getUserFromAuthentication((AbstractAuthenticationToken) principal);

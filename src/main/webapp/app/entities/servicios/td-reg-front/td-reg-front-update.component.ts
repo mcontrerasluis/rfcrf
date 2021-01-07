@@ -285,7 +285,7 @@ export class TdRegFrontUpdateComponent implements OnInit {
       reg ='rfnorte'
     }
     
-    if(this.account.tipoContribuyente === 'F'){
+    if(this.account.tipoContribuyente.toLowerCase() === ('f')){
       tipo = 'fisica';
     }else{
       tipo = 'moral';

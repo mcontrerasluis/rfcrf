@@ -179,8 +179,8 @@ public class UserService {
         } else if (user.getLogin() == null) {
             user.setLogin((String) details.get("cn"));
         }
-        if (details.get("fullname") != null) {
-            user.setFirstName((String) details.get("fullname"));
+        if (details.get("nombreCompleto") != null) {
+            user.setFirstName((String) details.get("nombreCompleto"));
         }
         if (details.get("cn") != null) {
             user.setRfc((String) details.get("cn"));
